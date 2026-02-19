@@ -391,17 +391,18 @@
 
     function renderScoreList() {
         const list = document.getElementById('score-list');
-        list.innerHTML = '';
+        let html = '';
         players.forEach((p, i) => {
-            list.innerHTML += `
-                <div class="score-item">
-                    <span>${p.name} (${p.score} p)</span>
+            html += `
+                <div class="score-item" id="score-item-${i}">
+                    <span>${p.name} (<strong>${p.score}</strong> p)</span>
                     <div class="point-controls">
                         <button onclick="addPt(${i}, 1)">+1</button>
                         <button onclick="addPt(${i}, 2)" style="color:var(--accent); border-color:var(--accent);">+2</button>
                     </div>
                 </div>`;
         });
+        list.innerHTML = html;
         if (roundCount >= 10) {
             document.getElementById('nextRoundBtn').innerText = "Avsluta spelet";
         }
@@ -410,6 +411,11 @@
     function addPt(idx, val) {
         players[idx].score += val;
         renderScoreList();
+        const item = document.getElementById('score-item-' + idx);
+        if (item) {
+            item.style.background = 'rgba(129, 140, 248, 0.2)';
+            setTimeout(() => { item.style.background = ''; }, 300);
+        }
     }
 
     function handleNextRound() {
