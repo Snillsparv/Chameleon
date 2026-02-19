@@ -27,7 +27,7 @@
             font-family: 'Outfit', sans-serif;
             background-color: #0f172a;
             /* Se till att din bakgrundsbild heter background.png */
-            background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('background.png');
+            background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('background2.png');
             background-size: cover;
             background-position: center center;
             background-attachment: fixed;
@@ -120,6 +120,7 @@
         <p>Välj språk / Choose language</p>
         <button class="btn btn-lang" onclick="setLanguage('sv')">Svenska</button>
         <button class="btn btn-lang" onclick="setLanguage('en')">English</button>
+        <a href="index.html" style="display:inline-block; margin-top:15px; color:#818cf8; font-size:0.9rem; text-decoration:none;">&#8592; Tillbaka till meny</a>
     </div>
 
     <div id="scr-setup" class="hidden screen-animate">
@@ -157,7 +158,7 @@
     <div id="scr-video" class="hidden screen-animate">
         <h1 id="txt-video-title">Finalen...</h1>
         <div class="video-wrapper">
-            <video id="victoryVideo" playsinline><source src="video.mp4" type="video/mp4"></video>
+            <video id="victoryVideo" playsinline><source src="video2.mp4" type="video/mp4"></video>
         </div>
         <button class="btn" id="btn-skip" onclick="finishVideo()">Skippa</button>
     </div>
@@ -166,6 +167,7 @@
         <h1 id="grandWinner" style="font-size: 3.5rem; color: var(--winner-gold);">Namn</h1>
         <div id="final-ranking"></div>
         <button class="btn" id="btn-again" onclick="location.reload()">Spela igen</button>
+        <a href="index.html" style="display:inline-block; margin-top:15px; color:#818cf8; font-size:0.9rem; text-decoration:none;">&#8592; Tillbaka till meny</a>
     </div>
 </div>
 

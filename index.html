@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kameleonten – 100 kategorier</title>
+    <title>Spelkväll</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0f172a">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦎</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
 
     <style>
         :root {
@@ -17,15 +17,14 @@
             --card: rgba(30, 41, 59, 0.6);
             --primary: #818cf8;
             --accent: #d946ef;
-            --winner-gold: #fbbf24;
             --text: #f8fafc;
-            --glass: rgba(255, 255, 255, 0.05);
         }
 
-        * { box-sizing: border-box; transition: all 0.3s ease; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Outfit', sans-serif;
+            background-color: #0f172a;
             background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('image_1.png');
             background-size: cover;
             background-position: center center;
@@ -35,475 +34,107 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
-            overflow-x: hidden;
         }
 
         .container {
             width: 95%;
             max-width: 500px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 2.4rem;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 35px;
+            font-size: 1rem;
+        }
+
+        .game-card {
             background: var(--card);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            padding: 35px 30px;
-            border-radius: 32px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
-
-        .logo { width: 80px; margin: 0 auto 15px auto; filter: drop-shadow(0 0 8px rgba(129, 140, 248, 0.6)); }
-
-        h1 {
-            font-weight: 800; font-size: 2.2rem; margin: 0 0 10px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        input {
-            background: rgba(15, 23, 42, 0.6); border: 1px solid #334155;
-            color: white; padding: 14px 16px; border-radius: 12px;
-            font-size: 1.1rem; margin: 5px 0; width: 100%; text-align: center;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white; border: none; padding: 16px; border-radius: 16px;
-            font-size: 1.1rem; font-weight: 700; cursor: pointer; width: 100%;
-            margin-top: 15px; box-shadow: 0 10px 20px -5px rgba(129, 140, 248, 0.4);
-        }
-
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px -5px rgba(129, 140, 248, 0.5); }
-
-        .btn-small {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--primary);
-            padding: 12px;
-            font-size: 0.9rem;
-            width: 40%;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            align-items: center;
-            margin-top: 15px;
-        }
-
-        .video-wrapper {
-            width: 100%;
             border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.6);
-            border: 2px solid var(--accent);
+            padding: 30px 25px;
             margin-bottom: 20px;
-            background: #000;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
         }
-        video { width: 100%; display: block; }
 
-        .winner-crown { font-size: 4rem; margin-bottom: 10px; display: block; animation: bounce 2s infinite; }
-        .winner-name { font-size: 3rem; font-weight: 800; color: var(--winner-gold); text-shadow: 0 0 20px rgba(251, 191, 36, 0.5); }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .game-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary);
+        }
 
-        .secret-card { background: rgba(15, 23, 42, 0.5); padding: 30px; border-radius: 24px; border: 2px solid var(--primary); }
-        .grid-board { display: grid; grid-template-columns: 40px repeat(4, 1fr); gap: 8px; margin: 25px 0; }
-        .cell { background: rgba(255,255,255,0.03); padding: 12px 4px; border-radius: 12px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1); }
-        .cell-header { color: var(--primary); font-weight: 800; border: none; background: transparent; }
-        .score-item { display: flex; justify-content: space-between; background: rgba(255,255,255,0.05); margin: 10px 0; padding: 15px 20px; border-radius: 16px; align-items: center; }
-        .point-controls button { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: var(--primary); width: 40px; height: 40px; border-radius: 10px; font-weight: bold; margin-left: 5px; cursor: pointer; }
-        .point-controls button.accent { color: var(--accent); border-color: var(--accent); }
-        .point-controls button.selected { background: var(--primary); color: white; }
-        .point-controls button.selected-accent { background: var(--accent); color: white; border-color: var(--accent); }
+        .game-icon {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 12px;
+        }
 
-        .hidden { display: none !important; }
-        .animate-in { animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .game-title {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
 
-        .leaderboard { margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); text-align: left; }
-        .leaderboard h3 { color: var(--accent); margin-bottom: 10px; }
-        .leaderboard p { margin: 4px 0; font-size: 0.95rem; color: #cbd5e1; }
+        .game-desc {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .game-players {
+            display: inline-block;
+            background: rgba(129, 140, 248, 0.15);
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 12px;
+        }
     </style>
 </head>
 <body>
 
-<div class="container animate-in" id="app">
-    <div id="scr-setup">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHBhdGggZmlsbD0iIzgxOGNmOCIgZD0iTTU4IDE0Yy0yLjMyIDAtNC4zNC45Ny01Ljc5IDIuNTFDNDkuMzkgMTQuNjIgNDUuODggMTMgNDIgMTNjLTYuNjMgMC0xMiA1LjM3LTEyIDEyIDAgNC4xIDEuOTUgNy42NiA0Ljk0IDkuOTRDMyAgNTEuNDEgMyA1NSAzIDU1czYuNTItNS44MSAyNi45Mi01Ljk0YzUuOTggMy4wMiAxMi43NCA0Ljk0IDE5Ljk2IDQuOTkgMC0uMDItLjI2LTcuNjUtOS43Ny0xMC41IEM0Ni4xIDQwLjA0IDUxIDM0Ljc2IDUxIDI5YzAtLjIyLS4wMS0uNDMtLjAyLS42NEM1NC4zNCAyOS40OSA1OCAyNi42NiA1OCAyM3MtMy42Ni02LjQ5LTcuMDItNS4zNmMxLjQ1LTEuNTQgMi4zNS0zLjYzIDIuMzUtNS45NEM1My4zMyAxNi4zOCA1NS40OSAxNCA1OCAxNHoiLz48Y2lyY2xlIGN4PSI0MiIgY3k9IjIzIiByPSIzIiBmaWxsPSIjZmZmIi8+PC9zdmc+" alt="Logotyp" class="logo">
-        <h1>Kameleonten</h1>
-        <p>Neonutgåvan. 100 slumpmässiga kategorier.</p>
-        <div style="text-align: left; margin-bottom: 20px;">
-            <label>Antal spelare:</label>
-            <input type="number" id="pCount" value="4" min="3" max="10">
-        </div>
-        <button class="btn" onclick="setupNames()">Fortsätt</button>
-        <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 15px;">
-            Tips: Tryck <b>Ctrl + Plus</b> för att zooma in.
-        </p>
-    </div>
+<div class="container">
+    <h1>Spelkväll</h1>
+    <p class="subtitle">Välj ett spel att spela</p>
 
-    <div id="scr-names" class="hidden">
-        <h1>Spelarnamn</h1>
-        <div id="name-container"></div>
-        <button class="btn" onclick="startGame()">Starta spelet</button>
-    </div>
+    <a href="kameleonten.html" class="game-card">
+        <span class="game-icon">🦎</span>
+        <div class="game-title">Kameleonten</div>
+        <div class="game-desc">Bluffy dig igenom 100 kategorier. Vem är kameleonten som inte vet det hemliga ordet?</div>
+        <span class="game-players">3–10 spelare</span>
+    </a>
 
-    <div id="scr-pass" class="hidden">
-        <p style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary);">Skicka till</p>
-        <h1 id="currentPlayerName" style="font-size: 3rem; margin: 10px 0;">Spelare</h1>
-        <div id="secret-area" class="hidden">
-            <div class="secret-card">
-                <h3 id="roleTitle" style="margin: 0; color: var(--accent); text-transform: uppercase;">Din roll</h3>
-                <div id="roleContent" style="font-size: 1.8rem; font-weight: 800; margin-top: 15px;"></div>
-            </div>
-        </div>
-        <button class="btn" id="revealBtn" onclick="toggleReveal()" style="margin-top: 30px;">Visa min roll</button>
-    </div>
-
-    <div id="scr-board" class="hidden">
-        <p id="roundIndicator" style="color: var(--primary); font-weight: 800;">Runda 1/10</p>
-        <h1 id="boardCatName" style="font-size: 2.2rem; margin-top: 0;"></h1>
-        <div class="grid-board" id="gridBoard"></div>
-        <button class="btn" onclick="showScoring()">Dela ut poäng</button>
-    </div>
-
-    <div id="scr-scores" class="hidden">
-        <h1>Aktuell ställning</h1>
-        <div id="score-list"></div>
-        <div class="button-group">
-            <button class="btn btn-small" onclick="triggerFinal()">Avsluta spelet</button>
-            <button class="btn" id="nextRoundBtn" onclick="handleNextRound()" style="margin-top:0; width: 55%;">Nästa runda</button>
-        </div>
-    </div>
-
-    <div id="scr-video" class="hidden">
-        <h1 style="color: var(--accent);">Storfinalen</h1>
-        <div class="video-wrapper">
-            <video id="victoryVideo" playsinline>
-                <source src="video.mp4" type="video/mp4">
-            </video>
-        </div>
-        <button class="btn" onclick="finishVideo()">Hoppa över</button>
-    </div>
-
-    <div id="scr-final" class="hidden">
-        <span class="winner-crown">👑</span>
-        <h1 class="winner-name" id="grandWinner">Vinnare</h1>
-        <div id="final-ranking" style="margin-top: 30px; text-align: left;"></div>
-        <div id="leaderboard-section" class="leaderboard hidden"></div>
-        <button class="btn" onclick="location.reload()">Nytt spel</button>
-    </div>
+    <a href="herd-mentality.html" class="game-card">
+        <span class="game-icon">🐮</span>
+        <div class="game-title">Herd Mentality</div>
+        <div class="game-desc">Tänk som flocken! Svara som majoriteten och undvik att bli den rosa kon.</div>
+        <span class="game-players">3–10 spelare</span>
+    </a>
 </div>
 
-<script>
-    // 100 UNIKA KATEGORIER
-    const allCategories = [
-        { cat: "Djur", words: ["Lion", "Tiger", "Elephant", "Giraffe", "Penguin", "Kangaroo", "Wolf", "Zebra", "Gorilla", "Panda", "Hippo", "Crocodile", "Camel", "Eagle", "Shark", "Dolphin"] },
-        { cat: "Mat", words: ["Pizza", "Sushi", "Tacos", "Burger", "Pasta", "Steak", "Curry", "Omelette", "Pancakes", "Salad", "Dim Sum", "Kebab", "Lasagna", "Burrito", "Ramen", "Falafel"] },
-        { cat: "Länder", words: ["Sweden", "Germany", "USA", "Japan", "France", "Brazil", "Australia", "Canada", "Italy", "Spain", "India", "Egypt", "Mexico", "Thailand", "Norway", "Greece"] },
-        { cat: "Filmer", words: ["Star Wars", "Inception", "Titanic", "Matrix", "Joker", "Avatar", "Gladiator", "Up", "Scream", "Frozen", "Lion King", "Jaws", "Alien", "Psycho", "Die Hard", "Coco"] },
-        { cat: "Varumärken", words: ["Apple", "Google", "Nike", "IKEA", "Tesla", "Coke", "Amazon", "LEGO", "Samsung", "Disney", "Netflix", "Adidas", "Sony", "McDonalds", "BMW", "Spotify"] },
-        { cat: "Sport", words: ["Football", "Tennis", "Golf", "Hockey", "Boxing", "Rugby", "Skiing", "Surfing", "Baseball", "Yoga", "Swimming", "Fencing", "Cricket", "Karate", "Darts", "Cycling"] },
-        { cat: "Yrken", words: ["Doctor", "Chef", "Pilot", "Artist", "Teacher", "Farmer", "Lawyer", "Nurse", "Firefighter", "Coder", "Writer", "Actor", "Cop", "Mechanic", "Scientist", "Waiter"] },
-        { cat: "Föremål", words: ["Camera", "Laptop", "Bicycle", "Watch", "Key", "Hammer", "Guitar", "Mirror", "Compass", "Battery", "Umbrella", "Toaster", "Printer", "Violin", "Soap", "Map"] },
-        { cat: "Musikgenrer", words: ["Rock", "Jazz", "Pop", "Techno", "Blues", "Metal", "Classical", "Country", "Reggae", "Hip Hop", "Disco", "Opera", "Punk", "Soul", "Salsa", "Folk"] },
-        { cat: "Hobbyer", words: ["Reading", "Gaming", "Hiking", "Fishing", "Cooking", "Dancing", "Drawing", "Camping", "Gardening", "Chess", "Running", "Knitting", "Singing", "Baking", "Pottery", "Photography"] },
-        { cat: "Instrument", words: ["Piano", "Drums", "Flute", "Trumpet", "Violin", "Cello", "Harp", "Saxophone", "Banjo", "Clarinet", "Oboe", "Trombone", "Tuba", "Accordion", "Bongos", "Harmonica"] },
-        { cat: "Väder", words: ["Sunny", "Rainy", "Snowy", "Windy", "Stormy", "Foggy", "Cloudy", "Hail", "Tornado", "Rainbow", "Heatwave", "Blizzard", "Thunder", "Lightning", "Mist", "Monsoon"] },
-        { cat: "Desserter", words: ["Cake", "Ice Cream", "Brownie", "Donut", "Pie", "Pudding", "Cookie", "Sorbet", "Muffin", "Tiramisu", "Cheesecake", "Waffle", "Crepe", "Eclair", "Macaron", "Trifle"] },
-        { cat: "Kläder", words: ["Shirt", "Pants", "Jacket", "Dress", "Skirt", "Hat", "Gloves", "Scarf", "Socks", "Shoes", "Tie", "Belt", "Sweater", "Coat", "Shorts", "Vest"] },
-        { cat: "Rymden", words: ["Planet", "Star", "Galaxy", "Moon", "Sun", "Comet", "Asteroid", "Nebula", "Rocket", "Astronaut", "Orbit", "Gravity", "Void", "Meteor", "NASA", "Satellite"] },
-        { cat: "Köksredskap", words: ["Knife", "Spoon", "Fork", "Whisk", "Grater", "Peeler", "Ladle", "Spatula", "Tongs", "Pot", "Pan", "Bowl", "Plate", "Cup", "Mixer", "Oven"] },
-        { cat: "Insekter", words: ["Bee", "Ant", "Fly", "Spider", "Beetle", "Butterfly", "Moth", "Cricket", "Wasp", "Tick", "Flea", "Scorpion", "Ladybug", "Mosquito", "Termite", "Dragonfly"] },
-        { cat: "Skolan", words: ["Teacher", "Student", "Pencil", "Book", "Desk", "Eraser", "Ruler", "Compass", "Map", "Library", "Exam", "Grade", "Locker", "Paper", "Glue", "Class"] },
-        { cat: "Blommor", words: ["Rose", "Tulip", "Daisy", "Lily", "Sunflower", "Orchid", "Lavender", "Poppy", "Lotus", "Violet", "Peony", "Jasmine", "Cactus", "Iris", "Bluebell", "Dahlia"] },
-        { cat: "Möbler", words: ["Chair", "Table", "Bed", "Sofa", "Desk", "Shelf", "Cabinet", "Drawer", "Mirror", "Lamp", "Rug", "Stool", "Bench", "Wardrobe", "Couch", "Sideboard"] },
-        { cat: "Planeter", words: ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "Sun", "Moon", "Titan", "Europa", "Io", "Phobos", "Deimos"] },
-        { cat: "Mytologi", words: ["Zeus", "Hera", "Thor", "Odin", "Loki", "Anubis", "Osiris", "Ra", "Athena", "Apollo", "Ares", "Poseidon", "Medusa", "Dragon", "Phoenix", "Centaur"] },
-        { cat: "Kroppsdelar", words: ["Head", "Arm", "Leg", "Hand", "Foot", "Eye", "Ear", "Nose", "Mouth", "Heart", "Lung", "Brain", "Bone", "Skin", "Tongue", "Neck"] },
-        { cat: "Frukt", words: ["Apple", "Banana", "Orange", "Grape", "Melon", "Mango", "Cherry", "Lemon", "Kiwi", "Pear", "Peach", "Plum", "Berry", "Fig", "Date", "Pineapple"] },
-        { cat: "Grönsaker", words: ["Carrot", "Potato", "Tomato", "Onion", "Garlic", "Pea", "Corn", "Broccoli", "Spinach", "Pepper", "Cucumber", "Lettuce", "Radish", "Celery", "Cabbage", "Kale"] },
-        { cat: "Former", words: ["Circle", "Square", "Triangle", "Star", "Heart", "Oval", "Cross", "Diamond", "Hexagon", "Octagon", "Sphere", "Cube", "Cone", "Cylinder", "Pyramid", "Line"] },
-        { cat: "Verktyg", words: ["Hammer", "Saw", "Drill", "Wrench", "Pliers", "Screwdriver", "Axe", "Chisel", "Level", "Nail", "Screw", "Clamp", "File", "Vise", "Tape", "Plane"] },
-        { cat: "Fordon", words: ["Car", "Truck", "Bus", "Train", "Plane", "Boat", "Bike", "Scooter", "Subway", "Tank", "Tractor", "Van", "Taxi", "Glider", "Canoe", "Sled"] },
-        { cat: "Konststilar", words: ["Cubism", "Realism", "Pop Art", "Abstract", "Modern", "Gothic", "Renaissance", "Surrealism", "Baroque", "Minimalism", "Graffiti", "Mosaic", "Portrait", "Sketch", "Oil", "Comic"] },
-        { cat: "Brädspel", words: ["Chess", "Monopoly", "Scrabble", "Risk", "Clue", "Catan", "Checkers", "Pandemic", "Bingo", "Cards", "Darts", "Go", "Backgammon", "Uno", "Poker", "Dominoes"] },
-        { cat: "Drycker", words: ["Water", "Coffee", "Tea", "Juice", "Soda", "Milk", "Beer", "Wine", "Gin", "Vodka", "Whisky", "Cider", "Lemonade", "Smoothie", "Shake", "Punch"] },
-        { cat: "Kontorsmaterial", words: ["Pen", "Pencil", "Paper", "Folder", "Clip", "Stapler", "Tape", "Ink", "Eraser", "Ruler", "Stamp", "Glue", "Notebook", "Envelope", "Marker", "Scissors"] },
-        { cat: "Elektronik", words: ["Phone", "Laptop", "TV", "Tablet", "Camera", "Radio", "Watch", "Speaker", "Drone", "Printer", "Console", "Oven", "Fridge", "Iron", "Vacuum", "Toaster"] },
-        { cat: "Superhjältar", words: ["Batman", "Superman", "Spiderman", "Iron Man", "Thor", "Hulk", "Flash", "Aquaman", "Wonder Woman", "Robin", "Joker", "Bane", "Catwoman", "Wolverine", "Magneto", "Groot"] },
-        { cat: "Havsliv", words: ["Shark", "Whale", "Dolphin", "Octopus", "Crab", "Shrimp", "Fish", "Coral", "Starfish", "Seal", "Turtle", "Squid", "Ray", "Lobster", "Eel", "Walrus"] },
-        { cat: "Byggnader", words: ["House", "Tower", "Castle", "Skyscraper", "Igloo", "Cabin", "Mansion", "Factory", "Barn", "Shed", "Palace", "Bridge", "Temple", "Church", "Bank", "Store"] },
-        { cat: "Bondgårdsdjur", words: ["Cow", "Pig", "Sheep", "Chicken", "Horse", "Goat", "Duck", "Goose", "Donkey", "Turkey", "Rabbit", "Dog", "Cat", "Llama", "Bull", "Chick"] },
-        { cat: "Natur", words: ["Tree", "Mountain", "River", "Ocean", "Lake", "Desert", "Forest", "Valley", "Cliff", "Island", "Cave", "Swamp", "Beach", "Field", "Sky", "Rock"] },
-        { cat: "Kontor", words: ["Desk", "Chair", "Computer", "Phone", "Paper", "Meeting", "Boss", "Salary", "Email", "Project", "Fax", "Printer", "Coffee", "Lunch", "Folder", "Break"] },
-        { cat: "Daglig rutin", words: ["Waking", "Eating", "Sleeping", "Working", "Shower", "Reading", "Exercise", "Cooking", "Driving", "Shopping", "Cleaning", "Brushing", "Dressing", "Walking", "Talking", "Dreaming"] },
-        { cat: "Metaller", words: ["Gold", "Silver", "Iron", "Copper", "Steel", "Lead", "Tin", "Zinc", "Bronze", "Brass", "Aluminum", "Platinum", "Nickel", "Mercury", "Titanium", "Chrome"] },
-        { cat: "Leksaker", words: ["Doll", "Ball", "Block", "Puzzle", "Car", "Robot", "Yo-yo", "Kite", "Lego", "Marble", "Top", "Slime", "Drone", "Bear", "Train", "Plane"] },
-        { cat: "Bakning", words: ["Flour", "Sugar", "Egg", "Milk", "Butter", "Yeast", "Honey", "Salt", "Bowl", "Tray", "Whisk", "Sifter", "Rolling", "Frosting", "Vanilla", "Oven"] },
-        { cat: "Pizzatoppingar", words: ["Cheese", "Tomato", "Ham", "Pineapple", "Olive", "Mushroom", "Pepperoni", "Salami", "Chicken", "Bacon", "Onion", "Pepper", "Corn", "Pesto", "Anchovy", "Herbs"] },
-        { cat: "Kortspel", words: ["Poker", "Blackjack", "Bridge", "Uno", "Solitaire", "Hearts", "Snap", "Rummy", "War", "Cheat", "Go Fish", "Speed", "Spit", "Slap", "Gin", "Euchre"] },
-        { cat: "Snabbmat", words: ["Burger", "Pizza", "Nuggets", "Fries", "Hotdog", "Taco", "Kebab", "Donut", "Shake", "Soda", "Onion", "Sauce", "Wings", "Wrap", "Sandwich", "Ice Cream"] },
-        { cat: "Vilda Västern", words: ["Cowboy", "Sheriff", "Horse", "Saloon", "Gold", "Duel", "Desert", "Cactus", "Outlaw", "Gun", "Hat", "Boots", "Spurs", "Whisky", "Rope", "Badge"] },
-        { cat: "Sagor", words: ["King", "Queen", "Knight", "Dragon", "Witch", "Elf", "Giant", "Fairy", "Wolf", "Tower", "Magic", "Sword", "Crown", "Forest", "Curse", "Mirror"] },
-        { cat: "Halloween", words: ["Ghost", "Pumpkin", "Candy", "Witch", "Bat", "Zombie", "Vampire", "Skeleton", "Mask", "Moon", "Owl", "Spider", "Black Cat", "Scary", "Tomb", "Monster"] },
-        { cat: "Trädgård", words: ["Soil", "Seed", "Pot", "Hose", "Rake", "Spade", "Mower", "Water", "Bloom", "Weed", "Dirt", "Tree", "Fence", "Gate", "Sun", "Glove"] },
-        { cat: "Gym", words: ["Weights", "Bench", "Rope", "Bike", "Treadmill", "Mat", "Sweat", "Muscle", "Coach", "Water", "Towel", "Gym", "Jog", "Lift", "Push", "Pull"] },
-        { cat: "Badrum", words: ["Soap", "Brush", "Sink", "Bath", "Shower", "Towel", "Mirror", "Mat", "Water", "Paste", "Comb", "Plug", "Tile", "Drain", "Sponge", "Gel"] },
-        { cat: "Husdjur", words: ["Dog", "Cat", "Hamster", "Bird", "Fish", "Snake", "Lizard", "Rabbit", "Turtle", "Spider", "Horse", "Pony", "Pig", "Mouse", "Rat", "Frog"] },
-        { cat: "Resor", words: ["Map", "Plane", "Train", "Ticket", "Bag", "Hotel", "Beach", "Sight", "Guide", "Passport", "Fly", "Sail", "Drive", "Walk", "Tour", "Trip"] },
-        { cat: "Vinter", words: ["Snow", "Ice", "Cold", "Ski", "Sled", "Coat", "Glove", "Scarf", "Boots", "Fire", "Cocoa", "Soup", "Frost", "Wind", "Melt", "Slip"] },
-        { cat: "Sommar", words: ["Sun", "Heat", "Beach", "Swim", "Ice", "Surf", "Sand", "Fan", "Pool", "Towel", "Tan", "Boat", "Trip", "Hike", "Grill", "Drink"] },
-        { cat: "Fest", words: ["Cake", "Music", "Dance", "Gift", "Game", "Guest", "Drink", "Food", "Song", "Fun", "Hat", "Balloons", "Card", "Bow", "Laugh", "Light"] },
-        { cat: "Medicin", words: ["Doctor", "Nurse", "Pill", "Clinic", "Surgery", "Heart", "Blood", "Health", "Cure", "Pain", "Drug", "Mask", "Scan", "Ward", "Bed", "Life"] },
-        { cat: "Polis", words: ["Badge", "Car", "Uniform", "Siren", "Crime", "Clue", "Court", "Judge", "Prison", "Law", "Cop", "Search", "Arrest", "Guilt", "Truth", "Case"] },
-        { cat: "Vetenskap", words: ["Lab", "Test", "Acid", "Gas", "Star", "Atom", "Cell", "Brain", "Fact", "Proof", "Study", "Math", "Tool", "Data", "Light", "Earth"] },
-        { cat: "Cirkus", words: ["Clown", "Lion", "Tent", "Ring", "Show", "Magic", "Acrobat", "Ball", "Trap", "Rope", "Trick", "Laugh", "Crowd", "Act", "Fire", "Costume"] },
-        { cat: "Slott", words: ["Knight", "King", "Wall", "Gate", "Moat", "Stone", "Sword", "Tower", "Flag", "Guard", "Crown", "Shield", "Armor", "Horse", "Steel", "War"] },
-        { cat: "Pirater", words: ["Ship", "Gold", "Map", "Sea", "Hook", "Flag", "Bird", "Chest", "Skull", "Sword", "Rum", "Island", "Wave", "Storm", "Port", "Booty"] },
-        { cat: "Dinosaurier", words: ["Rex", "Egg", "Bone", "Leaf", "Old", "Big", "Tail", "Claw", "Hunt", "Eat", "Die", "Rock", "Mud", "Herb", "Meat", "Jungle"] },
-        { cat: "Camping", words: ["Tent", "Fire", "Wood", "Bag", "Hike", "Star", "Food", "Dark", "Lake", "Boot", "Flash", "Knife", "Pack", "Walk", "Cold", "Bear"] },
-        { cat: "Bygge", words: ["Brick", "Wood", "Glass", "Nail", "Hammer", "Crane", "Hard Hat", "Plan", "Build", "Cement", "Steel", "Wall", "Roof", "Floor", "Door", "House"] },
-        { cat: "Detektiv", words: ["Clue", "Case", "Mystery", "Fingerprint", "Proof", "Crime", "Victim", "Suspect", "Alibi", "Motive", "Search", "Trace", "Solve", "Truth", "Lies", "Eye"] },
-        { cat: "Bio", words: ["Screen", "Popcorn", "Seat", "Ticket", "Film", "Director", "Actor", "Script", "Light", "Sound", "Action", "Drama", "Comedy", "Scary", "Hero", "Villain"] },
-        { cat: "Viking", words: ["Boat", "Axe", "Shield", "Sword", "Sea", "North", "Cold", "Valhalla", "Rune", "Armor", "Helmet", "Hammer", "Storm", "War", "Gold", "Mead"] },
-        { cat: "Bibliotek", words: ["Book", "Shelf", "Quiet", "Read", "Page", "Index", "Author", "Title", "Borrow", "Return", "Study", "Ink", "Paper", "Word", "Story", "Fact"] },
-        { cat: "Bondgård", words: ["Cow", "Tractor", "Plow", "Seed", "Harvest", "Barn", "Mud", "Hay", "Fence", "Field", "Grow", "Dirt", "Sun", "Water", "Green", "Corn"] },
-        { cat: "Bergsklättring", words: ["Snow", "Peak", "Hike", "Climb", "Rope", "Cold", "View", "Air", "Rock", "Trail", "Steep", "Camp", "Sky", "Cloud", "Ice", "Stone"] },
-        { cat: "Flygplats", words: ["Plane", "Bag", "Check", "Fly", "Gate", "Pilot", "Ticket", "Seat", "Cloud", "Land", "Fuel", "Travel", "Customs", "Duty", "Shop", "Wait"] },
-        { cat: "Restaurang", words: ["Menu", "Table", "Food", "Drink", "Waiter", "Chef", "Tip", "Bill", "Seat", "Plate", "Fork", "Knife", "Kitchen", "Eat", "Taste", "Order"] },
-        { cat: "Fotboll", words: ["Ball", "Goal", "Kick", "Team", "Field", "Fan", "Ref", "Score", "Win", "Lose", "Grass", "Shirt", "Boot", "Play", "Game", "Match"] },
-        { cat: "Fotografi", words: ["Lens", "Flash", "Zoom", "Snap", "Pic", "Film", "Light", "Focus", "View", "Shutter", "Tripod", "Digital", "Memory", "Color", "Black", "White"] },
-        { cat: "Magi", words: ["Wand", "Hat", "Card", "Trick", "Coin", "Rabbit", "Stage", "Show", "Hidden", "Mystery", "Lie", "Hand", "Speed", "Illusion", "Cloud", "Disappear"] },
-        { cat: "Målning", words: ["Brush", "Oil", "Canvas", "Color", "Frame", "Art", "Artist", "Sketch", "Mix", "Draw", "Stroke", "Studio", "Gallery", "View", "Subject", "Light"] },
-        { cat: "Broar", words: ["Steel", "Stone", "Road", "River", "Cross", "Arch", "Span", "Tower", "Cable", "Car", "Walk", "Under", "Over", "Gap", "Safe", "Strong"] },
-        { cat: "Datorer", words: ["Mouse", "Key", "Screen", "Code", "Web", "File", "Data", "Cloud", "Chip", "RAM", "CPU", "Disk", "User", "Fast", "Logic", "Math"] },
-        { cat: "Forntida Egypten", words: ["Pharaoh", "Pyramid", "Nile", "Sand", "Mummy", "Sphinx", "Gold", "God", "Tomb", "Stone", "Slave", "Desert", "Cat", "Sun", "Boat", "River"] },
-        { cat: "Snabba bilar", words: ["Engine", "Race", "Track", "Tire", "Fuel", "Speed", "Turbo", "Drive", "Fast", "Win", "Road", "Wheel", "Brake", "Shift", "Grip", "Drift"] },
-        { cat: "Stormarknad", words: ["Cart", "Shelf", "Food", "Cashier", "Sale", "Price", "Bag", "Pay", "Fruit", "Milk", "Meat", "Bread", "Drink", "Aisle", "List", "Shop"] },
-        { cat: "Spioner", words: ["Agent", "Secret", "Mission", "Gadget", "Code", "Shadow", "Watch", "Gun", "Fast Car", "Lies", "Truth", "Enemy", "Base", "File", "Camera", "Micro"] },
-        { cat: "Stränder", words: ["Sand", "Water", "Sun", "Wave", "Shell", "Boat", "Fish", "Blue", "Towel", "Ball", "Surf", "Swim", "Tan", "Salt", "Hot", "Relax"] },
-        { cat: "Kaffe", words: ["Bean", "Cup", "Black", "Milk", "Sugar", "Bitter", "Hot", "Drink", "Barista", "Roast", "Morning", "Cafe", "Steam", "Foam", "Grind", "Mug"] },
-        { cat: "Sömnad", words: ["Needle", "Thread", "Fabric", "Stitch", "Button", "Zip", "Pattern", "Hem", "Tailor", "Dress", "Scissors", "Pin", "Machine", "Measure", "Cut", "Sew"] },
-        { cat: "Kryddor", words: ["Salt", "Pepper", "Cinnamon", "Basil", "Oregano", "Thyme", "Cumin", "Paprika", "Ginger", "Garlic", "Chili", "Saffron", "Mint", "Parsley", "Rosemary", "Vanilla"] },
-        { cat: "Ädelstenar", words: ["Diamond", "Ruby", "Emerald", "Sapphire", "Amethyst", "Topaz", "Opal", "Pearl", "Garnet", "Jade", "Quartz", "Onyx", "Agate", "Coral", "Amber", "Turquoise"] },
-        { cat: "Träd", words: ["Oak", "Pine", "Maple", "Birch", "Leaf", "Root", "Bark", "Branch", "Sap", "Forest", "Apple", "Palm", "Wood", "Willow", "Evergreen", "Shade"] },
-        { cat: "Floder", words: ["Amazon", "Nile", "Mississippi", "Water", "Flow", "Current", "Bridge", "Fish", "Boat", "Delta", "Bank", "Mouth", "Source", "Valley", "Stream", "Nature"] },
-        { cat: "Öar", words: ["Hawaii", "Greenland", "Japan", "Water", "Sand", "Beach", "Isolated", "Boat", "Treasure", "Palm", "Volcano", "Reef", "Ocean", "Map", "Tropical", "Remote"] },
-        { cat: "Städer", words: ["Paris", "Tokyo", "London", "New York", "Street", "Park", "Building", "Traffic", "People", "Metro", "Skyscraper", "Plaza", "Capital", "Nightlife", "Lights", "Map"] },
-        { cat: "Bergstoppar", words: ["Everest", "Alps", "Peak", "Climb", "Summit", "Snow", "Rock", "Hike", "Cold", "Steep", "View", "Air", "Height", "Range", "Slope", "Path"] },
-        { cat: "Flaggor", words: ["Star", "Stripe", "Blue", "Red", "Yellow", "Country", "Symbol", "Pole", "Wind", "Pride", "Wave", "Nation", "Color", "Emblem", "Cloth", "Standard"] },
-        { cat: "Monster", words: ["Zombie", "Ghost", "Vampire", "Werewolf", "Scary", "Night", "Dark", "Hide", "Teeth", "Claw", "Fear", "Movie", "Beast", "Shadow", "Strange", "Creature"] },
-        { cat: "Godis", words: ["Chocolate", "Gummy", "Sweet", "Sugar", "Lollipop", "Wrap", "Melt", "Eat", "Treat", "Mint", "Chewy", "Hard", "Bowl", "Child", "Gift", "Sticky"] },
-        { cat: "Uppfinningar", words: ["Wheel", "Lightbulb", "Internet", "Telephone", "Camera", "Car", "Plane", "Engine", "Compass", "Clock", "Paper", "Printing", "Radio", "Steam", "Vaccine", "Battery"] },
-        { cat: "Upptäckare", words: ["Columbus", "Vasco", "Magellan", "Cook", "Space", "New", "Map", "Ship", "Gold", "Land", "Journey", "History", "Unknown", "Discovery", "Route", "Flag"] }
-    ];
-
-    let players = [];
-    let curIdx = 0;
-    let roundCount = 0;
-    let roles = [];
-    let isRevealed = false;
-    let randomizedOrder = [];
-    let activeScreen = 'scr-setup';
-    let roundScores = [];
-
-    // BLANDA ARRAY
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-
-    function setupNames() {
-        const count = parseInt(document.getElementById('pCount').value, 10);
-        if (count < 3 || count > 10 || isNaN(count)) return;
-        const container = document.getElementById('name-container');
-        container.innerHTML = '';
-        for (let i = 0; i < count; i++) {
-            container.innerHTML += `<input type="text" id="pName${i}" placeholder="Spelare ${i + 1}">`;
-        }
-        switchScreen('scr-names');
-        randomizedOrder = shuffle([...allCategories]);
-    }
-
-    function startGame() {
-        const count = parseInt(document.getElementById('pCount').value, 10);
-        for (let i = 0; i < count; i++) {
-            const name = document.getElementById(`pName${i}`).value.trim() || `Spelare ${i + 1}`;
-            players.push({ name: name, score: 0 });
-        }
-        beginRound();
-        switchScreen('scr-pass');
-    }
-
-    function beginRound() {
-        roundCount++;
-        const data = randomizedOrder[(roundCount - 1) % randomizedOrder.length];
-        const coords = ['A', 'B', 'C', 'D'][Math.floor(Math.random() * 4)] + (Math.floor(Math.random() * 4) + 1);
-        const cham = Math.floor(Math.random() * players.length);
-
-        roles = players.map((_, i) => i === cham ? "KAMELEONTEN" : `KOORDINAT: ${coords}`);
-        curIdx = 0;
-        updatePassScreen();
-    }
-
-    function updatePassScreen() {
-        document.getElementById('currentPlayerName').innerText = players[curIdx].name;
-        document.getElementById('secret-area').classList.add('hidden');
-        document.getElementById('revealBtn').innerText = "Visa min roll";
-        isRevealed = false;
-    }
-
-    function toggleReveal() {
-        if (!isRevealed) {
-            document.getElementById('roleContent').innerText = roles[curIdx];
-            document.getElementById('secret-area').classList.remove('hidden');
-            document.getElementById('revealBtn').innerText = "Jag har memorerat det";
-            isRevealed = true;
-        } else {
-            curIdx++;
-            if (curIdx < players.length) updatePassScreen();
-            else showBoard();
-        }
-    }
-
-    function showBoard() {
-        switchScreen('scr-board');
-        const data = randomizedOrder[(roundCount - 1) % randomizedOrder.length];
-        document.getElementById('roundIndicator').innerText = `Runda ${roundCount}/10`;
-        document.getElementById('boardCatName').innerText = data.cat;
-        const grid = document.getElementById('gridBoard');
-        grid.innerHTML = '<div class="cell cell-header"></div>';
-        ['A', 'B', 'C', 'D'].forEach(l => grid.innerHTML += `<div class="cell cell-header">${l}</div>`);
-        for (let i = 0; i < 4; i++) {
-            grid.innerHTML += `<div class="cell cell-header">${i + 1}</div>`;
-            for (let j = 0; j < 4; j++) {
-                grid.innerHTML += `<div class="cell">${data.words[i * 4 + j]}</div>`;
-            }
-        }
-    }
-
-    function showScoring() {
-        switchScreen('scr-scores');
-        renderScoreList();
-    }
-
-    function renderScoreList() {
-        if (roundScores.length !== players.length) {
-            roundScores = players.map(() => 0);
-        }
-        const list = document.getElementById('score-list');
-        let html = '';
-        players.forEach((p, i) => {
-            const sel1 = roundScores[i] === 1 ? ' selected' : '';
-            const sel2 = roundScores[i] === 2 ? ' selected-accent' : '';
-            html += `
-                <div class="score-item">
-                    <span>${p.name} (<strong>${p.score}</strong> p)</span>
-                    <div class="point-controls">
-                        <button class="${sel1}" onclick="togglePt(${i}, 1)">+1</button>
-                        <button class="accent${sel2}" onclick="togglePt(${i}, 2)">+2</button>
-                    </div>
-                </div>`;
-        });
-        list.innerHTML = html;
-        if (roundCount >= 10) {
-            document.getElementById('nextRoundBtn').innerText = "Avsluta spelet";
-        }
-    }
-
-    function togglePt(idx, val) {
-        roundScores[idx] = roundScores[idx] === val ? 0 : val;
-        renderScoreList();
-    }
-
-    function applyRoundScores() {
-        players.forEach((p, i) => { p.score += roundScores[i]; });
-        roundScores = players.map(() => 0);
-    }
-
-    function handleNextRound() {
-        applyRoundScores();
-        if (roundCount < 10) {
-            beginRound();
-            switchScreen('scr-pass');
-        } else {
-            triggerFinal();
-        }
-    }
-
-    function triggerFinal() {
-        switchScreen('scr-video');
-        const video = document.getElementById('victoryVideo');
-        video.play().catch(() => {
-            finishVideo();
-        });
-        video.onended = finishVideo;
-    }
-
-    function finishVideo() {
-        document.getElementById('victoryVideo').pause();
-        switchScreen('scr-final');
-        showFinalWinner();
-    }
-
-    function showFinalWinner() {
-        const sorted = [...players].sort((a, b) => b.score - a.score);
-        document.getElementById('grandWinner').innerText = sorted[0].name;
-        const ranking = document.getElementById('final-ranking');
-        ranking.innerHTML = '<h3 style="color:var(--primary)">Slutställning:</h3>';
-        sorted.forEach((p, i) => {
-            ranking.innerHTML += `<p>${i + 1}. ${p.name} — ${p.score} p</p>`;
-        });
-        saveToLeaderboard(sorted);
-        showLeaderboard();
-    }
-
-    // SPARAR POÄNG TILL LOCALSTORAGE
-    function saveToLeaderboard(sorted) {
-        try {
-            const board = JSON.parse(localStorage.getItem('chameleon_leaderboard') || '{}');
-            sorted.forEach(p => {
-                if (!board[p.name]) board[p.name] = 0;
-                board[p.name] += p.score;
-            });
-            localStorage.setItem('chameleon_leaderboard', JSON.stringify(board));
-        } catch (e) { /* localStorage unavailable */ }
-    }
-
-    function showLeaderboard() {
-        try {
-            const board = JSON.parse(localStorage.getItem('chameleon_leaderboard') || '{}');
-            const entries = Object.entries(board).sort((a, b) => b[1] - a[1]);
-            if (entries.length === 0) return;
-            const section = document.getElementById('leaderboard-section');
-            section.classList.remove('hidden');
-            section.innerHTML = '<h3>Topplista (alla spel):</h3>';
-            entries.forEach(([name, score], i) => {
-                section.innerHTML += `<p>${i + 1}. ${name} — ${score} p</p>`;
-            });
-        } catch (e) { /* localStorage unavailable */ }
-    }
-
-    function switchScreen(to) {
-        const current = document.getElementById(activeScreen);
-        const next = document.getElementById(to);
-        if (activeScreen === to) return;
-        current.classList.remove('animate-in');
-        current.style.opacity = 0;
-        setTimeout(() => {
-            current.classList.add('hidden');
-            current.style.opacity = 1;
-            next.classList.remove('hidden');
-            next.classList.add('animate-in');
-            activeScreen = to;
-        }, 300);
-    }
-</script>
 </body>
 </html>
