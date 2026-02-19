@@ -114,8 +114,9 @@
         .cell-header { color: var(--primary); font-weight: 800; border: none; background: transparent; }
         .score-item { display: flex; justify-content: space-between; background: rgba(255,255,255,0.05); margin: 10px 0; padding: 15px 20px; border-radius: 16px; align-items: center; }
         .point-controls button { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: var(--primary); width: 40px; height: 40px; border-radius: 10px; font-weight: bold; margin-left: 5px; cursor: pointer; }
+        .point-controls button.accent { color: var(--accent); border-color: var(--accent); }
         .point-controls button.selected { background: var(--primary); color: white; }
-        .point-controls button.selected-accent { background: var(--accent); color: white; }
+        .point-controls button.selected-accent { background: var(--accent); color: white; border-color: var(--accent); }
 
         .hidden { display: none !important; }
         .animate-in { animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
@@ -406,7 +407,7 @@
                     <span>${p.name} (<strong>${p.score}</strong> p)</span>
                     <div class="point-controls">
                         <button class="${sel1}" onclick="togglePt(${i}, 1)">+1</button>
-                        <button class="${sel2}" onclick="togglePt(${i}, 2)" style="color:var(--accent); border-color:var(--accent);">+2</button>
+                        <button class="accent${sel2}" onclick="togglePt(${i}, 2)">+2</button>
                     </div>
                 </div>`;
         });
