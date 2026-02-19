@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Chameleon - 100 Categories Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦎</text></svg>">
+
+    <style>
+        :root {
+            --bg-overlay: rgba(15, 23, 42, 0.85);
+            --card: rgba(30, 41, 59, 0.6);
+            --primary: #818cf8;
+            --accent: #d946ef;
+            --winner-gold: #fbbf24;
+            --text: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('image_1.png');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 500px;
+            background: var(--card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 35px 30px;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo { width: 80px; margin: 0 auto 15px auto; filter: drop-shadow(0 0 8px rgba(129, 140, 248, 0.6)); }
+
+        h1 { 
+            font-weight: 800; font-size: 2.2rem; margin: 0 0 10px; 
+            background: linear-gradient(to right, var(--primary), var(--accent)); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+        }
+        
+        input {
+            background: rgba(15, 23, 42, 0.6); border: 1px solid #334155;
+            color: white; padding: 14px 16px; border-radius: 12px;
+            font-size: 1.1rem; margin: 5px 0; width: 100%; text-align: center;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white; border: none; padding: 16px; border-radius: 16px;
+            font-size: 1.1rem; font-weight: 700; cursor: pointer; width: 100%;
+            margin-top: 15px; box-shadow: 0 10px 20px -5px rgba(129, 140, 248, 0.4);
+        }
+
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px -5px rgba(129, 140, 248, 0.5); }
+
+        .btn-small {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--primary);
+            padding: 12px;
+            font-size: 0.9rem;
+            width: 40%;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.6);
+            border: 2px solid var(--accent);
+            margin-bottom: 20px;
+            background: #000;
+        }
+        video { width: 100%; display: block; }
+
+        .winner-crown { font-size: 4rem; margin-bottom: 10px; display: block; animation: bounce 2s infinite; }
+        .winner-name { font-size: 3rem; font-weight: 800; color: var(--winner-gold); text-shadow: 0 0 20px rgba(251, 191, 36, 0.5); }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .secret-card { background: rgba(15, 23, 42, 0.5); padding: 30px; border-radius: 24px; border: 2px solid var(--primary); }
+        .grid-board { display: grid; grid-template-columns: 40px repeat(4, 1fr); gap: 8px; margin: 25px 0; }
+        .cell { background: rgba(255,255,255,0.03); padding: 12px 4px; border-radius: 12px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1); }
+        .cell-header { color: var(--primary); font-weight: 800; border: none; background: transparent; }
+        .score-item { display: flex; justify-content: space-between; background: rgba(255,255,255,0.05); margin: 10px 0; padding: 15px 20px; border-radius: 16px; align-items: center; }
+        .point-controls button { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: var(--primary); width: 40px; height: 40px; border-radius: 10px; font-weight: bold; margin-left: 5px; }
+
+        .hidden { display: none !important; }
+        .animate-in { animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    </style>
+</head>
+<body>
+
+<div class="container animate-in" id="app">
+    <div id="scr-setup">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHBhdGggZmlsbD0iIzgxOGNmOCIgZD0iTTU4IDE0Yy0yLjMyIDAtNC4zNC45Ny01Ljc5IDIuNTFDNDkuMzkgMTQuNjIgNDUuODggMTMgNDIgMTNjLTYuNjMgMC0xMiA1LjM3LTEyIDEyIDAgNC4xIDEuOTUgNy42NiA0Ljk0IDkuOTRDMyAgNTEuNDEgMyA1NSAzIDU1czYuNTItNS44MSAyNi45Mi01Ljk0YzUuOTggMy4wMiAxMi43NCA0Ljk0IDE5Ljk2IDQuOTkgMC0uMDItLjI2LTcuNjUtOS43Ny0xMC41IEM0Ni4xIDQwLjA0IDUxIDM0Ljc2IDUxIDI5YzAtLjIyLS4wMS0uNDMtLjAyLS42NEM1NC4zNCAyOS40OSA1OCAyNi42NiA1OCAyM3MtMy42Ni02LjQ5LTcuMDItNS4zNmMxLjQ1LTEuNTQgMi4zNS0zLjYzIDIuMzUtNS45NEM1My4zMyAxNi4zOCA1NS40OSAxNCA1OCAxNHoiLz48Y2lyY2xlIGN4PSI0MiIgY3k9IjIzIiByPSIzIiBmaWxsPSIjZmZmIi8+PC9zdmc+" alt="Logo" class="logo">
+        <h1>The Chameleon</h1>
+        <p>Neon Edition. 100 Categories Randomized.</p>
+        <div style="text-align: left; margin-bottom: 20px;">
+            <label>Number of players:</label>
+            <input type="number" id="pCount" value="4" min="3" max="10">
+        </div>
+        <button class="btn" onclick="setupNames()">Continue</button>
+        <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 15px;">
+            Tip: Press <b>Ctrl + Plus</b> to zoom in.
+        </p>
+    </div>
+
+    <div id="scr-names" class="hidden">
+        <h1>Player Names</h1>
+        <div id="name-container"></div>
+        <button class="btn" onclick="startGame()">Start Game</button>
+    </div>
+
+    <div id="scr-pass" class="hidden">
+        <p style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary);">Pass to</p>
+        <h1 id="currentPlayerName" style="font-size: 3rem; margin: 10px 0;">Player</h1>
+        <div id="secret-area" class="hidden">
+            <div class="secret-card">
+                <h3 id="roleTitle" style="margin: 0; color: var(--accent); text-transform: uppercase;">Your Role</h3>
+                <div id="roleContent" style="font-size: 1.8rem; font-weight: 800; margin-top: 15px;"></div>
+            </div>
+        </div>
+        <button class="btn" id="revealBtn" onclick="toggleReveal()" style="margin-top: 30px;">Reveal Secret</button>
+    </div>
+
+    <div id="scr-board" class="hidden">
+        <p id="roundIndicator" style="color: var(--primary); font-weight: 800;">Round 1/10</p>
+        <h1 id="boardCatName" style="font-size: 2.2rem; margin-top: 0;"></h1>
+        <div class="grid-board" id="gridBoard"></div>
+        <button class="btn" onclick="showScoring()">Award Points</button>
+    </div>
+
+    <div id="scr-scores" class="hidden">
+        <h1>Current Scores</h1>
+        <div id="score-list"></div>
+        <div class="button-group">
+            <button class="btn btn-small" onclick="triggerFinal()">Finish Game</button>
+            <button class="btn" id="nextRoundBtn" onclick="handleNextRound()" style="margin-top:0; width: 55%;">Next Round</button>
+        </div>
+    </div>
+
+    <div id="scr-video" class="hidden">
+        <h1 style="color: var(--accent);">Grand Finale</h1>
+        <div class="video-wrapper">
+            <video id="victoryVideo" playsinline>
+                <source src="video.mp4" type="video/mp4">
+            </video>
+        </div>
+        <button class="btn" onclick="finishVideo()">Skip Video</button>
+    </div>
+
+    <div id="scr-final" class="hidden">
+        <span class="winner-crown">👑</span>
+        <h1 class="winner-name" id="grandWinner">Winner</h1>
+        <div id="final-ranking" style="margin-top: 30px; text-align: left;"></div>
+        <button class="btn" onclick="location.reload()">New Game</button>
+    </div>
+</div>
+
+<script>
+    // 100 UNIQUE CATEGORIES
+    const allCategories = [
+        { cat: "Animals", words: ["Lion", "Tiger", "Elephant", "Giraffe", "Penguin", "Kangaroo", "Wolf", "Zebra", "Gorilla", "Panda", "Hippo", "Crocodile", "Camel", "Eagle", "Shark", "Dolphin"] },
+        { cat: "Food", words: ["Pizza", "Sushi", "Tacos", "Burger", "Pasta", "Steak", "Curry", "Omelette", "Pancakes", "Salad", "Dim Sum", "Kebab", "Lasagna", "Burrito", "Ramen", "Falafel"] },
+        { cat: "Countries", words: ["Sweden", "Germany", "USA", "Japan", "France", "Brazil", "Australia", "Canada", "Italy", "Spain", "India", "Egypt", "Mexico", "Thailand", "Norway", "Greece"] },
+        { cat: "Movies", words: ["Star Wars", "Inception", "Titanic", "Matrix", "Joker", "Avatar", "Gladiator", "Up", "Scream", "Frozen", "Lion King", "Jaws", "Alien", "Psycho", "Die Hard", "Coco"] },
+        { cat: "Brands", words: ["Apple", "Google", "Nike", "IKEA", "Tesla", "Coke", "Amazon", "LEGO", "Samsung", "Disney", "Netflix", "Adidas", "Sony", "McDonalds", "BMW", "Spotify"] },
+        { cat: "Sports", words: ["Football", "Tennis", "Golf", "Hockey", "Boxing", "Rugby", "Skiing", "Surfing", "Baseball", "Yoga", "Swimming", "Fencing", "Cricket", "Karate", "Darts", "Cycling"] },
+        { cat: "Jobs", words: ["Doctor", "Chef", "Pilot", "Artist", "Teacher", "Farmer", "Lawyer", "Nurse", "Firefighter", "Coder", "Writer", "Actor", "Cop", "Mechanic", "Scientist", "Waiter"] },
+        { cat: "Objects", words: ["Camera", "Laptop", "Bicycle", "Watch", "Key", "Hammer", "Guitar", "Mirror", "Compass", "Battery", "Umbrella", "Toaster", "Printer", "Violin", "Soap", "Map"] },
+        { cat: "Music Genres", words: ["Rock", "Jazz", "Pop", "Techno", "Blues", "Metal", "Classical", "Country", "Reggae", "Hip Hop", "Disco", "Opera", "Punk", "Soul", "Salsa", "Folk"] },
+        { cat: "Hobbies", words: ["Reading", "Gaming", "Hiking", "Fishing", "Cooking", "Dancing", "Drawing", "Camping", "Gardening", "Chess", "Running", "Knitting", "Singing", "Baking", "Pottery", "Photography"] },
+        { cat: "Instruments", words: ["Piano", "Drums", "Flute", "Trumpet", "Violin", "Cello", "Harp", "Saxophone", "Banjo", "Clarinet", "Oboe", "Trombone", "Tuba", "Accordion", "Bongos", "Harmonica"] },
+        { cat: "Weather", words: ["Sunny", "Rainy", "Snowy", "Windy", "Stormy", "Foggy", "Cloudy", "Hail", "Tornado", "Rainbow", "Heatwave", "Blizzard", "Thunder", "Lightning", "Mist", "Monsoon"] },
+        { cat: "Desserts", words: ["Cake", "Ice Cream", "Brownie", "Donut", "Pie", "Pudding", "Cookie", "Sorbet", "Muffin", "Tiramisu", "Cheesecake", "Waffle", "Crepe", "Eclair", "Macaron", "Trifle"] },
+        { cat: "Clothing", words: ["Shirt", "Pants", "Jacket", "Dress", "Skirt", "Hat", "Gloves", "Scarf", "Socks", "Shoes", "Tie", "Belt", "Sweater", "Coat", "Shorts", "Vest"] },
+        { cat: "Space", words: ["Planet", "Star", "Galaxy", "Moon", "Sun", "Comet", "Asteroid", "Nebula", "Rocket", "Astronaut", "Orbit", "Gravity", "Void", "Meteor", "NASA", "Satellite"] },
+        { cat: "Kitchen Tools", words: ["Knife", "Spoon", "Fork", "Whisk", "Grater", "Peeler", "Ladle", "Spatula", "Tongs", "Pot", "Pan", "Bowl", "Plate", "Cup", "Mixer", "Oven"] },
+        { cat: "Insects", words: ["Bee", "Ant", "Fly", "Spider", "Beetle", "Butterfly", "Moth", "Cricket", "Wasp", "Tick", "Flea", "Scorpion", "Ladybug", "Mosquito", "Termite", "Dragonfly"] },
+        { cat: "School", words: ["Teacher", "Student", "Pencil", "Book", "Desk", "Eraser", "Ruler", "Compass", "Map", "Library", "Exam", "Grade", "Locker", "Paper", "Glue", "Class"] },
+        { cat: "Flowers", words: ["Rose", "Tulip", "Daisy", "Lily", "Sunflower", "Orchid", "Lavender", "Poppy", "Lotus", "Violet", "Peony", "Jasmine", "Cactus", "Iris", "Bluebell", "Dahlia"] },
+        { cat: "Furniture", words: ["Chair", "Table", "Bed", "Sofa", "Desk", "Shelf", "Cabinet", "Drawer", "Mirror", "Lamp", "Rug", "Stool", "Bench", "Wardrobe", "Couch", "Sideboard"] },
+        { cat: "Planets", words: ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "Sun", "Moon", "Titan", "Europa", "Io", "Phobos", "Deimos"] },
+        { cat: "Mythology", words: ["Zeus", "Hera", "Thor", "Odin", "Loki", "Anubis", "Osiris", "Ra", "Athena", "Apollo", "Ares", "Poseidon", "Medusa", "Dragon", "Phoenix", "Centaur"] },
+        { cat: "Body Parts", words: ["Head", "Arm", "Leg", "Hand", "Foot", "Eye", "Ear", "Nose", "Mouth", "Heart", "Lung", "Brain", "Bone", "Skin", "Tongue", "Neck"] },
+        { cat: "Fruit", words: ["Apple", "Banana", "Orange", "Grape", "Melon", "Mango", "Cherry", "Lemon", "Kiwi", "Pear", "Peach", "Plum", "Berry", "Fig", "Date", "Pineapple"] },
+        { cat: "Vegetables", words: ["Carrot", "Potato", "Tomato", "Onion", "Garlic", "Pea", "Corn", "Broccoli", "Spinach", "Pepper", "Cucumber", "Lettuce", "Radish", "Celery", "Cabbage", "Kale"] },
+        { cat: "Shapes", words: ["Circle", "Square", "Triangle", "Star", "Heart", "Oval", "Cross", "Diamond", "Hexagon", "Octagon", "Sphere", "Cube", "Cone", "Cylinder", "Pyramid", "Line"] },
+        { cat: "Tools", words: ["Hammer", "Saw", "Drill", "Wrench", "Pliers", "Screwdriver", "Axe", "Chisel", "Level", "Nail", "Screw", "Clamp", "File", "Vise", "Tape", "Plane"] },
+        { cat: "Vehicles", words: ["Car", "Truck", "Bus", "Train", "Plane", "Boat", "Bike", "Scooter", "Subway", "Tank", "Tractor", "Van", "Taxi", "Glider", "Canoe", "Sled"] },
+        { cat: "Art Styles", words: ["Cubism", "Realism", "Pop Art", "Abstract", "Modern", "Gothic", "Renaissance", "Surrealism", "Baroque", "Minimalism", "Graffiti", "Mosaic", "Portrait", "Sketch", "Oil", "Comic"] },
+        { cat: "Board Games", words: ["Chess", "Monopoly", "Scrabble", "Risk", "Clue", "Catan", "Checkers", "Pandemic", "Bingo", "Cards", "Darts", "Go", "Backgammon", "Uno", "Poker", "Dominoes"] },
+        { cat: "Drinks", words: ["Water", "Coffee", "Tea", "Juice", "Soda", "Milk", "Beer", "Wine", "Gin", "Vodka", "Whisky", "Cider", "Lemonade", "Smoothie", "Shake", "Punch"] },
+        { cat: "Stationery", words: ["Pen", "Pencil", "Paper", "Folder", "Clip", "Stapler", "Tape", "Ink", "Eraser", "Ruler", "Stamp", "Glue", "Notebook", "Envelope", "Marker", "Scissors"] },
+        { cat: "Electronics", words: ["Phone", "Laptop", "TV", "Tablet", "Camera", "Radio", "Watch", "Speaker", "Drone", "Printer", "Console", "Oven", "Fridge", "Iron", "Vacuum", "Toaster"] },
+        { cat: "Superheroes", words: ["Batman", "Superman", "Spiderman", "Iron Man", "Thor", "Hulk", "Flash", "Aquaman", "Wonder Woman", "Robin", "Joker", "Bane", "Catwoman", "Wolverine", "Magneto", "Groot"] },
+        { cat: "Ocean Life", words: ["Shark", "Whale", "Dolphin", "Octopus", "Crab", "Shrimp", "Fish", "Coral", "Starfish", "Seal", "Turtle", "Squid", "Ray", "Lobster", "Eel", "Walrus"] },
+        { cat: "Buildings", words: ["House", "Tower", "Castle", "Skyscraper", "Igloo", "Cabin", "Mansion", "Factory", "Barn", "Shed", "Palace", "Bridge", "Temple", "Church", "Bank", "Store"] },
+        { cat: "Farm Animals", words: ["Cow", "Pig", "Sheep", "Chicken", "Horse", "Goat", "Duck", "Goose", "Donkey", "Turkey", "Rabbit", "Dog", "Cat", "Llama", "Bull", "Chick"] },
+        { cat: "Nature", words: ["Tree", "Mountain", "River", "Ocean", "Lake", "Desert", "Forest", "Valley", "Cliff", "Island", "Cave", "Swamp", "Beach", "Field", "Sky", "Rock"] },
+        { cat: "Office", words: ["Desk", "Chair", "Computer", "Phone", "Paper", "Meeting", "Boss", "Salary", "Email", "Project", "Fax", "Printer", "Coffee", "Lunch", "Folder", "Break"] },
+        { cat: "Daily Routine", words: ["Waking", "Eating", "Sleeping", "Working", "Shower", "Reading", "Exercise", "Cooking", "Driving", "Shopping", "Cleaning", "Brushing", "Dressing", "Walking", "Talking", "Dreaming"] },
+        { cat: "Metals", words: ["Gold", "Silver", "Iron", "Copper", "Steel", "Lead", "Tin", "Zinc", "Bronze", "Brass", "Aluminum", "Platinum", "Nickel", "Mercury", "Titanium", "Chrome"] },
+        { cat: "Toys", words: ["Doll", "Ball", "Block", "Puzzle", "Car", "Robot", "Yo-yo", "Kite", "Lego", "Marble", "Top", "Slime", "Drone", "Bear", "Train", "Plane"] },
+        { cat: "Baking", words: ["Flour", "Sugar", "Egg", "Milk", "Butter", "Yeast", "Honey", "Salt", "Bowl", "Tray", "Whisk", "Sifter", "Rolling", "Frosting", "Vanilla", "Oven"] },
+        { cat: "Pizza Toppings", words: ["Cheese", "Tomato", "Ham", "Pineapple", "Olive", "Mushroom", "Pepperoni", "Salami", "Chicken", "Bacon", "Onion", "Pepper", "Corn", "Pesto", "Anchovy", "Herbs"] },
+        { cat: "Card Games", words: ["Poker", "Blackjack", "Bridge", "Uno", "Solitaire", "Hearts", "Snap", "Rummy", "War", "Cheat", "Go Fish", "Speed", "Spit", "Slap", "Gin", "Euchre"] },
+        { cat: "Fast Food", words: ["Burger", "Pizza", "Nuggets", "Fries", "Hotdog", "Taco", "Kebab", "Donut", "Shake", "Soda", "Onion", "Sauce", "Wings", "Wrap", "Sandwich", "Ice Cream"] },
+        { cat: "Wild West", words: ["Cowboy", "Sheriff", "Horse", "Saloon", "Gold", "Duel", "Desert", "Cactus", "Outlaw", "Gun", "Hat", "Boots", "Spurs", "Whisky", "Rope", "Badge"] },
+        { cat: "Fairytales", words: ["King", "Queen", "Knight", "Dragon", "Witch", "Elf", "Giant", "Fairy", "Wolf", "Tower", "Magic", "Sword", "Crown", "Forest", "Curse", "Mirror"] },
+        { cat: "Halloween", words: ["Ghost", "Pumpkin", "Candy", "Witch", "Bat", "Zombie", "Vampire", "Skeleton", "Mask", "Moon", "Owl", "Spider", "Black Cat", "Scary", "Tomb", "Monster"] },
+        { cat: "Gardening", words: ["Soil", "Seed", "Pot", "Hose", "Rake", "Spade", "Mower", "Water", "Bloom", "Weed", "Dirt", "Tree", "Fence", "Gate", "Sun", "Glove"] },
+        { cat: "Gym", words: ["Weights", "Bench", "Rope", "Bike", "Treadmill", "Mat", "Sweat", "Muscle", "Coach", "Water", "Towel", "Gym", "Jog", "Lift", "Push", "Pull"] },
+        { cat: "Bathroom", words: ["Soap", "Brush", "Sink", "Bath", "Shower", "Towel", "Mirror", "Mat", "Water", "Paste", "Comb", "Plug", "Tile", "Drain", "Sponge", "Gel"] },
+        { cat: "Pets", words: ["Dog", "Cat", "Hamster", "Bird", "Fish", "Snake", "Lizard", "Rabbit", "Turtle", "Spider", "Horse", "Pony", "Pig", "Mouse", "Rat", "Frog"] },
+        { cat: "Travel", words: ["Map", "Plane", "Train", "Ticket", "Bag", "Hotel", "Beach", "Sight", "Guide", "Passport", "Fly", "Sail", "Drive", "Walk", "Tour", "Trip"] },
+        { cat: "Winter", words: ["Snow", "Ice", "Cold", "Ski", "Sled", "Coat", "Glove", "Scarf", "Boots", "Fire", "Cocoa", "Soup", "Frost", "Wind", "Melt", "Slip"] },
+        { cat: "Summer", words: ["Sun", "Heat", "Beach", "Swim", "Ice", "Surf", "Sand", "Fan", "Pool", "Towel", "Tan", "Boat", "Trip", "Hike", "Grill", "Drink"] },
+        { cat: "Party", words: ["Cake", "Music", "Dance", "Gift", "Game", "Guest", "Drink", "Food", "Song", "Fun", "Hat", "Balloons", "Card", "Bow", "Laugh", "Light"] },
+        { cat: "Medicine", words: ["Doctor", "Nurse", "Pill", "Clinic", "Surgery", "Heart", "Blood", "Health", "Cure", "Pain", "Drug", "Mask", "Scan", "Ward", "Bed", "Life"] },
+        { cat: "Police", words: ["Badge", "Car", "Uniform", "Siren", "Crime", "Clue", "Court", "Judge", "Prison", "Law", "Cop", "Search", "Arrest", "Guilt", "Truth", "Case"] },
+        { cat: "Science", words: ["Lab", "Test", "Acid", "Gas", "Star", "Atom", "Cell", "Brain", "Fact", "Proof", "Study", "Math", "Tool", "Data", "Light", "Earth"] },
+        { cat: "Circus", words: ["Clown", "Lion", "Tent", "Ring", "Show", "Magic", "Acrobat", "Ball", "Trap", "Rope", "Trick", "Laugh", "Crowd", "Act", "Fire", "Costume"] },
+        { cat: "Castle", words: ["Knight", "King", "Wall", "Gate", "Moat", "Stone", "Sword", "Tower", "Flag", "Guard", "Crown", "Shield", "Armor", "Horse", "Steel", "War"] },
+        { cat: "Pirates", words: ["Ship", "Gold", "Map", "Sea", "Hook", "Flag", "Bird", "Chest", "Skull", "Sword", "Rum", "Island", "Wave", "Storm", "Port", "Booty"] },
+        { cat: "Dinosaurs", words: ["Rex", "Egg", "Bone", "Leaf", "Old", "Big", "Tail", "Claw", "Hunt", "Eat", "Die", "Rock", "Mud", "Herb", "Meat", "Jungle"] },
+        { cat: "Camping", words: ["Tent", "Fire", "Wood", "Bag", "Hike", "Star", "Food", "Dark", "Lake", "Boot", "Flash", "Knife", "Pack", "Walk", "Cold", "Bear"] },
+        { cat: "Construction", words: ["Brick", "Wood", "Glass", "Nail", "Hammer", "Crane", "Hard Hat", "Plan", "Build", "Cement", "Steel", "Wall", "Roof", "Floor", "Door", "House"] },
+        { cat: "Detective", words: ["Clue", "Case", "Mystery", "Fingerprint", "Proof", "Crime", "Victim", "Suspect", "Alibi", "Motive", "Search", "Trace", "Solve", "Truth", "Lies", "Eye"] },
+        { cat: "Cinema", words: ["Screen", "Popcorn", "Seat", "Ticket", "Film", "Director", "Actor", "Script", "Light", "Sound", "Action", "Drama", "Comedy", "Scary", "Hero", "Villain"] },
+        { cat: "Viking", words: ["Boat", "Axe", "Shield", "Sword", "Sea", "North", "Cold", "Valhalla", "Rune", "Armor", "Helmet", "Hammer", "Storm", "War", "Gold", "Mead"] },
+        { cat: "Library", words: ["Book", "Shelf", "Quiet", "Read", "Page", "Index", "Author", "Title", "Borrow", "Return", "Study", "Ink", "Paper", "Word", "Story", "Fact"] },
+        { cat: "Farm", words: ["Cow", "Tractor", "Plow", "Seed", "Harvest", "Barn", "Mud", "Hay", "Fence", "Field", "Grow", "Dirt", "Sun", "Water", "Green", "Corn"] },
+        { cat: "Mountain", words: ["Snow", "Peak", "Hike", "Climb", "Rope", "Cold", "View", "Air", "Rock", "Trail", "Steep", "Camp", "Sky", "Cloud", "Ice", "Stone"] },
+        { cat: "Airport", words: ["Plane", "Bag", "Check", "Fly", "Gate", "Pilot", "Ticket", "Seat", "Cloud", "Land", "Fuel", "Travel", "Customs", "Duty", "Shop", "Wait"] },
+        { cat: "Restaurant", words: ["Menu", "Table", "Food", "Drink", "Waiter", "Chef", "Tip", "Bill", "Seat", "Plate", "Fork", "Knife", "Kitchen", "Eat", "Taste", "Order"] },
+        { cat: "Football", words: ["Ball", "Goal", "Kick", "Team", "Field", "Fan", "Ref", "Score", "Win", "Lose", "Grass", "Shirt", "Boot", "Play", "Game", "Match"] },
+        { cat: "Photography", words: ["Lens", "Flash", "Zoom", "Snap", "Pic", "Film", "Light", "Focus", "View", "Shutter", "Tripod", "Digital", "Memory", "Color", "Black", "White"] },
+        { cat: "Magic", words: ["Wand", "Hat", "Card", "Trick", "Coin", "Rabbit", "Stage", "Show", "Hidden", "Mystery", "Lie", "Hand", "Speed", "Illusion", "Cloud", "Disappear"] },
+        { cat: "Painting", words: ["Brush", "Oil", "Canvas", "Color", "Frame", "Art", "Artist", "Sketch", "Mix", "Draw", "Stroke", "Studio", "Gallery", "View", "Subject", "Light"] },
+        { cat: "Bridges", words: ["Steel", "Stone", "Road", "River", "Cross", "Arch", "Span", "Tower", "Cable", "Car", "Walk", "Under", "Over", "Gap", "Safe", "Strong"] },
+        { cat: "Computers", words: ["Mouse", "Key", "Screen", "Code", "Web", "File", "Data", "Cloud", "Chip", "RAM", "CPU", "Disk", "User", "Fast", "Logic", "Math"] },
+        { cat: "Ancient Egypt", words: ["Pharaoh", "Pyramid", "Nile", "Sand", "Mummy", "Sphinx", "Gold", "God", "Tomb", "Stone", "Slave", "Desert", "Cat", "Sun", "Boat", "River"] },
+        { cat: "Fast Cars", words: ["Engine", "Race", "Track", "Tire", "Fuel", "Speed", "Turbo", "Drive", "Fast", "Win", "Road", "Wheel", "Brake", "Shift", "Grip", "Drift"] },
+        { cat: "Supermarket", words: ["Cart", "Shelf", "Food", "Cashier", "Sale", "Price", "Bag", "Pay", "Fruit", "Milk", "Meat", "Bread", "Drink", "Aisle", "List", "Shop"] },
+        { cat: "Spies", words: ["Agent", "Secret", "Mission", "Gadget", "Code", "Shadow", "Watch", "Gun", "Fast Car", "Lies", "Truth", "Enemy", "Base", "File", "Camera", "Micro"] },
+        { cat: "Beaches", words: ["Sand", "Water", "Sun", "Wave", "Shell", "Boat", "Fish", "Blue", "Towel", "Ball", "Surf", "Swim", "Tan", "Salt", "Hot", "Relax"] },
+        { cat: "Coffee", words: ["Bean", "Cup", "Black", "Milk", "Sugar", "Bitter", "Hot", "Drink", "Barista", "Roast", "Morning", "Cafe", "Steam", "Foam", "Grind", "Mug"] },
+        { cat: "Sewing", words: ["Needle", "Thread", "Fabric", "Stitch", "Button", "Zip", "Pattern", "Hem", "Tailor", "Dress", "Scissors", "Pin", "Machine", "Measure", "Cut", "Sew"] },
+        { cat: "Tools", words: ["Hammer", "Screw", "Nail", "Saw", "Drill", "Level", "Tape", "Wrench", "Pliers", "Glue", "Clutter", "Garage", "Fix", "Build", "Wood", "Metal"] },
+        { cat: "Bridges", words: ["Arch", "Golden Gate", "Suspension", "Water", "Crossing", "Steel", "Cable", "Tower", "Road", "Footpath", "River", "Valley", "Beam", "Iron", "Skyline", "Engineering"] },
+        { cat: "Trees", words: ["Oak", "Pine", "Maple", "Birch", "Leaf", "Root", "Bark", "Branch", "Sap", "Forest", "Apple", "Palm", "Wood", "Willow", "Evergreen", "Shade"] },
+        { cat: "Rivers", words: ["Amazon", "Nile", "Mississippi", "Water", "Flow", "Current", "Bridge", "Fish", "Boat", "Delta", "Bank", "Mouth", "Source", "Valley", "Stream", "Nature"] },
+        { cat: "Islands", words: ["Hawaii", "Greenland", "Japan", "Water", "Sand", "Beach", "Isolated", "Boat", "Treasure", "Palm", "Volcano", "Reef", "Ocean", "Map", "Tropical", "Remote"] },
+        { cat: "Cities", words: ["Paris", "Tokyo", "London", "New York", "Street", "Park", "Building", "Traffic", "People", "Metro", "Skyscraper", "Plaza", "Capital", "Nightlife", "Lights", "Map"] },
+        { cat: "Mountains", words: ["Everest", "Alps", "Peak", "Climb", "Summit", "Snow", "Rock", "Hike", "Cold", "Steep", "View", "Air", "Height", "Range", "Slope", "Path"] },
+        { cat: "Flags", words: ["Star", "Stripe", "Blue", "Red", "Yellow", "Country", "Symbol", "Pole", "Wind", "Pride", "Wave", "Nation", "Color", "Emblem", "Cloth", "Standard"] },
+        { cat: "Monsters", words: ["Zombie", "Ghost", "Vampire", "Werewolf", "Scary", "Night", "Dark", "Hide", "Teeth", "Claw", "Fear", "Movie", "Beast", "Shadow", "Strange", "Creature"] },
+        { cat: "Candy", words: ["Chocolate", "Gummy", "Sweet", "Sugar", "Lollipop", "Wrap", "Melt", "Eat", "Treat", "Mint", "Chewy", "Hard", "Bowl", "Child", "Gift", "Sticky"] },
+        { cat: "Inventions", words: ["Wheel", "Lightbulb", "Internet", "Telephone", "Camera", "Car", "Plane", "Engine", "Compass", "Clock", "Paper", "Printing", "Radio", "Steam", "Vaccine", "Battery"] },
+        { cat: "Explorers", words: ["Columbus", "Vasco", "Magellan", "Cook", "Space", "New", "Map", "Ship", "Gold", "Land", "Journey", "History", "Unknown", "Discovery", "Route", "Flag"] }
+    ];
+
+    let players = [];
+    let curIdx = 0;
+    let roundCount = 0;
+    let roles = [];
+    let isRevealed = false;
+    let randomizedOrder = [];
+
+    // SHUFFLE ARRAY
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function setupNames() {
+        const count = document.getElementById('pCount').value;
+        const container = document.getElementById('name-container');
+        container.innerHTML = '';
+        for(let i=0; i<count; i++) {
+            container.innerHTML += `<input type="text" id="pName${i}" placeholder="Player ${i+1}">`;
+        }
+        switchScreen('scr-setup', 'scr-names');
+        // Pre-randomize all 100 categories
+        randomizedOrder = shuffle([...allCategories]);
+    }
+
+    function startGame() {
+        if(players.length === 0) {
+            const count = document.getElementById('pCount').value;
+            for(let i=0; i<count; i++) {
+                players.push({ name: document.getElementById(`pName${i}`).value.trim() || `Player ${i+1}`, score: 0 });
+            }
+        }
+        roundCount++;
+        const data = randomizedOrder[(roundCount - 1) % randomizedOrder.length];
+        const coords = ['A','B','C','D'][Math.floor(Math.random()*4)] + (Math.floor(Math.random()*4)+1);
+        const cham = Math.floor(Math.random()*players.length);
+
+        roles = players.map((_, i) => i === cham ? "THE CHAMELEON" : `COORDINATE: ${coords}`);
+        curIdx = 0;
+        switchScreen('scr-names', 'scr-pass');
+        updatePassScreen();
+    }
+
+    function updatePassScreen() {
+        document.getElementById('currentPlayerName').innerText = players[curIdx].name;
+        document.getElementById('secret-area').classList.add('hidden');
+        document.getElementById('revealBtn').innerText = "Reveal My Role";
+        isRevealed = false;
+    }
+
+    function toggleReveal() {
+        if(!isRevealed) {
+            document.getElementById('roleContent').innerText = roles[curIdx];
+            document.getElementById('secret-area').classList.remove('hidden');
+            document.getElementById('revealBtn').innerText = "I've Memorized It";
+            isRevealed = true;
+        } else {
+            curIdx++;
+            if(curIdx < players.length) updatePassScreen();
+            else showBoard();
+        }
+    }
+
+    function showBoard() {
+        switchScreen('scr-pass', 'scr-board');
+        const data = randomizedOrder[(roundCount - 1) % randomizedOrder.length];
+        document.getElementById('roundIndicator').innerText = `Round ${roundCount}/10`;
+        document.getElementById('boardCatName').innerText = data.cat;
+        const grid = document.getElementById('gridBoard');
+        grid.innerHTML = '<div class="cell cell-header"></div>';
+        ['A','B','C','D'].forEach(l => grid.innerHTML += `<div class="cell cell-header">${l}</div>`);
+        for(let i=0; i<4; i++) {
+            grid.innerHTML += `<div class="cell cell-header">${i+1}</div>`;
+            for(let j=0; j<4; j++) {
+                grid.innerHTML += `<div class="cell">${data.words[i*4+j]}</div>`;
+            }
+        }
+    }
+
+    function showScoring() {
+        switchScreen('scr-board', 'scr-scores');
+        const list = document.getElementById('score-list');
+        list.innerHTML = '';
+        players.forEach((p, i) => {
+            list.innerHTML += `
+                <div class="score-item">
+                    <span>${p.name} (${p.score} pts)</span>
+                    <div class="point-controls">
+                        <button onclick="addPt(${i}, 1)">+1</button>
+                        <button onclick="addPt(${i}, 2)" style="color:var(--accent); border-color:var(--accent);">+2</button>
+                    </div>
+                </div>`;
+        });
+        if(roundCount >= 10) document.getElementById('nextRoundBtn').innerText = "Finish Game";
+    }
+
+    function addPt(idx, val) {
+        players[idx].score += val;
+        showScoring();
+    }
+
+    function handleNextRound() {
+        if(roundCount < 10) {
+            switchScreen('scr-scores', 'scr-pass');
+            startGame();
+        } else {
+            triggerFinal();
+        }
+    }
+
+    function triggerFinal() {
+        let currentScr = players.length > 0 ? 'scr-scores' : 'scr-setup';
+        if (!document.getElementById('scr-scores').classList.contains('hidden')) currentScr = 'scr-scores';
+        switchScreen(currentScr, 'scr-video');
+        const video = document.getElementById('victoryVideo');
+        video.play().catch(e => console.log("Blocked"));
+        video.onended = finishVideo;
+    }
+
+    function finishVideo() {
+        document.getElementById('victoryVideo').pause();
+        switchScreen('scr-video', 'scr-final');
+        showFinalWinner();
+    }
+
+    function showFinalWinner() {
+        const sorted = [...players].sort((a, b) => b.score - a.score);
+        document.getElementById('grandWinner').innerText = sorted[0].name;
+        const ranking = document.getElementById('final-ranking');
+        ranking.innerHTML = '<h3 style="color:var(--primary)">Final Standings:</h3>';
+        sorted.forEach((p, i) => {
+            ranking.innerHTML += `<p>${i+1}. ${p.name} — ${p.score} pts</p>`;
+        });
+    }
+
+    function switchScreen(from, to) {
+        const current = document.getElementById(from);
+        const next = document.getElementById(to);
+        current.classList.remove('animate-in');
+        current.style.opacity = 0;
+        setTimeout(() => {
+            current.classList.add('hidden');
+            current.style.opacity = 1;
+            next.classList.remove('hidden');
+            next.classList.add('animate-in');
+        }, 300);
+    }
+</script>
+</body>
+</html>
