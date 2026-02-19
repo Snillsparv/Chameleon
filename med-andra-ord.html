@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Med andra ord</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0f172a">
+
+    <style>
+        :root {
+            --bg-overlay: rgba(15, 23, 42, 0.85);
+            --card: rgba(30, 41, 59, 0.8);
+            --primary: #818cf8;
+            --accent: #34d399;
+            --winner-gold: #fbbf24;
+            --text: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.05);
+            --danger: #f87171;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0f172a;
+            background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('background2.png');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 500px;
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 40px 30px;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            opacity: 0;
+            animation: startFadeIn 1.5s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes startFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { font-weight: 800; font-size: 2.5rem; margin: 0 0 10px; background: linear-gradient(to right, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p { color: #94a3b8; margin-bottom: 25px; }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white; border: none; padding: 18px; border-radius: 18px;
+            font-weight: 700; cursor: pointer; width: 100%; font-size: 1.1rem;
+            margin-top: 15px; box-shadow: 0 10px 20px -5px rgba(129, 140, 248, 0.4);
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-secondary { background: var(--glass); border: 1px solid rgba(255,255,255,0.15); box-shadow: none; }
+
+        input { background: rgba(15, 23, 42, 0.8); border: 1px solid #334155; color: white; padding: 16px; border-radius: 14px; width: 100%; text-align: center; font-size: 1.2rem; margin-top: 10px; font-family: 'Outfit', sans-serif; transition: border-color 0.3s; }
+        input:focus { outline: none; border-color: var(--primary); }
+
+        .word-display {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 40px 25px;
+            border-radius: 24px;
+            border: 2px solid var(--accent);
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 25px 0;
+            color: white;
+            line-height: 1.3;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        /* Timer */
+        .timer-container { margin: 20px 0; position: relative; }
+        .timer-bar-bg {
+            width: 100%;
+            height: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .timer-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            border-radius: 6px;
+            transition: width 0.1s linear;
+            width: 100%;
+        }
+        .timer-bar.warning { background: linear-gradient(90deg, var(--danger), #fbbf24); }
+        .timer-text { font-size: 2rem; font-weight: 800; margin-bottom: 8px; color: var(--accent); }
+        .timer-text.warning { color: var(--danger); }
+
+        /* Score tracking */
+        .score-row {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.05); padding: 15px; border-radius: 18px;
+            margin-bottom: 12px; transition: all 0.3s;
+        }
+        .score-row .player-name { flex: 1; text-align: left; margin-left: 10px; font-weight: 600; }
+        .score-row .player-score { font-weight: 800; color: var(--accent); font-size: 1.1rem; min-width: 50px; text-align: right; }
+
+        .point-btn {
+            background: var(--primary); border: none; color: white;
+            width: 44px; height: 44px; border-radius: 12px; font-weight: 800;
+            cursor: pointer; font-size: 1rem; transition: all 0.2s;
+            font-family: 'Outfit', sans-serif;
+        }
+        .point-btn:active { transform: scale(0.9); }
+        .minus-btn { background: rgba(248, 113, 113, 0.3); color: var(--danger); }
+
+        /* Round controls */
+        .round-controls { display: flex; gap: 12px; margin-top: 15px; }
+        .round-controls .btn { flex: 1; margin-top: 0; }
+
+        /* Team setup */
+        .team-block {
+            background: rgba(255,255,255,0.05); border-radius: 18px;
+            padding: 20px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .team-block h3 { font-size: 1.1rem; margin-bottom: 10px; color: var(--accent); }
+        .team-block.team-b h3 { color: var(--primary); }
+
+        .team-indicator {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        .team-a-badge { background: rgba(52, 211, 153, 0.2); color: var(--accent); }
+        .team-b-badge { background: rgba(129, 140, 248, 0.2); color: var(--primary); }
+
+        .word-counter { color: #64748b; font-size: 0.85rem; margin-top: 5px; }
+
+        /* Victory */
+        .winner-crown { font-size: 4rem; margin-bottom: 10px; animation: bounce 1s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .hidden { display: none !important; }
+        .screen-animate { animation: fadeIn 0.4s forwards ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .rules-box {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 18px;
+            padding: 20px;
+            text-align: left;
+            margin: 15px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .rules-box b { color: var(--text); }
+
+        .settings-row {
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255,255,255,0.05); padding: 14px 18px;
+            border-radius: 14px; margin-top: 10px;
+        }
+        .settings-row label { font-weight: 600; font-size: 0.95rem; }
+        .settings-row input { width: 80px; margin: 0; padding: 10px; font-size: 1rem; }
+
+        .team-score-display {
+            display: flex; gap: 15px; margin-bottom: 20px;
+        }
+        .team-score-card {
+            flex: 1; padding: 15px; border-radius: 18px; text-align: center;
+        }
+        .team-score-card.team-a { background: rgba(52, 211, 153, 0.15); border: 1px solid rgba(52, 211, 153, 0.3); }
+        .team-score-card.team-b { background: rgba(129, 140, 248, 0.15); border: 1px solid rgba(129, 140, 248, 0.3); }
+        .team-score-card .team-label { font-size: 0.8rem; color: #94a3b8; margin-bottom: 4px; }
+        .team-score-card .team-pts { font-size: 2rem; font-weight: 800; }
+        .team-a .team-pts { color: var(--accent); }
+        .team-b .team-pts { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app">
+
+    <!-- STARTSKÄRM -->
+    <div id="scr-start" class="screen-animate">
+        <div style="font-size: 3.5rem; margin-bottom: 15px;">💬</div>
+        <h1>Med andra ord</h1>
+        <p>Förklara ord för ditt lag utan att säga själva ordet!</p>
+        <div class="rules-box">
+            <b>Så spelar ni:</b><br>
+            1. Dela upp er i två lag<br>
+            2. En spelare förklarar ord medan laget gissar<br>
+            3. Du får INTE säga ordet eller delar av det<br>
+            4. Rätt gissat = +1 poäng, hoppa över = -1 poäng<br>
+            5. Laget med flest poäng vinner!
+        </div>
+        <button class="btn" onclick="switchScreen('scr-start','scr-setup')">Sätt igång!</button>
+        <a href="index.html" style="display:inline-block; margin-top:15px; color:#818cf8; font-size:0.9rem; text-decoration:none;">&#8592; Tillbaka till meny</a>
+    </div>
+
+    <!-- INSTÄLLNINGAR -->
+    <div id="scr-setup" class="hidden screen-animate">
+        <h1>Inställningar</h1>
+        <p>Ställ in spelet</p>
+        <div class="settings-row">
+            <label>Sekunder per runda:</label>
+            <input type="number" id="timerInput" value="60" min="20" max="120" step="10">
+        </div>
+        <div class="settings-row">
+            <label>Poäng för att vinna:</label>
+            <input type="number" id="winScoreInput" value="25" min="5" max="100" step="5">
+        </div>
+        <button class="btn" onclick="switchScreen('scr-setup','scr-teams')">Fortsätt</button>
+    </div>
+
+    <!-- LAGNAMN -->
+    <div id="scr-teams" class="hidden screen-animate">
+        <h1>Lagen</h1>
+        <p>Ge era lag namn</p>
+        <div class="team-block">
+            <h3>Lag 1</h3>
+            <input type="text" id="teamAName" placeholder="T.ex. Ordmästarna">
+        </div>
+        <div class="team-block team-b">
+            <h3>Lag 2</h3>
+            <input type="text" id="teamBName" placeholder="T.ex. Snackisarna">
+        </div>
+        <button class="btn" onclick="startGame()">Starta spelet!</button>
+    </div>
+
+    <!-- VEM FÖRKLARAR -->
+    <div id="scr-turn" class="hidden screen-animate">
+        <div class="team-score-display">
+            <div class="team-score-card team-a">
+                <div class="team-label" id="turnScoreALabel">Lag A</div>
+                <div class="team-pts" id="turnScoreA">0</div>
+            </div>
+            <div class="team-score-card team-b">
+                <div class="team-label" id="turnScoreBLabel">Lag B</div>
+                <div class="team-pts" id="turnScoreB">0</div>
+            </div>
+        </div>
+        <div id="turnTeamBadge" class="team-indicator team-a-badge">Lag A</div>
+        <h1 style="font-size: 1.8rem; margin-bottom: 5px;">Er tur att förklara!</h1>
+        <p>Ge telefonen till den som ska förklara</p>
+        <button class="btn" onclick="startTimer()">Starta rundan!</button>
+    </div>
+
+    <!-- SPELRUNDA (timer + ord) -->
+    <div id="scr-play" class="hidden screen-animate">
+        <div class="timer-container">
+            <div class="timer-text" id="timerText">60</div>
+            <div class="timer-bar-bg"><div class="timer-bar" id="timerBar"></div></div>
+        </div>
+        <div class="word-display" id="wordDisplay">—</div>
+        <div class="word-counter" id="wordCounter">Ord 1</div>
+        <div class="round-controls">
+            <button class="btn btn-secondary" onclick="skipWord()" id="btnSkip" style="background: rgba(248,113,113,0.2); border-color: rgba(248,113,113,0.4); color: var(--danger);">Hoppa över (-1)</button>
+            <button class="btn" onclick="correctWord()">Rätt! (+1)</button>
+        </div>
+    </div>
+
+    <!-- RUNDRESULTAT -->
+    <div id="scr-result" class="hidden screen-animate">
+        <h1 style="font-size: 1.8rem;">Rundan slut!</h1>
+        <div class="team-score-display" style="margin-top: 20px;">
+            <div class="team-score-card team-a">
+                <div class="team-label" id="resScoreALabel">Lag A</div>
+                <div class="team-pts" id="resScoreA">0</div>
+            </div>
+            <div class="team-score-card team-b">
+                <div class="team-label" id="resScoreBLabel">Lag B</div>
+                <div class="team-pts" id="resScoreB">0</div>
+            </div>
+        </div>
+        <p id="resultSummary" style="font-size: 1.1rem; color: var(--text);"></p>
+        <div id="resultWords" style="margin: 15px 0; text-align: left;"></div>
+        <button class="btn" id="btnNextRound" onclick="nextTurn()">Nästa lag</button>
+    </div>
+
+    <!-- VINNARE -->
+    <div id="scr-final" class="hidden screen-animate">
+        <div class="winner-crown">👑</div>
+        <h1 id="winnerName" style="font-size: 2.5rem; color: var(--winner-gold); -webkit-text-fill-color: var(--winner-gold);">Vinnare!</h1>
+        <p id="winnerSub" style="font-size: 1.1rem;">vinner med 25 poäng!</p>
+        <div class="team-score-display" style="margin-top: 20px;">
+            <div class="team-score-card team-a">
+                <div class="team-label" id="finalScoreALabel">Lag A</div>
+                <div class="team-pts" id="finalScoreA">0</div>
+            </div>
+            <div class="team-score-card team-b">
+                <div class="team-label" id="finalScoreBLabel">Lag B</div>
+                <div class="team-pts" id="finalScoreB">0</div>
+            </div>
+        </div>
+        <button class="btn" onclick="location.reload()">Spela igen</button>
+        <a href="index.html" style="display:inline-block; margin-top:15px; color:#818cf8; font-size:0.9rem; text-decoration:none;">&#8592; Tillbaka till meny</a>
+    </div>
+</div>
+
+<script>
+    /* ============================================================
+       ORDDATABAS — 300 ord
+       Mix: ~40% substantiv, ~20% verb, ~15% adjektiv,
+            ~15% abstrakta substantiv, ~10% kända personer/karaktärer
+       ============================================================ */
+    const allWords = [
+        // — VARDAGLIGA SUBSTANTIV (ca 120 st) —
+        "Tandborste","Flygplan","Jordgubbe","Solglasögon","Regnbåge",
+        "Fotboll","Dammsugare","Skorsten","Hängmatta","Fallskärm",
+        "Segelbåt","Karusell","Glasspinne","Brevlåda","Trumma",
+        "Popcorn","Pyramid","Dagbok","Cykel","Studsare",
+        "Strykjärn","Ambulans","Kikare","Ryggsäck","Solros",
+        "Ficklampa","Helikopter","Vulkan","Skateboard","Gardin",
+        "Diskmaskin","Stövlar","Paraply","Bergochdalbana","Kompass",
+        "Akvarium","Saxofon","Hörlurar","Kamera","Smörgås",
+        "Badkar","Vindkraftverk","Skottkärra","Dykare","Smink",
+        "Grillkorv","Studentmössa","Dockhus","Trampolin","Palmträd",
+        "Tält","Ballong","Gungstol","Tennisracket","Roddbåt",
+        "Snögubbe","Spindelnät","Eldslukare","Fågelskrämma","Flaskhals",
+        "Korsord","Sandslott","Fiskmås","Vattenpistol","Myra",
+        "Pingvin","Känguru","Delfin","Uggla","Papegoja",
+        "Elefant","Krokodil","Sköldpadda","Giraff","Flodhäst",
+        "Astronaut","Brandman","Sjuksköterska","Bagare","Frisör",
+        "Pilot","Clown","Detektiv","Cowboy","Trollkarl",
+        "Pannkaka","Kanelbulle","Köttbullar","Varmkorv","Chokladkaka",
+        "Kaffekopp","Potatisskalare","Brödrost","Tvättmaskin","Kylskåp",
+        "Fyrtorn","Igloo","Slott","Vindmölla","Fontän",
+        "Rulltrappa","Bilbarnstol","Drönare","Såpbubbla","Torktumlare",
+        "Vattenfall","Laviner","Glödlampa","Diamant","Skattkista",
+        "Skäggig","Hammock","Nyckelring","Kuvert","Pappersflygplan",
+        "Mustasch","Peruk","Megafon","Rullstol","Gosedjur",
+
+        // — VERB (ca 60 st) —
+        "Skratta","Simma","Jonglera","Vissla","Snickra",
+        "Gäspa","Nosa","Klättra","Brottas","Dansa",
+        "Drömma","Snubbla","Krypa","Grilla","Hosta",
+        "Jogga","Steka","Hänga","Blunda","Smyga",
+        "Snarka","Paddla","Segla","Dyka","Surfa",
+        "Hoppa","Nicka","Blinka","Sjunga","Sova",
+        "Måla","Gråta","Slåss","Vindsurfa","Baka",
+        "Meditera","Dirigera","Limma","Tävla","Flyga",
+        "Ramla","Klia","Nyna","Sparka","Rapa",
+        "Snurra","Trolla","Buga","Flirta","Jogga",
+        "Stretcha","Pussla","Skala","Fiska","Jaga",
+        "Springa","Hoppsa","Virka","Tälta","Skida",
+
+        // — ADJEKTIV (ca 45 st) —
+        "Modig","Avundsjuk","Generad","Envis","Mystisk",
+        "Klurig","Slö","Nyfiken","Blyg","Girig",
+        "Listig","Butter","Häftig","Klumpig","Lat",
+        "Rädd","Stolt","Förvirrad","Desperat","Löjlig",
+        "Ödmjuk","Artig","Elak","Vresig","Fåfäng",
+        "Paranoid","Romantisk","Nostalgisk","Spontan","Lycklig",
+        "Besviken","Förälskad","Hungrig","Törstig","Trött",
+        "Kittlig","Frusen","Svettig","Yr","Mätt",
+        "Generös","Makaber","Dramatisk","Sarkastisk","Osynlig",
+
+        // — ABSTRAKTA SUBSTANTIV (ca 45 st) —
+        "Nostalgi","Frihet","Fantasi","Rättvisa","Vänskap",
+        "Karma","Kaos","Instinkt","Tradition","Kreativitet",
+        "Skam","Stolthet","Empati","Mod","Galenskap",
+        "Tur","Öde","Samvete","Kärlek","Avund",
+        "Makt","Hopp","Ångest","Glädje","Sorg",
+        "Ilska","Respekt","Lojalitet","Förtroende","Hemlängtan",
+        "Äventyr","Fördomar","Ensamhet","Panik","Längtan",
+        "Inspiration","Harmoni","Karisma","Uppfinning","Disciplin",
+        "Prestige","Ironi","Dilemma","Utmaning","Tålamod",
+
+        // — KÄNDA PERSONER & KARAKTÄRER (ca 30 st) —
+        "Pippi Långstrump","Einstein","Kleopatra","Bamse","Zlatan",
+        "Harry Potter","Batman","Tarzan","Musse Pigg","Rödluvan",
+        "Elvis","Madonna","Mona Lisa","Astrid Lindgren","Robin Hood",
+        "Donald Duck","Sherlock Holmes","Mozart","Napoleon","ABBA",
+        "Karlsson på taket","Ronja Rövardotter","Emil i Lönneberga","Nalle Puh","Pinocchio",
+        "Dracula","Snövit","Askungen","Zorro","Greta Thunberg"
+    ];
+
+    /* ============================================================
+       SPELLOGIK
+       ============================================================ */
+    let teamA = { name: 'Lag A', score: 0 };
+    let teamB = { name: 'Lag B', score: 0 };
+    let currentTeam = null; // referens till teamA eller teamB
+    let isTeamATurn = true;
+
+    let timerDuration = 60;
+    let winScore = 25;
+    let timerInterval = null;
+    let timeLeft = 60;
+
+    let shuffledWords = [];
+    let wordIndex = 0;
+    let roundCorrect = 0;
+    let roundSkipped = 0;
+    let roundWords = []; // { word, result: 'correct'|'skipped' }
+
+    function startGame() {
+        teamA.name = document.getElementById('teamAName').value || 'Lag A';
+        teamB.name = document.getElementById('teamBName').value || 'Lag B';
+        timerDuration = parseInt(document.getElementById('timerInput').value) || 60;
+        winScore = parseInt(document.getElementById('winScoreInput').value) || 25;
+
+        // Shuffle words
+        shuffledWords = [...allWords].sort(() => Math.random() - 0.5);
+        wordIndex = 0;
+
+        isTeamATurn = true;
+        currentTeam = teamA;
+        showTurnScreen();
+    }
+
+    function showTurnScreen() {
+        updateAllScores();
+        const badge = document.getElementById('turnTeamBadge');
+        badge.textContent = currentTeam.name;
+        badge.className = 'team-indicator ' + (isTeamATurn ? 'team-a-badge' : 'team-b-badge');
+        switchScreen(activeScreen(), 'scr-turn');
+    }
+
+    function startTimer() {
+        roundCorrect = 0;
+        roundSkipped = 0;
+        roundWords = [];
+        timeLeft = timerDuration;
+
+        showNextWord();
+        updateTimerDisplay();
+        switchScreen('scr-turn', 'scr-play');
+
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                endRound();
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const el = document.getElementById('timerText');
+        const bar = document.getElementById('timerBar');
+        el.textContent = timeLeft;
+        const pct = (timeLeft / timerDuration) * 100;
+        bar.style.width = pct + '%';
+
+        if (timeLeft <= 10) {
+            el.className = 'timer-text warning';
+            bar.className = 'timer-bar warning';
+        } else {
+            el.className = 'timer-text';
+            bar.className = 'timer-bar';
+        }
+    }
+
+    function showNextWord() {
+        if (wordIndex >= shuffledWords.length) {
+            // Reshuffle if we run out
+            shuffledWords = [...allWords].sort(() => Math.random() - 0.5);
+            wordIndex = 0;
+        }
+        document.getElementById('wordDisplay').textContent = shuffledWords[wordIndex];
+        document.getElementById('wordCounter').textContent = `Ord ${roundCorrect + roundSkipped + 1}`;
+    }
+
+    function correctWord() {
+        roundWords.push({ word: shuffledWords[wordIndex], result: 'correct' });
+        roundCorrect++;
+        currentTeam.score++;
+        wordIndex++;
+        showNextWord();
+    }
+
+    function skipWord() {
+        roundWords.push({ word: shuffledWords[wordIndex], result: 'skipped' });
+        roundSkipped++;
+        currentTeam.score = Math.max(0, currentTeam.score - 1);
+        wordIndex++;
+        showNextWord();
+    }
+
+    function endRound() {
+        clearInterval(timerInterval);
+        updateAllScores();
+
+        // Summary
+        const net = roundCorrect - roundSkipped;
+        document.getElementById('resultSummary').innerHTML =
+            `<b>${currentTeam.name}</b> fick <b style="color:var(--accent)">${roundCorrect} rätt</b>` +
+            (roundSkipped > 0 ? ` och hoppade över <b style="color:var(--danger)">${roundSkipped}</b>` : '') +
+            ` (${net >= 0 ? '+' : ''}${net} netto)`;
+
+        // Word list
+        const wordsDiv = document.getElementById('resultWords');
+        wordsDiv.innerHTML = roundWords.map(w =>
+            `<div style="display:flex; justify-content:space-between; padding:8px 12px; border-radius:10px; margin-bottom:4px; background: ${w.result === 'correct' ? 'rgba(52,211,153,0.1)' : 'rgba(248,113,113,0.1)'}">
+                <span>${w.word}</span>
+                <span style="color:${w.result === 'correct' ? 'var(--accent)' : 'var(--danger)'}; font-weight:700;">${w.result === 'correct' ? '+1' : '-1'}</span>
+            </div>`
+        ).join('');
+
+        // Check winner
+        if (teamA.score >= winScore || teamB.score >= winScore) {
+            document.getElementById('btnNextRound').textContent = 'Se vinnaren!';
+            document.getElementById('btnNextRound').onclick = showWinner;
+        } else {
+            document.getElementById('btnNextRound').textContent = 'Nästa lag';
+            document.getElementById('btnNextRound').onclick = nextTurn;
+        }
+
+        switchScreen('scr-play', 'scr-result');
+    }
+
+    function nextTurn() {
+        isTeamATurn = !isTeamATurn;
+        currentTeam = isTeamATurn ? teamA : teamB;
+        showTurnScreen();
+    }
+
+    function showWinner() {
+        const winner = teamA.score >= teamB.score ? teamA : teamB;
+        document.getElementById('winnerName').textContent = winner.name;
+        document.getElementById('winnerSub').textContent = `vinner med ${winner.score} poäng!`;
+        updateAllScores();
+        switchScreen('scr-result', 'scr-final');
+    }
+
+    function updateAllScores() {
+        // Turn screen
+        document.getElementById('turnScoreALabel').textContent = teamA.name;
+        document.getElementById('turnScoreA').textContent = teamA.score;
+        document.getElementById('turnScoreBLabel').textContent = teamB.name;
+        document.getElementById('turnScoreB').textContent = teamB.score;
+        // Result screen
+        document.getElementById('resScoreALabel').textContent = teamA.name;
+        document.getElementById('resScoreA').textContent = teamA.score;
+        document.getElementById('resScoreBLabel').textContent = teamB.name;
+        document.getElementById('resScoreB').textContent = teamB.score;
+        // Final screen
+        document.getElementById('finalScoreALabel').textContent = teamA.name;
+        document.getElementById('finalScoreA').textContent = teamA.score;
+        document.getElementById('finalScoreBLabel').textContent = teamB.name;
+        document.getElementById('finalScoreB').textContent = teamB.score;
+    }
+
+    /* Skärmhantering */
+    function switchScreen(from, to) {
+        document.getElementById(from).classList.add('hidden');
+        const next = document.getElementById(to);
+        next.classList.remove('hidden');
+        // Re-trigger animation
+        next.classList.remove('screen-animate');
+        void next.offsetWidth;
+        next.classList.add('screen-animate');
+    }
+
+    function activeScreen() {
+        const ids = ['scr-start','scr-setup','scr-teams','scr-turn','scr-play','scr-result','scr-final'];
+        for (let id of ids) if (!document.getElementById(id).classList.contains('hidden')) return id;
+        return 'scr-start';
+    }
+</script>
+</body>
+</html>
