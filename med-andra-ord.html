@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Med andra ord</title>
+    <title>Med andra ord – Trekamp</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <meta name="mobile-web-app-capable" content="yes">
@@ -50,8 +50,8 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             text-align: center;
             opacity: 0;
-            animation: startFadeIn 1.5s ease-out forwards;
-            animation-delay: 0.5s;
+            animation: startFadeIn 1s ease-out forwards;
+            animation-delay: 0.3s;
         }
 
         @keyframes startFadeIn {
@@ -60,250 +60,199 @@
         }
 
         h1 { font-weight: 800; font-size: 2.5rem; margin: 0 0 10px; background: linear-gradient(to right, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        p { color: #94a3b8; margin-bottom: 25px; }
+        p { color: #94a3b8; margin-bottom: 20px; }
 
         .btn {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white; border: none; padding: 18px; border-radius: 18px;
             font-weight: 700; cursor: pointer; width: 100%; font-size: 1.1rem;
             margin-top: 15px; box-shadow: 0 10px 20px -5px rgba(129, 140, 248, 0.4);
-            transition: all 0.3s ease;
-            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s ease; font-family: 'Outfit', sans-serif;
         }
         .btn:active { transform: scale(0.98); }
 
         .btn-secondary { background: var(--glass); border: 1px solid rgba(255,255,255,0.15); box-shadow: none; }
 
-        input { background: rgba(15, 23, 42, 0.8); border: 1px solid #334155; color: white; padding: 16px; border-radius: 14px; width: 100%; text-align: center; font-size: 1.2rem; margin-top: 10px; font-family: 'Outfit', sans-serif; transition: border-color 0.3s; }
-        input:focus { outline: none; border-color: var(--primary); }
-
-        .word-display {
-            background: rgba(15, 23, 42, 0.6);
-            padding: 40px 25px;
-            border-radius: 24px;
-            border: 2px solid var(--accent);
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin: 25px 0;
-            color: white;
-            line-height: 1.3;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
+        /* Team selection */
+        .team-choice {
+            display: flex; gap: 15px; justify-content: center; margin: 25px 0;
         }
 
-        /* Timer */
-        .timer-container { margin: 20px 0; position: relative; }
-        .timer-bar-bg {
-            width: 100%;
-            height: 12px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 6px;
-            overflow: hidden;
+        .team-choice-btn {
+            flex: 1; padding: 25px 15px; border-radius: 20px;
+            border: 2px solid rgba(255,255,255,0.15); background: var(--glass);
+            cursor: pointer; text-align: center; transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif; color: var(--text);
         }
-        .timer-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            border-radius: 6px;
-            transition: width 0.1s linear;
-            width: 100%;
+
+        .team-choice-btn:hover, .team-choice-btn.selected {
+            border-color: var(--accent); background: rgba(52, 211, 153, 0.15);
         }
-        .timer-bar.warning { background: linear-gradient(90deg, var(--danger), #fbbf24); }
-        .timer-text { font-size: 2rem; font-weight: 800; margin-bottom: 8px; color: var(--accent); }
-        .timer-text.warning { color: var(--danger); }
 
-        /* Score tracking */
-        .score-row {
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255,255,255,0.05); padding: 15px; border-radius: 18px;
-            margin-bottom: 12px; transition: all 0.3s;
-        }
-        .score-row .player-name { flex: 1; text-align: left; margin-left: 10px; font-weight: 600; }
-        .score-row .player-score { font-weight: 800; color: var(--accent); font-size: 1.1rem; min-width: 50px; text-align: right; }
+        .team-choice-btn .tc-num { font-size: 2.5rem; font-weight: 800; display: block; color: var(--accent); }
+        .team-choice-btn .tc-label { font-size: 0.9rem; color: #94a3b8; margin-top: 4px; }
 
-        .point-btn {
-            background: var(--primary); border: none; color: white;
-            width: 44px; height: 44px; border-radius: 12px; font-weight: 800;
-            cursor: pointer; font-size: 1rem; transition: all 0.2s;
-            font-family: 'Outfit', sans-serif;
-        }
-        .point-btn:active { transform: scale(0.9); }
-        .minus-btn { background: rgba(248, 113, 113, 0.3); color: var(--danger); }
-
-        /* Round controls */
-        .round-controls { display: flex; gap: 12px; margin-top: 15px; }
-        .round-controls .btn { flex: 1; margin-top: 0; }
-
-        /* Team setup */
+        /* Team assignment */
         .team-block {
             background: rgba(255,255,255,0.05); border-radius: 18px;
-            padding: 20px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1);
-        }
-        .team-block h3 { font-size: 1.1rem; margin-bottom: 10px; color: var(--accent); }
-        .team-block.team-b h3 { color: var(--primary); }
-
-        .team-indicator {
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-        .team-a-badge { background: rgba(52, 211, 153, 0.2); color: var(--accent); }
-        .team-b-badge { background: rgba(129, 140, 248, 0.2); color: var(--primary); }
-
-        /* Player input */
-        .player-input-row {
-            display: flex; gap: 8px; align-items: center; margin-top: 8px;
-        }
-        .player-input-row input { flex: 1; margin: 0; }
-        .player-input-row .remove-btn {
-            background: rgba(248,113,113,0.2); border: 1px solid rgba(248,113,113,0.3);
-            color: var(--danger); width: 42px; height: 42px; border-radius: 12px;
-            cursor: pointer; font-size: 1.2rem; font-weight: 700; flex-shrink: 0;
-            font-family: 'Outfit', sans-serif;
-        }
-        .player-list { margin: 10px 0; }
-        .team-count-row {
-            display: flex; align-items: center; justify-content: center; gap: 15px;
-            margin: 15px 0;
-        }
-        .team-count-row button {
-            background: var(--glass); border: 1px solid rgba(255,255,255,0.2);
-            color: white; width: 44px; height: 44px; border-radius: 12px;
-            font-size: 1.3rem; font-weight: 800; cursor: pointer;
-            font-family: 'Outfit', sans-serif;
-        }
-        .team-count-row button:active { transform: scale(0.9); }
-        .team-count-display { font-size: 2rem; font-weight: 800; min-width: 40px; }
-
-        /* Team assignment display */
-        .team-assignment {
-            background: rgba(255,255,255,0.05); border-radius: 18px;
-            padding: 15px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.1);
-        }
-        .team-assignment h3 { font-size: 1rem; margin-bottom: 8px; }
-        .team-assignment .member { padding: 4px 0; color: #cbd5e1; font-size: 0.95rem; }
-
-        .validation-error { color: var(--danger); font-size: 0.85rem; margin-top: 8px; display: none; }
-
-        .word-counter { color: #64748b; font-size: 0.85rem; margin-top: 5px; }
-
-        /* Victory */
-        .winner-crown { font-size: 4rem; margin-bottom: 10px; animation: bounce 1s infinite; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-        .hidden { display: none !important; }
-        .screen-animate { animation: fadeIn 0.4s forwards ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        .rules-box {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 18px;
-            padding: 20px;
-            text-align: left;
-            margin: 15px 0;
+            padding: 15px; margin-bottom: 12px;
             border: 1px solid rgba(255,255,255,0.1);
-            color: #cbd5e1;
-            font-size: 0.9rem;
-            line-height: 1.6;
         }
-        .rules-box b { color: var(--text); }
+        .team-block h3 { font-size: 1.05rem; margin-bottom: 10px; }
 
+        .team-member {
+            display: flex; align-items: center; gap: 8px;
+            padding: 5px 0;
+        }
+        .team-member img {
+            width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
+        }
+        .team-member span { font-weight: 600; font-size: 0.9rem; }
+
+        /* Settings */
         .settings-row {
             display: flex; align-items: center; justify-content: space-between;
             background: rgba(255,255,255,0.05); padding: 14px 18px;
             border-radius: 14px; margin-top: 10px;
         }
         .settings-row label { font-weight: 600; font-size: 0.95rem; }
-        .settings-row input { width: 80px; margin: 0; padding: 10px; font-size: 1rem; }
-
-        .team-score-display {
-            display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
+        .settings-row input {
+            width: 80px; margin: 0; padding: 10px; font-size: 1rem;
+            background: rgba(15, 23, 42, 0.8); border: 1px solid #334155;
+            color: white; border-radius: 14px; text-align: center;
+            font-family: 'Outfit', sans-serif;
         }
+
+        /* Team score cards */
+        .team-score-display { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .team-score-card {
-            flex: 1 1 calc(50% - 10px); min-width: 80px; padding: 12px 8px; border-radius: 18px; text-align: center;
+            flex: 1 1 calc(50% - 10px); min-width: 80px; padding: 12px 8px;
+            border-radius: 18px; text-align: center;
         }
         .team-score-card .team-label { font-size: 0.8rem; color: #94a3b8; margin-bottom: 4px; }
         .team-score-card .team-pts { font-size: 1.8rem; font-weight: 800; }
+
+        /* Team faces during turn */
+        .turn-faces {
+            display: flex; justify-content: center; gap: 8px; margin: 15px 0;
+        }
+        .turn-faces img {
+            width: 50px; height: 50px; border-radius: 50%; object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .team-indicator {
+            display: inline-block; padding: 6px 16px; border-radius: 20px;
+            font-weight: 700; font-size: 0.9rem; margin-bottom: 15px;
+        }
+
+        /* Word display */
+        .word-display {
+            background: rgba(15, 23, 42, 0.6); padding: 40px 25px; border-radius: 24px;
+            border: 2px solid var(--accent); font-size: 2.2rem; font-weight: 800;
+            margin: 25px 0; color: white; line-height: 1.3; min-height: 120px;
+            display: flex; align-items: center; justify-content: center; user-select: none;
+        }
+
+        /* Timer */
+        .timer-container { margin: 20px 0; }
+        .timer-bar-bg { width: 100%; height: 12px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; }
+        .timer-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--primary)); border-radius: 6px; transition: width 0.1s linear; width: 100%; }
+        .timer-bar.warning { background: linear-gradient(90deg, var(--danger), #fbbf24); }
+        .timer-text { font-size: 2rem; font-weight: 800; margin-bottom: 8px; color: var(--accent); }
+        .timer-text.warning { color: var(--danger); }
+
+        .word-counter { color: #64748b; font-size: 0.85rem; margin-top: 5px; }
+
+        .round-controls { display: flex; gap: 12px; margin-top: 15px; }
+        .round-controls .btn { flex: 1; margin-top: 0; }
+
+        /* Result faces */
+        .result-faces {
+            display: flex; justify-content: center; gap: 8px; margin: 15px 0;
+        }
+        .result-faces img {
+            width: 46px; height: 46px; border-radius: 50%; object-fit: cover;
+            transition: all 0.4s ease;
+        }
+        .result-faces img.happy { animation: happyBounce 0.5s ease; }
+        @keyframes happyBounce { 0% { transform: scale(1); } 40% { transform: scale(1.25); } 100% { transform: scale(1); } }
+
+        /* Winner */
+        .winner-crown { font-size: 4rem; margin-bottom: 10px; animation: bounce 1s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .winner-faces {
+            display: flex; justify-content: center; gap: 10px; margin: 15px 0;
+        }
+        .winner-faces img {
+            width: 70px; height: 70px; border-radius: 50%; object-fit: cover;
+            border: 3px solid var(--winner-gold);
+            box-shadow: 0 0 15px rgba(251,191,36,0.4);
+            animation: bounce 1.5s ease-in-out infinite;
+        }
+
+        .hidden { display: none !important; }
+        .screen-animate { animation: fadeIn 0.4s forwards ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Confetti */
+        .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; overflow: hidden; }
+        .confetti { position: absolute; width: 10px; height: 10px; top: -10px; animation: confettiFall linear forwards; }
+        @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
     </style>
 </head>
 <body>
 
 <div class="container" id="app">
 
-    <!-- STARTSKÄRM -->
-    <div id="scr-start" class="screen-animate">
+    <!-- TEAM CHOICE -->
+    <div id="scr-teamchoice" class="screen-animate">
         <div style="font-size: 3.5rem; margin-bottom: 15px;">💬</div>
         <h1>Med andra ord</h1>
         <p>Förklara ord för ditt lag utan att säga själva ordet!</p>
-        <div class="rules-box">
-            <b>Så spelar ni:</b><br>
-            1. Skriv in alla spelares namn och välj antal lag<br>
-            2. Spelare slumpas in i lagen<br>
-            3. En spelare förklarar ord medan laget gissar<br>
-            4. Du får INTE säga ordet eller delar av det<br>
-            5. Rätt gissat = +1 poäng, hoppa över = -1 poäng<br>
-            6. Laget med flest poäng vinner!
+        <p style="font-weight: 700; color: var(--text);">Hur många lag vill ni spela i?</p>
+        <div class="team-choice">
+            <button class="team-choice-btn" onclick="chooseTeams(2)">
+                <span class="tc-num">2</span>
+                <span class="tc-label">Två lag (4+4)</span>
+            </button>
+            <button class="team-choice-btn" onclick="chooseTeams(4)">
+                <span class="tc-num">4</span>
+                <span class="tc-label">Fyra lag (2+2+2+2)</span>
+            </button>
         </div>
-        <button class="btn" onclick="switchScreen('scr-start','scr-setup')">Sätt igång!</button>
-        <a href="index.html" style="display:inline-block; margin-top:15px; color:#818cf8; font-size:0.9rem; text-decoration:none;">&#8592; Tillbaka till meny</a>
-    </div>
-
-    <!-- INSTÄLLNINGAR -->
-    <div id="scr-setup" class="hidden screen-animate">
-        <h1>Inställningar</h1>
-        <p>Ställ in spelet</p>
         <div class="settings-row">
             <label>Sekunder per runda:</label>
             <input type="number" id="timerInput" value="60" min="20" max="120" step="10">
         </div>
-        <div class="settings-row">
+        <div class="settings-row" style="margin-top: 8px;">
             <label>Poäng för att vinna:</label>
             <input type="number" id="winScoreInput" value="25" min="5" max="100" step="5">
         </div>
-        <button class="btn" onclick="switchScreen('scr-setup','scr-players')">Fortsätt</button>
+        <a href="index.html" style="display:inline-block; margin-top:20px; color:#818cf8; font-size:0.9rem; text-decoration:none;">&#8592; Tillbaka till trekampen</a>
     </div>
 
-    <!-- SPELARE & ANTAL LAG -->
-    <div id="scr-players" class="hidden screen-animate">
-        <h1>Spelare</h1>
-        <p>Lägg till alla som ska spela</p>
-        <div id="playerInputs" class="player-list"></div>
-        <button class="btn btn-secondary" onclick="addPlayerInput()" style="margin-top: 10px;">+ Lägg till spelare</button>
-        <div style="margin-top: 20px;">
-            <label style="font-weight: 600; font-size: 1.05rem;">Antal lag:</label>
-            <div class="team-count-row">
-                <button onclick="changeTeamCount(-1)">−</button>
-                <div class="team-count-display" id="teamCountDisplay">2</div>
-                <button onclick="changeTeamCount(1)">+</button>
-            </div>
-        </div>
-        <div class="validation-error" id="playerError">Varje lag behöver minst 2 spelare.</div>
-        <button class="btn" onclick="assignTeams()">Slumpa lag!</button>
-    </div>
-
-    <!-- LAGVISNING / NAMNGE LAG -->
+    <!-- TEAM DISPLAY -->
     <div id="scr-teams" class="hidden screen-animate">
-        <h1>Lagen</h1>
-        <p>Så här slumpades lagen! Ge dem namn om ni vill.</p>
+        <h1>Lagen!</h1>
+        <p>Så här slumpades lagen!</p>
         <div id="teamAssignments"></div>
         <button class="btn" onclick="startGame()">Starta spelet!</button>
+        <button class="btn btn-secondary" onclick="reshuffleTeams()" style="margin-top: 8px;">Slumpa om</button>
     </div>
 
-    <!-- VEM FÖRKLARAR -->
+    <!-- TURN SCREEN -->
     <div id="scr-turn" class="hidden screen-animate">
         <div class="team-score-display" id="turnScores"></div>
-        <div id="turnTeamBadge" class="team-indicator" style="margin-bottom: 10px;">Lag</div>
+        <div id="turnTeamBadge" class="team-indicator">Lag</div>
         <h1 style="font-size: 1.8rem; margin-bottom: 5px;">Er tur att förklara!</h1>
+        <div class="turn-faces" id="turnFaces"></div>
         <p>Ge telefonen till den som ska förklara</p>
         <button class="btn" onclick="startTimer()">Starta rundan!</button>
     </div>
 
-    <!-- SPELRUNDA (timer + ord) -->
+    <!-- PLAY SCREEN -->
     <div id="scr-play" class="hidden screen-animate">
         <div class="timer-container">
             <div class="timer-text" id="timerText">60</div>
@@ -312,39 +261,51 @@
         <div class="word-display" id="wordDisplay">—</div>
         <div class="word-counter" id="wordCounter">Ord 1</div>
         <div class="round-controls">
-            <button class="btn btn-secondary" onclick="skipWord()" id="btnSkip" style="background: rgba(248,113,113,0.2); border-color: rgba(248,113,113,0.4); color: var(--danger);">Hoppa över (-1)</button>
+            <button class="btn btn-secondary" onclick="skipWord()" style="background: rgba(248,113,113,0.2); border-color: rgba(248,113,113,0.4); color: var(--danger);">Hoppa över (-1)</button>
             <button class="btn" onclick="correctWord()">Rätt! (+1)</button>
         </div>
     </div>
 
-    <!-- RUNDRESULTAT -->
+    <!-- RESULT SCREEN -->
     <div id="scr-result" class="hidden screen-animate">
         <h1 style="font-size: 1.8rem;">Rundan slut!</h1>
         <div class="team-score-display" id="resScores" style="margin-top: 20px;"></div>
+        <div class="result-faces" id="resultFaces"></div>
         <p id="resultSummary" style="font-size: 1.1rem; color: var(--text);"></p>
         <div id="resultWords" style="margin: 15px 0; text-align: left;"></div>
         <button class="btn" id="btnNextRound" onclick="nextTurn()">Nästa lag</button>
     </div>
 
-    <!-- VINNARE -->
+    <!-- WINNER SCREEN -->
     <div id="scr-final" class="hidden screen-animate">
         <div class="winner-crown">👑</div>
         <h1 id="winnerName" style="font-size: 2.5rem; color: var(--winner-gold); -webkit-text-fill-color: var(--winner-gold);">Vinnare!</h1>
+        <div class="winner-faces" id="winnerFaces"></div>
         <p id="winnerSub" style="font-size: 1.1rem;">vinner med 25 poäng!</p>
         <div class="team-score-display" id="finalScores" style="margin-top: 20px;"></div>
-        <button class="btn" onclick="location.reload()">Spela igen</button>
-        <a href="index.html" style="display:inline-block; margin-top:15px; color:#818cf8; font-size:0.9rem; text-decoration:none;">&#8592; Tillbaka till meny</a>
+        <button class="btn" onclick="saveAndReturn()">Tillbaka till trekampen</button>
     </div>
 </div>
 
+<div class="confetti-container" id="confettiContainer"></div>
+
 <script>
-    /* ============================================================
-       ORDDATABAS — ca 415 ord
-       Mix: substantiv, verb, adjektiv, abstrakta substantiv,
-            avancerade ord, kända personer & karaktärer
-       ============================================================ */
+    const PLAYERS = [
+        { name: 'Jonas', img: 'Jonas' },
+        { name: 'Jessica', img: 'Jessan' },
+        { name: 'Johanna', img: 'Johanna' },
+        { name: 'Alex', img: 'Alex' },
+        { name: 'Rasmus', img: 'Rasmus' },
+        { name: 'Boel', img: 'Boel' },
+        { name: 'Karla', img: 'Karla' },
+        { name: 'Elin', img: 'Elin' }
+    ];
+
+    function getImg(p, mood) {
+        return 'Chameleon Lillebror/' + mood + ' ' + p.img + '.webp';
+    }
+
     const allWords = [
-        // — VARDAGLIGA SUBSTANTIV (ca 120 st) —
         "Tandborste","Flygplan","Jordgubbe","Solglasögon","Regnbåge",
         "Fotboll","Dammsugare","Skorsten","Hängmatta","Fallskärm",
         "Segelbåt","Karusell","Glasspinne","Brevlåda","Trumma",
@@ -367,86 +328,56 @@
         "Fyrtorn","Igloo","Slott","Vindmölla","Fontän",
         "Rulltrappa","Bilbarnstol","Drönare","Såpbubbla","Torktumlare",
         "Vattenfall","Laviner","Glödlampa","Diamant","Skattkista",
-        "Skäggig","Hammock","Nyckelring","Kuvert","Pappersflygplan",
         "Mustasch","Peruk","Megafon","Rullstol","Gosedjur",
-
-        // — VERB (ca 60 st) —
         "Skratta","Simma","Jonglera","Vissla","Snickra",
-        "Gäspa","Nosa","Klättra","Brottas","Dansa",
-        "Drömma","Snubbla","Krypa","Grilla","Hosta",
-        "Jogga","Steka","Hänga","Blunda","Smyga",
-        "Snarka","Paddla","Segla","Dyka","Surfa",
-        "Hoppa","Nicka","Blinka","Sjunga","Sova",
-        "Måla","Gråta","Slåss","Vindsurfa","Baka",
-        "Meditera","Dirigera","Limma","Tävla","Flyga",
-        "Ramla","Klia","Nyna","Sparka","Rapa",
-        "Snurra","Trolla","Buga","Flirta","Jogga",
-        "Stretcha","Pussla","Skala","Fiska","Jaga",
-        "Springa","Hoppsa","Virka","Tälta","Skida",
-
-        // — ADJEKTIV (ca 45 st) —
+        "Gäspa","Klättra","Brottas","Dansa","Drömma",
+        "Snubbla","Krypa","Grilla","Hosta","Jogga",
+        "Steka","Hänga","Blunda","Smyga","Snarka",
+        "Paddla","Segla","Dyka","Surfa","Hoppa",
+        "Nicka","Blinka","Sjunga","Sova","Måla",
+        "Gråta","Baka","Meditera","Dirigera","Tävla",
+        "Flyga","Ramla","Nyna","Sparka","Snurra",
+        "Trolla","Buga","Flirta","Stretcha","Pussla",
+        "Skala","Fiska","Jaga","Springa","Skida",
         "Modig","Avundsjuk","Generad","Envis","Mystisk",
-        "Klurig","Slö","Nyfiken","Blyg","Girig",
-        "Listig","Butter","Häftig","Klumpig","Lat",
-        "Rädd","Stolt","Förvirrad","Desperat","Löjlig",
-        "Ödmjuk","Artig","Elak","Vresig","Fåfäng",
-        "Paranoid","Romantisk","Nostalgisk","Spontan","Lycklig",
+        "Klurig","Nyfiken","Blyg","Girig","Listig",
+        "Häftig","Klumpig","Lat","Rädd","Stolt",
+        "Förvirrad","Löjlig","Ödmjuk","Artig","Elak",
+        "Vresig","Romantisk","Nostalgisk","Spontan","Lycklig",
         "Besviken","Förälskad","Hungrig","Törstig","Trött",
-        "Kittlig","Frusen","Svettig","Yr","Mätt",
-        "Generös","Makaber","Dramatisk","Sarkastisk","Osynlig",
-
-        // — ABSTRAKTA SUBSTANTIV (ca 45 st) —
+        "Frusen","Svettig","Yr","Generös","Dramatisk",
         "Nostalgi","Frihet","Fantasi","Rättvisa","Vänskap",
         "Karma","Kaos","Instinkt","Tradition","Kreativitet",
-        "Skam","Stolthet","Empati","Mod","Galenskap",
-        "Tur","Öde","Samvete","Kärlek","Avund",
-        "Makt","Hopp","Ångest","Glädje","Sorg",
-        "Ilska","Respekt","Lojalitet","Förtroende","Hemlängtan",
-        "Äventyr","Fördomar","Ensamhet","Panik","Längtan",
-        "Inspiration","Harmoni","Karisma","Uppfinning","Disciplin",
-        "Prestige","Ironi","Dilemma","Utmaning","Tålamod",
-
-        // — SVÅRARE / MER AVANCERADE ORD (ca 60 st) —
-        "Byråkrati","Demokrati","Paradox","Filosofi","Propaganda",
-        "Diplomati","Kompromiss","Korruption","Revolution","Civilisation",
-        "Perspektiv","Prejudikat","Filantropi","Melankoli","Eufori",
-        "Skepticism","Sarkasm","Metafor","Symbolik","Dubbeltydig",
-        "Trovärdighet","Självförtroende","Konsekvens","Integritet","Självbedrägeri",
-        "Procrastinera","Förneka","Normalisera","Manipulera","Imponera",
-        "Antyda","Provocera","Kompensera","Bländas","Övertyga",
-        "Överskatta","Underskatta","Relatera","Resonera","Ifrågasätta",
-        "Hyckleri","Dubbelmoral","Stereotyp","Fördom","Syndabock",
-        "Identitetskris","Grupptryck","Pliktskyldig","Mångsidighet","Tunnelseende",
-        "Storhetsvansinne","Bekräftelsebehov","Önsketänkande","Skadeglädje","Rampfeber",
-
-        // — KÄNDA PERSONER & KARAKTÄRER (ca 60 st) —
+        "Stolthet","Empati","Mod","Tur","Öde",
+        "Samvete","Kärlek","Avund","Makt","Hopp",
+        "Glädje","Sorg","Ilska","Respekt","Lojalitet",
+        "Äventyr","Ensamhet","Panik","Längtan","Inspiration",
+        "Harmoni","Karisma","Disciplin","Ironi","Tålamod",
+        "Demokrati","Paradox","Filosofi","Kompromiss","Revolution",
+        "Perspektiv","Melankoli","Eufori","Metafor","Symbolik",
+        "Trovärdighet","Självförtroende","Integritet","Manipulera","Imponera",
+        "Provocera","Övertyga","Överskatta","Underskatta","Ifrågasätta",
+        "Stereotyp","Grupptryck","Skadeglädje","Rampfeber",
         "Pippi Långstrump","Einstein","Kleopatra","Bamse","Zlatan",
         "Harry Potter","Batman","Tarzan","Musse Pigg","Rödluvan",
         "Elvis","Madonna","Mona Lisa","Astrid Lindgren","Robin Hood",
         "Donald Duck","Sherlock Holmes","Mozart","Napoleon","ABBA",
         "Karlsson på taket","Ronja Rövardotter","Emil i Lönneberga","Nalle Puh","Pinocchio",
         "Dracula","Snövit","Askungen","Zorro","Greta Thunberg",
-        "Beyoncé","Elon Musk","Frida Kahlo","Leonardo da Vinci","Mahatma Gandhi",
-        "Martin Luther King","Marilyn Monroe","Charlie Chaplin","Michael Jackson","Oprah Winfrey",
         "Shrek","Elsa från Frost","Yoda","James Bond","Indiana Jones",
-        "Lara Croft","Mario","SpongeBob","Simba","Buzz Lightyear",
+        "Mario","SpongeBob","Simba","Buzz Lightyear",
         "Hermione Granger","Gandalf","Darth Vader","Spider-Man","Wonder Woman",
-        "Kalle Anka","Lotta på Bråkmakargatan","Alfons Åberg","Pettson och Findus","Mumin"
+        "Kalle Anka","Alfons Åberg","Pettson och Findus","Mumin"
     ];
 
-    /* ============================================================
-       SPELLOGIK
-       ============================================================ */
     const teamColors = [
         { bg: 'rgba(52, 211, 153, 0.15)', border: 'rgba(52, 211, 153, 0.3)', color: '#34d399', badgeBg: 'rgba(52, 211, 153, 0.2)' },
         { bg: 'rgba(129, 140, 248, 0.15)', border: 'rgba(129, 140, 248, 0.3)', color: '#818cf8', badgeBg: 'rgba(129, 140, 248, 0.2)' },
         { bg: 'rgba(251, 191, 36, 0.15)', border: 'rgba(251, 191, 36, 0.3)', color: '#fbbf24', badgeBg: 'rgba(251, 191, 36, 0.2)' },
         { bg: 'rgba(248, 113, 113, 0.15)', border: 'rgba(248, 113, 113, 0.3)', color: '#f87171', badgeBg: 'rgba(248, 113, 113, 0.2)' },
-        { bg: 'rgba(217, 70, 239, 0.15)', border: 'rgba(217, 70, 239, 0.3)', color: '#d946ef', badgeBg: 'rgba(217, 70, 239, 0.2)' },
-        { bg: 'rgba(56, 189, 248, 0.15)', border: 'rgba(56, 189, 248, 0.3)', color: '#38bdf8', badgeBg: 'rgba(56, 189, 248, 0.2)' },
     ];
 
-    let teams = [];         // [{ name, score, members: [] }, ...]
+    let teams = [];
     let currentTeamIdx = 0;
     let teamCount = 2;
 
@@ -461,121 +392,69 @@
     let roundSkipped = 0;
     let roundWords = [];
 
-    /* --- Spelarinmatning --- */
-    let playerCount = 0;
-
-    function initPlayerInputs() {
-        const container = document.getElementById('playerInputs');
-        container.innerHTML = '';
-        playerCount = 0;
-        for (let i = 0; i < 4; i++) addPlayerInput();
+    function chooseTeams(count) {
+        teamCount = count;
+        buildTeams();
+        showTeamAssignments();
+        switchScreen('scr-teamchoice', 'scr-teams');
     }
 
-    function addPlayerInput() {
-        playerCount++;
-        const container = document.getElementById('playerInputs');
-        const row = document.createElement('div');
-        row.className = 'player-input-row';
-        row.id = 'player-row-' + playerCount;
-        row.innerHTML = `<input type="text" placeholder="Spelare ${playerCount}" data-player="true">` +
-            `<button class="remove-btn" onclick="removePlayerInput('player-row-${playerCount}')">&times;</button>`;
-        container.appendChild(row);
-    }
-
-    function removePlayerInput(rowId) {
-        const row = document.getElementById(rowId);
-        if (row) row.remove();
-    }
-
-    function changeTeamCount(delta) {
-        teamCount = Math.max(2, Math.min(6, teamCount + delta));
-        document.getElementById('teamCountDisplay').textContent = teamCount;
-    }
-
-    function getPlayerNames() {
-        const inputs = document.querySelectorAll('#playerInputs input[data-player]');
-        const names = [];
-        inputs.forEach(inp => {
-            const v = inp.value.trim();
-            if (v) names.push(v);
-        });
-        return names;
-    }
-
-    function assignTeams() {
-        const names = getPlayerNames();
-        const errEl = document.getElementById('playerError');
-
-        if (names.length < teamCount * 2) {
-            errEl.textContent = `Det behövs minst ${teamCount * 2} spelare för ${teamCount} lag (minst 2 per lag).`;
-            errEl.style.display = 'block';
-            return;
-        }
-        errEl.style.display = 'none';
-
-        // Shuffle players
-        const shuffled = [...names].sort(() => Math.random() - 0.5);
-
-        // Create teams
+    function buildTeams() {
+        const shuffled = [...PLAYERS].sort(() => Math.random() - 0.5);
         teams = [];
         for (let i = 0; i < teamCount; i++) {
-            teams.push({ name: `Lag ${i + 1}`, score: 0, members: [] });
+            teams.push({ name: 'Lag ' + (i + 1), score: 0, members: [] });
         }
-
-        // Distribute round-robin
-        shuffled.forEach((name, idx) => {
-            teams[idx % teamCount].members.push(name);
+        shuffled.forEach((p, idx) => {
+            teams[idx % teamCount].members.push(p);
         });
+    }
 
-        // Show team assignments
+    function reshuffleTeams() {
+        buildTeams();
         showTeamAssignments();
-        switchScreen('scr-players', 'scr-teams');
     }
 
     function showTeamAssignments() {
         const container = document.getElementById('teamAssignments');
         container.innerHTML = teams.map((team, i) => {
             const c = teamColors[i % teamColors.length];
-            return `<div class="team-assignment" style="border-color: ${c.border};">
-                <h3 style="color: ${c.color};">
-                    <input type="text" value="${team.name}" onchange="teams[${i}].name = this.value"
-                        style="background: transparent; border: none; color: ${c.color}; font-weight: 700;
-                        font-size: 1.1rem; font-family: 'Outfit', sans-serif; padding: 0; width: 100%; text-align: center;">
-                </h3>
-                ${team.members.map(m => `<div class="member">${m}</div>`).join('')}
-            </div>`;
+            return '<div class="team-block" style="border-color: ' + c.border + ';">' +
+                '<h3 style="color: ' + c.color + ';">' + team.name + '</h3>' +
+                team.members.map(m =>
+                    '<div class="team-member">' +
+                    '<img src="' + getImg(m, 'Rund') + '" alt="' + m.name + '">' +
+                    '<span>' + m.name + '</span></div>'
+                ).join('') +
+                '</div>';
         }).join('');
     }
 
-    /* --- Spelstart --- */
     function startGame() {
         timerDuration = parseInt(document.getElementById('timerInput').value) || 60;
         winScore = parseInt(document.getElementById('winScoreInput').value) || 25;
 
-        // Read any updated team names from inputs
-        const nameInputs = document.querySelectorAll('#teamAssignments input[type="text"]');
-        nameInputs.forEach((inp, i) => {
-            if (teams[i]) teams[i].name = inp.value || `Lag ${i + 1}`;
-        });
-
-        // Reset scores
         teams.forEach(t => t.score = 0);
-
-        // Shuffle words
         shuffledWords = [...allWords].sort(() => Math.random() - 0.5);
         wordIndex = 0;
-
         currentTeamIdx = 0;
         showTurnScreen();
     }
 
     function showTurnScreen() {
         updateAllScores();
-        const badge = document.getElementById('turnTeamBadge');
+        const team = teams[currentTeamIdx];
         const c = teamColors[currentTeamIdx % teamColors.length];
-        badge.textContent = teams[currentTeamIdx].name;
+        const badge = document.getElementById('turnTeamBadge');
+        badge.textContent = team.name;
         badge.style.background = c.badgeBg;
         badge.style.color = c.color;
+
+        // Show team member faces
+        document.getElementById('turnFaces').innerHTML = team.members.map(m =>
+            '<img src="' + getImg(m, 'Rund') + '" alt="' + m.name + '" title="' + m.name + '">'
+        ).join('');
+
         switchScreen(activeScreen(), 'scr-turn');
     }
 
@@ -605,7 +484,6 @@
         el.textContent = timeLeft;
         const pct = (timeLeft / timerDuration) * 100;
         bar.style.width = pct + '%';
-
         if (timeLeft <= 10) {
             el.className = 'timer-text warning';
             bar.className = 'timer-bar warning';
@@ -621,7 +499,7 @@
             wordIndex = 0;
         }
         document.getElementById('wordDisplay').textContent = shuffledWords[wordIndex];
-        document.getElementById('wordCounter').textContent = `Ord ${roundCorrect + roundSkipped + 1}`;
+        document.getElementById('wordCounter').textContent = 'Ord ' + (roundCorrect + roundSkipped + 1);
     }
 
     function correctWord() {
@@ -646,27 +524,34 @@
 
         const team = teams[currentTeamIdx];
         const net = roundCorrect - roundSkipped;
-        document.getElementById('resultSummary').innerHTML =
-            `<b>${team.name}</b> fick <b style="color:var(--accent)">${roundCorrect} rätt</b>` +
-            (roundSkipped > 0 ? ` och hoppade över <b style="color:var(--danger)">${roundSkipped}</b>` : '') +
-            ` (${net >= 0 ? '+' : ''}${net} netto)`;
 
-        const wordsDiv = document.getElementById('resultWords');
-        wordsDiv.innerHTML = roundWords.map(w =>
-            `<div style="display:flex; justify-content:space-between; padding:8px 12px; border-radius:10px; margin-bottom:4px; background: ${w.result === 'correct' ? 'rgba(52,211,153,0.1)' : 'rgba(248,113,113,0.1)'}">
-                <span>${w.word}</span>
-                <span style="color:${w.result === 'correct' ? 'var(--accent)' : 'var(--danger)'}; font-weight:700;">${w.result === 'correct' ? '+1' : '-1'}</span>
-            </div>`
+        // Show team faces reacting
+        const mood = net > 0 ? 'Glad' : (net < 0 ? 'Ledsen' : 'Rund');
+        document.getElementById('resultFaces').innerHTML = team.members.map(m =>
+            '<img class="' + (net > 0 ? 'happy' : '') + '" src="' + getImg(m, mood) + '" alt="' + m.name + '">'
         ).join('');
 
-        // Check winner
+        document.getElementById('resultSummary').innerHTML =
+            '<b>' + team.name + '</b> fick <b style="color:var(--accent)">' + roundCorrect + ' rätt</b>' +
+            (roundSkipped > 0 ? ' och hoppade över <b style="color:var(--danger)">' + roundSkipped + '</b>' : '') +
+            ' (' + (net >= 0 ? '+' : '') + net + ' netto)';
+
+        document.getElementById('resultWords').innerHTML = roundWords.map(w =>
+            '<div style="display:flex; justify-content:space-between; padding:8px 12px; border-radius:10px; margin-bottom:4px; background: ' +
+            (w.result === 'correct' ? 'rgba(52,211,153,0.1)' : 'rgba(248,113,113,0.1)') + '">' +
+            '<span>' + w.word + '</span>' +
+            '<span style="color:' + (w.result === 'correct' ? 'var(--accent)' : 'var(--danger)') +
+            '; font-weight:700;">' + (w.result === 'correct' ? '+1' : '-1') + '</span></div>'
+        ).join('');
+
         const hasWinner = teams.some(t => t.score >= winScore);
+        const btn = document.getElementById('btnNextRound');
         if (hasWinner) {
-            document.getElementById('btnNextRound').textContent = 'Se vinnaren!';
-            document.getElementById('btnNextRound').onclick = showWinner;
+            btn.textContent = 'Se vinnaren!';
+            btn.onclick = showWinner;
         } else {
-            document.getElementById('btnNextRound').textContent = 'Nästa lag';
-            document.getElementById('btnNextRound').onclick = nextTurn;
+            btn.textContent = 'Nästa lag';
+            btn.onclick = nextTurn;
         }
 
         switchScreen('scr-play', 'scr-result');
@@ -680,19 +565,44 @@
     function showWinner() {
         const winner = teams.reduce((best, t) => t.score > best.score ? t : best, teams[0]);
         document.getElementById('winnerName').textContent = winner.name;
-        document.getElementById('winnerSub').textContent = `vinner med ${winner.score} poäng!`;
+        document.getElementById('winnerSub').textContent = 'vinner med ' + winner.score + ' poäng!';
+
+        // Show winner team faces (Glad)
+        document.getElementById('winnerFaces').innerHTML = winner.members.map(m =>
+            '<img src="' + getImg(m, 'Glad') + '" alt="' + m.name + '" title="' + m.name + '">'
+        ).join('');
+
         updateAllScores();
         switchScreen('scr-result', 'scr-final');
+        launchConfetti();
+    }
+
+    function saveAndReturn() {
+        try {
+            // Distribute team scores to individual players
+            const scores = JSON.parse(localStorage.getItem('trekamp_scores') || '{}');
+            teams.forEach(team => {
+                team.members.forEach(m => {
+                    scores[m.name] = (scores[m.name] || 0) + team.score;
+                });
+            });
+            localStorage.setItem('trekamp_scores', JSON.stringify(scores));
+
+            const games = JSON.parse(localStorage.getItem('trekamp_games') || '[]');
+            if (!games.includes('med-andra-ord')) games.push('med-andra-ord');
+            localStorage.setItem('trekamp_games', JSON.stringify(games));
+        } catch(e) {}
+
+        window.location.href = 'index.html';
     }
 
     function renderScoreCards(containerId) {
         const el = document.getElementById(containerId);
         el.innerHTML = teams.map((team, i) => {
             const c = teamColors[i % teamColors.length];
-            return `<div class="team-score-card" style="background: ${c.bg}; border: 1px solid ${c.border};">
-                <div class="team-label">${team.name}</div>
-                <div class="team-pts" style="color: ${c.color};">${team.score}</div>
-            </div>`;
+            return '<div class="team-score-card" style="background: ' + c.bg + '; border: 1px solid ' + c.border + ';">' +
+                '<div class="team-label">' + team.name + '</div>' +
+                '<div class="team-pts" style="color: ' + c.color + ';">' + team.score + '</div></div>';
         }).join('');
     }
 
@@ -702,7 +612,6 @@
         renderScoreCards('finalScores');
     }
 
-    /* Skärmhantering */
     function switchScreen(from, to) {
         document.getElementById(from).classList.add('hidden');
         const next = document.getElementById(to);
@@ -713,13 +622,28 @@
     }
 
     function activeScreen() {
-        const ids = ['scr-start','scr-setup','scr-players','scr-teams','scr-turn','scr-play','scr-result','scr-final'];
+        const ids = ['scr-teamchoice','scr-teams','scr-turn','scr-play','scr-result','scr-final'];
         for (let id of ids) if (!document.getElementById(id).classList.contains('hidden')) return id;
-        return 'scr-start';
+        return 'scr-teamchoice';
     }
 
-    // Initialize player inputs when page loads
-    initPlayerInputs();
+    function launchConfetti() {
+        const container = document.getElementById('confettiContainer');
+        const colors = ['#818cf8', '#34d399', '#fbbf24', '#d946ef', '#f472b6', '#38bdf8'];
+        for (let i = 0; i < 60; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti';
+            el.style.left = Math.random() * 100 + '%';
+            el.style.background = colors[Math.floor(Math.random() * colors.length)];
+            el.style.width = (6 + Math.random() * 8) + 'px';
+            el.style.height = (6 + Math.random() * 8) + 'px';
+            el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+            el.style.animationDuration = (2 + Math.random() * 3) + 's';
+            el.style.animationDelay = (Math.random() * 2) + 's';
+            container.appendChild(el);
+        }
+        setTimeout(() => { container.innerHTML = ''; }, 6000);
+    }
 </script>
 </body>
 </html>

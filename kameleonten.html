@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kameleonten – 100 kategorier</title>
+    <title>Kameleonten – Trekamp</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <meta name="mobile-web-app-capable" content="yes">
@@ -54,18 +54,10 @@
             z-index: 10;
         }
 
-        .logo { width: 80px; margin: 0 auto 15px auto; filter: drop-shadow(0 0 8px rgba(129, 140, 248, 0.6)); }
-
         h1 {
             font-weight: 800; font-size: 2.2rem; margin: 0 0 10px;
             background: linear-gradient(to right, var(--primary), var(--accent));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        input {
-            background: rgba(15, 23, 42, 0.6); border: 1px solid #334155;
-            color: white; padding: 14px 16px; border-radius: 12px;
-            font-size: 1.1rem; margin: 5px 0; width: 100%; text-align: center;
         }
 
         .btn {
@@ -73,8 +65,8 @@
             color: white; border: none; padding: 16px; border-radius: 16px;
             font-size: 1.1rem; font-weight: 700; cursor: pointer; width: 100%;
             margin-top: 15px; box-shadow: 0 10px 20px -5px rgba(129, 140, 248, 0.4);
+            font-family: 'Outfit', sans-serif;
         }
-
         .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px -5px rgba(129, 140, 248, 0.5); }
 
         .btn-small {
@@ -104,63 +96,150 @@
         }
         video { width: 100%; display: block; }
 
-        .winner-crown { font-size: 4rem; margin-bottom: 10px; display: block; animation: bounce 2s infinite; }
-        .winner-name { font-size: 3rem; font-weight: 800; color: var(--winner-gold); text-shadow: 0 0 20px rgba(251, 191, 36, 0.5); }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        /* Player face on pass screen */
+        .pass-face {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            margin: 15px auto;
+            display: block;
+            animation: faceAppear 0.5s ease-out;
+        }
+
+        @keyframes faceAppear {
+            from { opacity: 0; transform: scale(0.7); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .pass-face.chameleon {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(217, 70, 239, 0.5);
+            animation: chameleonPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes chameleonPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(217, 70, 239, 0.3); }
+            50% { box-shadow: 0 0 35px rgba(217, 70, 239, 0.7); }
+        }
 
         .secret-card { background: rgba(15, 23, 42, 0.5); padding: 30px; border-radius: 24px; border: 2px solid var(--primary); }
+        .secret-card.chameleon-card { border-color: var(--accent); background: rgba(217, 70, 239, 0.1); }
+
         .grid-board { display: grid; grid-template-columns: 40px repeat(4, 1fr); gap: 8px; margin: 25px 0; }
         .cell { background: rgba(255,255,255,0.03); padding: 12px 4px; border-radius: 12px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1); }
         .cell-header { color: var(--primary); font-weight: 800; border: none; background: transparent; }
-        .score-item { display: flex; justify-content: space-between; background: rgba(255,255,255,0.05); margin: 10px 0; padding: 15px 20px; border-radius: 16px; align-items: center; }
-        .point-controls button { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: var(--primary); width: 40px; height: 40px; border-radius: 10px; font-weight: bold; margin-left: 5px; cursor: pointer; }
+
+        /* Score list with faces */
+        .score-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.05);
+            margin: 8px 0;
+            padding: 10px 14px;
+            border-radius: 16px;
+            gap: 10px;
+        }
+
+        .score-item .s-face {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            transition: all 0.4s ease;
+        }
+
+        .score-item .s-face.happy {
+            animation: happyBounce 0.5s ease;
+        }
+
+        @keyframes happyBounce {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .score-item .s-name { flex: 1; text-align: left; font-weight: 600; font-size: 0.95rem; }
+        .score-item .s-pts { font-weight: 800; color: var(--primary); min-width: 40px; text-align: right; }
+
+        .point-controls button {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-left: 5px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+        }
         .point-controls button.accent { color: var(--accent); border-color: var(--accent); }
         .point-controls button.selected { background: var(--primary); color: white; }
         .point-controls button.selected-accent { background: var(--accent); color: white; border-color: var(--accent); }
+
+        /* Winner screen */
+        .winner-crown { font-size: 4rem; margin-bottom: 10px; display: block; animation: bounce 2s infinite; }
+        .winner-name { font-size: 2.5rem; font-weight: 800; color: var(--winner-gold); text-shadow: 0 0 20px rgba(251, 191, 36, 0.5); }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .winner-face {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--winner-gold);
+            box-shadow: 0 0 25px rgba(251,191,36,0.5);
+            margin: 10px auto;
+            display: block;
+            animation: bounce 2s infinite;
+        }
+
+        .final-ranking { margin-top: 20px; text-align: left; }
+        .final-row {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 12px; margin-bottom: 6px;
+            background: rgba(255,255,255,0.04); border-radius: 12px;
+        }
+        .final-row .f-face { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+        .final-row .f-name { flex: 1; font-weight: 600; }
+        .final-row .f-score { font-weight: 800; color: var(--primary); }
 
         .hidden { display: none !important; }
         .animate-in { animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        .leaderboard { margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); text-align: left; }
-        .leaderboard h3 { color: var(--accent); margin-bottom: 10px; }
-        .leaderboard p { margin: 4px 0; font-size: 0.95rem; color: #cbd5e1; }
+        /* Confetti */
+        .confetti-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1000; overflow: hidden;
+        }
+        .confetti {
+            position: absolute; width: 10px; height: 10px; top: -10px;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container animate-in" id="app">
-    <div id="scr-setup">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHBhdGggZmlsbD0iIzgxOGNmOCIgZD0iTTU4IDE0Yy0yLjMyIDAtNC4zNC45Ny01Ljc5IDIuNTFDNDkuMzkgMTQuNjIgNDUuODggMTMgNDIgMTNjLTYuNjMgMC0xMiA1LjM3LTEyIDEyIDAgNC4xIDEuOTUgNy42NiA0Ljk0IDkuOTRDMyAgNTEuNDEgMyA1NSAzIDU1czYuNTItNS44MSAyNi45Mi01Ljk0YzUuOTggMy4wMiAxMi43NCA0Ljk0IDE5Ljk2IDQuOTkgMC0uMDItLjI2LTcuNjUtOS43Ny0xMC41IEM0Ni4xIDQwLjA0IDUxIDM0Ljc2IDUxIDI5YzAtLjIyLS4wMS0uNDMtLjAyLS42NEM1NC4zNCAyOS40OSA1OCAyNi42NiA1OCAyM3MtMy42Ni02LjQ5LTcuMDItNS4zNmMxLjQ1LTEuNTQgMi4zNS0zLjYzIDIuMzUtNS45NEM1My4zMyAxNi4zOCA1NS40OSAxNCA1OCAxNHoiLz48Y2lyY2xlIGN4PSI0MiIgY3k9IjIzIiByPSIzIiBmaWxsPSIjZmZmIi8+PC9zdmc+" alt="Logotyp" class="logo">
-        <h1>Kameleonten</h1>
-        <p>Neonutgåvan. 100 slumpmässiga kategorier.</p>
-        <div style="text-align: left; margin-bottom: 20px;">
-            <label>Antal spelare:</label>
-            <input type="number" id="pCount" value="4" min="3" max="10">
-        </div>
-        <button class="btn" onclick="setupNames()">Fortsätt</button>
-        <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 15px;">
-            Tips: Tryck <b>Ctrl + Plus</b> för att zooma in.
-        </p>
-        <a href="index.html" style="display:inline-block; margin-top:10px; color:#818cf8; font-size:0.9rem; text-decoration:none;">&#8592; Tillbaka till meny</a>
-    </div>
 
-    <div id="scr-names" class="hidden">
-        <h1>Spelarnamn</h1>
-        <div id="name-container"></div>
-        <button class="btn" onclick="startGame()">Starta spelet</button>
-    </div>
-
-    <div id="scr-pass" class="hidden">
+    <div id="scr-pass">
         <p style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary);">Skicka till</p>
-        <h1 id="currentPlayerName" style="font-size: 3rem; margin: 10px 0;">Spelare</h1>
+        <h1 id="currentPlayerName" style="font-size: 2.8rem; margin: 5px 0;">Spelare</h1>
+        <img id="passFace" class="pass-face" src="" alt="">
         <div id="secret-area" class="hidden">
-            <div class="secret-card">
+            <div class="secret-card" id="secretCard">
                 <h3 id="roleTitle" style="margin: 0; color: var(--accent); text-transform: uppercase;">Din roll</h3>
                 <div id="roleContent" style="font-size: 1.8rem; font-weight: 800; margin-top: 15px;"></div>
             </div>
         </div>
-        <button class="btn" id="revealBtn" onclick="toggleReveal()" style="margin-top: 30px;">Visa min roll</button>
+        <button class="btn" id="revealBtn" onclick="toggleReveal()" style="margin-top: 25px;">Visa min roll</button>
     </div>
 
     <div id="scr-board" class="hidden">
@@ -171,7 +250,7 @@
     </div>
 
     <div id="scr-scores" class="hidden">
-        <h1>Aktuell ställning</h1>
+        <h1>Poäng</h1>
         <div id="score-list"></div>
         <div class="button-group">
             <button class="btn btn-small" onclick="triggerFinal()">Avsluta spelet</button>
@@ -191,15 +270,31 @@
 
     <div id="scr-final" class="hidden">
         <span class="winner-crown">👑</span>
+        <img id="winnerFace" class="winner-face" src="" alt="Vinnare">
         <h1 class="winner-name" id="grandWinner">Vinnare</h1>
-        <div id="final-ranking" style="margin-top: 30px; text-align: left;"></div>
-        <div id="leaderboard-section" class="leaderboard hidden"></div>
-        <button class="btn" onclick="location.reload()">Nytt spel</button>
-        <a href="index.html" style="display:inline-block; margin-top:15px; color:#818cf8; font-size:0.9rem; text-decoration:none;">&#8592; Tillbaka till meny</a>
+        <div class="final-ranking" id="final-ranking"></div>
+        <button class="btn" onclick="saveAndReturn()">Tillbaka till trekampen</button>
     </div>
 </div>
 
+<div class="confetti-container" id="confettiContainer"></div>
+
 <script>
+    const PLAYERS = [
+        { name: 'Jonas', img: 'Jonas' },
+        { name: 'Jessica', img: 'Jessan' },
+        { name: 'Johanna', img: 'Johanna' },
+        { name: 'Alex', img: 'Alex' },
+        { name: 'Rasmus', img: 'Rasmus' },
+        { name: 'Boel', img: 'Boel' },
+        { name: 'Karla', img: 'Karla' },
+        { name: 'Elin', img: 'Elin' }
+    ];
+
+    function getImg(p, mood) {
+        return 'Chameleon Lillebror/' + mood + ' ' + p.img + '.webp';
+    }
+
     // 100 UNIKA KATEGORIER
     const allCategories = [
         { cat: "Djur", words: ["Lion", "Tiger", "Elephant", "Giraffe", "Penguin", "Kangaroo", "Wolf", "Zebra", "Gorilla", "Panda", "Hippo", "Crocodile", "Camel", "Eagle", "Shark", "Dolphin"] },
@@ -303,16 +398,15 @@
         { cat: "Upptäckare", words: ["Columbus", "Vasco", "Magellan", "Cook", "Space", "New", "Map", "Ship", "Gold", "Land", "Journey", "History", "Unknown", "Discovery", "Route", "Flag"] }
     ];
 
-    let players = [];
+    let players = PLAYERS.map(p => ({ ...p, score: 0 }));
     let curIdx = 0;
     let roundCount = 0;
     let roles = [];
     let isRevealed = false;
     let randomizedOrder = [];
-    let activeScreen = 'scr-setup';
+    let activeScreen = 'scr-pass';
     let roundScores = [];
 
-    // BLANDA ARRAY
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -321,27 +415,9 @@
         return array;
     }
 
-    function setupNames() {
-        const count = parseInt(document.getElementById('pCount').value, 10);
-        if (count < 3 || count > 10 || isNaN(count)) return;
-        const container = document.getElementById('name-container');
-        container.innerHTML = '';
-        for (let i = 0; i < count; i++) {
-            container.innerHTML += `<input type="text" id="pName${i}" placeholder="Spelare ${i + 1}">`;
-        }
-        switchScreen('scr-names');
-        randomizedOrder = shuffle([...allCategories]);
-    }
-
-    function startGame() {
-        const count = parseInt(document.getElementById('pCount').value, 10);
-        for (let i = 0; i < count; i++) {
-            const name = document.getElementById(`pName${i}`).value.trim() || `Spelare ${i + 1}`;
-            players.push({ name: name, score: 0 });
-        }
-        beginRound();
-        switchScreen('scr-pass');
-    }
+    // Start game immediately
+    randomizedOrder = shuffle([...allCategories]);
+    beginRound();
 
     function beginRound() {
         roundCount++;
@@ -349,43 +425,63 @@
         const coords = ['A', 'B', 'C', 'D'][Math.floor(Math.random() * 4)] + (Math.floor(Math.random() * 4) + 1);
         const cham = Math.floor(Math.random() * players.length);
 
-        roles = players.map((_, i) => i === cham ? "KAMELEONTEN" : `KOORDINAT: ${coords}`);
+        roles = players.map((_, i) => i === cham ? "KAMELEONTEN" : 'KOORDINAT: ' + coords);
         curIdx = 0;
         updatePassScreen();
     }
 
     function updatePassScreen() {
-        document.getElementById('currentPlayerName').innerText = players[curIdx].name;
+        const p = players[curIdx];
+        document.getElementById('currentPlayerName').innerText = p.name;
+        document.getElementById('passFace').src = getImg(p, 'Rund');
+        document.getElementById('passFace').className = 'pass-face';
         document.getElementById('secret-area').classList.add('hidden');
-        document.getElementById('revealBtn').innerText = "Visa min roll";
+        document.getElementById('secretCard').className = 'secret-card';
+        document.getElementById('revealBtn').innerText = 'Visa min roll';
         isRevealed = false;
     }
 
     function toggleReveal() {
         if (!isRevealed) {
-            document.getElementById('roleContent').innerText = roles[curIdx];
+            const isCham = roles[curIdx] === "KAMELEONTEN";
+            const p = players[curIdx];
+
+            if (isCham) {
+                document.getElementById('passFace').src = getImg(p, 'Ledsen');
+                document.getElementById('passFace').className = 'pass-face chameleon';
+                document.getElementById('secretCard').className = 'secret-card chameleon-card';
+                document.getElementById('roleTitle').style.color = 'var(--accent)';
+                document.getElementById('roleContent').innerHTML = '🦎 DU ÄR KAMELEONTEN!';
+            } else {
+                document.getElementById('roleTitle').style.color = 'var(--primary)';
+                document.getElementById('roleContent').innerText = roles[curIdx];
+            }
+
             document.getElementById('secret-area').classList.remove('hidden');
-            document.getElementById('revealBtn').innerText = "Jag har memorerat det";
+            document.getElementById('revealBtn').innerText = 'Jag har memorerat det';
             isRevealed = true;
         } else {
             curIdx++;
-            if (curIdx < players.length) updatePassScreen();
-            else showBoard();
+            if (curIdx < players.length) {
+                updatePassScreen();
+            } else {
+                showBoard();
+            }
         }
     }
 
     function showBoard() {
         switchScreen('scr-board');
         const data = randomizedOrder[(roundCount - 1) % randomizedOrder.length];
-        document.getElementById('roundIndicator').innerText = `Runda ${roundCount}/10`;
+        document.getElementById('roundIndicator').innerText = 'Runda ' + roundCount + '/10';
         document.getElementById('boardCatName').innerText = data.cat;
         const grid = document.getElementById('gridBoard');
         grid.innerHTML = '<div class="cell cell-header"></div>';
-        ['A', 'B', 'C', 'D'].forEach(l => grid.innerHTML += `<div class="cell cell-header">${l}</div>`);
+        ['A', 'B', 'C', 'D'].forEach(l => grid.innerHTML += '<div class="cell cell-header">' + l + '</div>');
         for (let i = 0; i < 4; i++) {
-            grid.innerHTML += `<div class="cell cell-header">${i + 1}</div>`;
+            grid.innerHTML += '<div class="cell cell-header">' + (i + 1) + '</div>';
             for (let j = 0; j < 4; j++) {
-                grid.innerHTML += `<div class="cell">${data.words[i * 4 + j]}</div>`;
+                grid.innerHTML += '<div class="cell">' + data.words[i * 4 + j] + '</div>';
             }
         }
     }
@@ -404,18 +500,19 @@
         players.forEach((p, i) => {
             const sel1 = roundScores[i] === 1 ? ' selected' : '';
             const sel2 = roundScores[i] === 2 ? ' selected-accent' : '';
-            html += `
-                <div class="score-item">
-                    <span>${p.name} (<strong>${p.score}</strong> p)</span>
-                    <div class="point-controls">
-                        <button class="${sel1}" onclick="togglePt(${i}, 1)">+1</button>
-                        <button class="accent${sel2}" onclick="togglePt(${i}, 2)">+2</button>
-                    </div>
-                </div>`;
+            const mood = roundScores[i] > 0 ? 'Glad' : 'Rund';
+            html += '<div class="score-item">' +
+                '<img class="s-face' + (roundScores[i] > 0 ? ' happy' : '') + '" src="' + getImg(p, mood) + '" alt="' + p.name + '">' +
+                '<span class="s-name">' + p.name + '</span>' +
+                '<span class="s-pts">' + p.score + ' p</span>' +
+                '<div class="point-controls">' +
+                '<button class="' + sel1 + '" onclick="togglePt(' + i + ', 1)">+1</button>' +
+                '<button class="accent' + sel2 + '" onclick="togglePt(' + i + ', 2)">+2</button>' +
+                '</div></div>';
         });
         list.innerHTML = html;
         if (roundCount >= 10) {
-            document.getElementById('nextRoundBtn').innerText = "Avsluta spelet";
+            document.getElementById('nextRoundBtn').innerText = 'Avsluta spelet';
         }
     }
 
@@ -440,11 +537,10 @@
     }
 
     function triggerFinal() {
+        applyRoundScores();
         switchScreen('scr-video');
         const video = document.getElementById('victoryVideo');
-        video.play().catch(() => {
-            finishVideo();
-        });
+        video.play().catch(() => { finishVideo(); });
         video.onended = finishVideo;
     }
 
@@ -456,47 +552,43 @@
 
     function showFinalWinner() {
         const sorted = [...players].sort((a, b) => b.score - a.score);
-        document.getElementById('grandWinner').innerText = sorted[0].name;
+        const winner = sorted[0];
+
+        document.getElementById('winnerFace').src = getImg(winner, 'Glad');
+        document.getElementById('grandWinner').innerText = winner.name;
+
         const ranking = document.getElementById('final-ranking');
-        ranking.innerHTML = '<h3 style="color:var(--primary)">Slutställning:</h3>';
+        ranking.innerHTML = '<h3 style="color:var(--primary); margin-bottom: 12px;">Slutställning:</h3>';
         sorted.forEach((p, i) => {
-            ranking.innerHTML += `<p>${i + 1}. ${p.name} — ${p.score} p</p>`;
+            const mood = i === 0 ? 'Glad' : (i >= sorted.length - 2 ? 'Ledsen' : 'Rund');
+            ranking.innerHTML += '<div class="final-row">' +
+                '<img class="f-face" src="' + getImg(p, mood) + '" alt="' + p.name + '">' +
+                '<span class="f-name">' + (i + 1) + '. ' + p.name + '</span>' +
+                '<span class="f-score">' + p.score + ' p</span></div>';
         });
-        saveToLeaderboard(sorted);
-        showLeaderboard();
+
+        launchConfetti();
     }
 
-    // SPARAR POÄNG TILL LOCALSTORAGE
-    function saveToLeaderboard(sorted) {
+    function saveAndReturn() {
+        // Save scores to trekamp
         try {
-            const board = JSON.parse(localStorage.getItem('chameleon_leaderboard') || '{}');
-            sorted.forEach(p => {
-                if (!board[p.name]) board[p.name] = 0;
-                board[p.name] += p.score;
-            });
-            localStorage.setItem('chameleon_leaderboard', JSON.stringify(board));
-        } catch (e) { /* localStorage unavailable */ }
-    }
+            const scores = JSON.parse(localStorage.getItem('trekamp_scores') || '{}');
+            players.forEach(p => { scores[p.name] = (scores[p.name] || 0) + p.score; });
+            localStorage.setItem('trekamp_scores', JSON.stringify(scores));
 
-    function showLeaderboard() {
-        try {
-            const board = JSON.parse(localStorage.getItem('chameleon_leaderboard') || '{}');
-            const entries = Object.entries(board).sort((a, b) => b[1] - a[1]);
-            if (entries.length === 0) return;
-            const section = document.getElementById('leaderboard-section');
-            section.classList.remove('hidden');
-            section.innerHTML = '<h3>Topplista (alla spel):</h3>';
-            entries.forEach(([name, score], i) => {
-                section.innerHTML += `<p>${i + 1}. ${name} — ${score} p</p>`;
-            });
-        } catch (e) { /* localStorage unavailable */ }
+            const games = JSON.parse(localStorage.getItem('trekamp_games') || '[]');
+            if (!games.includes('kameleonten')) games.push('kameleonten');
+            localStorage.setItem('trekamp_games', JSON.stringify(games));
+        } catch(e) {}
+
+        window.location.href = 'index.html';
     }
 
     function switchScreen(to) {
         const current = document.getElementById(activeScreen);
         const next = document.getElementById(to);
         if (activeScreen === to) return;
-        current.classList.remove('animate-in');
         current.style.opacity = 0;
         setTimeout(() => {
             current.classList.add('hidden');
@@ -505,6 +597,24 @@
             next.classList.add('animate-in');
             activeScreen = to;
         }, 300);
+    }
+
+    function launchConfetti() {
+        const container = document.getElementById('confettiContainer');
+        const colors = ['#818cf8', '#d946ef', '#fbbf24', '#34d399', '#f472b6', '#38bdf8'];
+        for (let i = 0; i < 60; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti';
+            el.style.left = Math.random() * 100 + '%';
+            el.style.background = colors[Math.floor(Math.random() * colors.length)];
+            el.style.width = (6 + Math.random() * 8) + 'px';
+            el.style.height = (6 + Math.random() * 8) + 'px';
+            el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+            el.style.animationDuration = (2 + Math.random() * 3) + 's';
+            el.style.animationDelay = (Math.random() * 2) + 's';
+            container.appendChild(el);
+        }
+        setTimeout(() => { container.innerHTML = ''; }, 6000);
     }
 </script>
 </body>

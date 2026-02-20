@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Herd Mentality - AniJonas Edition</title>
+    <title>Herd Mentality – Trekamp</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    
+
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0f172a">
@@ -15,18 +15,17 @@
             --bg-overlay: rgba(15, 23, 42, 0.85);
             --card: rgba(30, 41, 59, 0.8);
             --primary: #818cf8;
-            --accent: #f472b6; 
+            --accent: #f472b6;
             --winner-gold: #fbbf24;
             --text: #f8fafc;
             --glass: rgba(255, 255, 255, 0.05);
         }
 
         * { box-sizing: border-box; transition: all 0.3s ease; }
-        
+
         body {
             font-family: 'Outfit', sans-serif;
             background-color: #0f172a;
-            /* Se till att din bakgrundsbild heter background.png */
             background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('background2.png');
             background-size: cover;
             background-position: center center;
@@ -39,7 +38,6 @@
             margin: 0;
         }
 
-        /* HUVUDBEHÅLLARE MED DELAY-EFFEKT */
         .container {
             width: 95%;
             max-width: 500px;
@@ -51,11 +49,9 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             text-align: center;
-            
-            /* Startar osynlig och dimmar upp efter 1 sekund */
             opacity: 0;
-            animation: startFadeIn 1.5s ease-out forwards;
-            animation-delay: 1s; 
+            animation: startFadeIn 1s ease-out forwards;
+            animation-delay: 0.3s;
         }
 
         @keyframes startFadeIn {
@@ -64,202 +60,315 @@
         }
 
         .neon-cow {
-            width: 130px;
-            height: auto;
-            margin: 0 auto 20px;
-            display: block;
-            color: var(--accent);
-            filter: drop-shadow(0 0 15px var(--accent));
+            width: 130px; height: auto; margin: 0 auto 20px; display: block;
+            color: var(--accent); filter: drop-shadow(0 0 15px var(--accent));
         }
 
         h1 { font-weight: 800; font-size: 2.5rem; margin: 0 0 10px; background: linear-gradient(to right, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         p { color: #94a3b8; margin-bottom: 25px; }
 
-        .btn { 
-            background: linear-gradient(135deg, var(--primary), var(--accent)); 
-            color: white; border: none; padding: 18px; border-radius: 18px; 
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white; border: none; padding: 18px; border-radius: 18px;
             font-weight: 700; cursor: pointer; width: 100%; font-size: 1.1rem;
             margin-top: 15px; box-shadow: 0 10px 20px -5px rgba(129, 140, 248, 0.5);
+            font-family: 'Outfit', sans-serif;
         }
         .btn:active { transform: scale(0.98); }
 
-        .btn-lang { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--primary); margin-bottom: 10px; }
+        .question-box {
+            background: rgba(15, 23, 42, 0.6); padding: 35px 25px; border-radius: 24px;
+            border: 2px solid var(--primary); font-size: 1.6rem; font-weight: 700;
+            margin: 25px 0; color: white; line-height: 1.3;
+        }
 
-        input { background: rgba(15, 23, 42, 0.8); border: 1px solid #334155; color: white; padding: 16px; border-radius: 14px; width: 100%; text-align: center; font-size: 1.2rem; margin-top: 10px; }
+        /* Scoring rows with faces */
+        .score-row {
+            display: flex; align-items: center;
+            background: rgba(255,255,255,0.05); padding: 12px;
+            border-radius: 18px; margin-bottom: 10px;
+            border: 2px solid transparent; gap: 10px;
+        }
+        .score-row.has-cow {
+            border-color: var(--accent);
+            background: rgba(244, 114, 182, 0.15);
+        }
 
-        .question-box { background: rgba(15, 23, 42, 0.6); padding: 35px 25px; border-radius: 24px; border: 2px solid var(--primary); font-size: 1.6rem; font-weight: 700; margin: 25px 0; color: white; line-height: 1.3; }
+        .score-row .sr-face {
+            width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
+            flex-shrink: 0; transition: all 0.4s ease;
+        }
 
-        .score-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 18px; margin-bottom: 12px; border: 2px solid transparent; }
-        .score-row.has-cow { border-color: var(--accent); background: rgba(244, 114, 182, 0.2); }
-        
-        .cow-btn { background: #1e293b; border: none; padding: 10px; border-radius: 12px; cursor: pointer; font-size: 1.4rem; width: 50px; }
+        .score-row .sr-face.cow-face {
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 12px rgba(244, 114, 182, 0.5);
+        }
+
+        .score-row .sr-face.happy { animation: happyBounce 0.5s ease; }
+        @keyframes happyBounce { 0% { transform: scale(1); } 40% { transform: scale(1.2); } 100% { transform: scale(1); } }
+
+        .score-row .sr-name { flex: 1; text-align: left; font-weight: 600; }
+        .score-row .sr-pts { font-weight: 800; color: var(--primary); min-width: 40px; text-align: right; margin-right: 8px; }
+
+        .cow-btn { background: #1e293b; border: none; padding: 10px; border-radius: 12px; cursor: pointer; font-size: 1.4rem; width: 50px; flex-shrink: 0; }
         .cow-btn.active { background: var(--accent); box-shadow: 0 0 15px var(--accent); }
-        
-        .point-btn { background: var(--primary); border: none; color: white; width: 50px; height: 50px; border-radius: 14px; font-weight: 800; cursor: pointer; }
+
+        .point-btn {
+            background: var(--primary); border: none; color: white;
+            width: 50px; height: 50px; border-radius: 14px;
+            font-weight: 800; cursor: pointer; flex-shrink: 0;
+            font-family: 'Outfit', sans-serif;
+        }
         .point-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
         .video-wrapper { width: 100%; border-radius: 24px; overflow: hidden; border: 2px solid var(--accent); margin-bottom: 20px; background: #000; }
         video { width: 100%; display: block; }
 
+        /* Winner */
+        .winner-face {
+            width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
+            border: 4px solid var(--winner-gold);
+            box-shadow: 0 0 25px rgba(251,191,36,0.5);
+            margin: 10px auto; display: block;
+            animation: winBounce 1.5s ease-in-out infinite;
+        }
+        @keyframes winBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .final-row {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 14px; margin-bottom: 8px;
+        }
+        .final-row .f-face { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+        .final-row .f-name { flex: 1; text-align: left; font-weight: 600; }
+        .final-row .f-score { font-weight: 800; color: var(--primary); }
+
         .hidden { display: none !important; }
-        
-        /* Interna skärm-växlingar (snabbare än start-infasningen) */
         .screen-animate { animation: fadeIn 0.4s forwards ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Confetti */
+        .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; overflow: hidden; }
+        .confetti { position: absolute; width: 10px; height: 10px; top: -10px; animation: confettiFall linear forwards; }
+        @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
     </style>
 </head>
 <body>
 
 <div class="container" id="app">
-    <div id="scr-language" class="screen-animate">
+
+    <div id="scr-question" class="screen-animate">
         <svg class="neon-cow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2c-4 0-7 3-7 7 0 1.5.5 3 1 4.5C4.5 15 3 16.5 3 18c0 1.5 1 3 2.5 3.5C7 22.5 9.5 23 12 23s5-0.5 6.5-1.5c1.5-0.5 2.5-2 2.5-3.5 0-1.5-1.5-3-3-4.5.5-1.5 1-3 1-4.5C19 5 16 2 12 2z"/>
             <path d="M8 10h.01"/><path d="M16 10h.01"/><path d="M12 16v-2"/>
         </svg>
         <h1>Herd Mentality</h1>
-        <p>Välj språk / Choose language</p>
-        <button class="btn btn-lang" onclick="setLanguage('sv')">Svenska</button>
-        <button class="btn btn-lang" onclick="setLanguage('en')">English</button>
-        <a href="index.html" style="display:inline-block; margin-top:15px; color:#818cf8; font-size:0.9rem; text-decoration:none;">&#8592; Tillbaka till meny</a>
-    </div>
-
-    <div id="scr-setup" class="hidden screen-animate">
-        <h1 id="txt-title">Herd Mentality</h1>
-        <p id="txt-subtitle">...</p>
-        <div style="text-align: left;">
-            <label id="txt-pcount" style="font-weight: 600;">Antal spelare:</label>
-            <input type="number" id="pCount" value="4" min="3" max="10">
-        </div>
-        <button class="btn" id="btn-continue" onclick="setupNames()">Fortsätt</button>
-    </div>
-
-    <div id="scr-names" class="hidden screen-animate">
-        <h1 id="txt-names-title">Namn</h1>
-        <div id="name-container"></div>
-        <button class="btn" id="btn-start" onclick="initGame()">Starta</button>
-    </div>
-
-    <div id="scr-question" class="hidden screen-animate">
-        <p id="roundTitle" style="font-weight: 800; color: var(--primary);">RUNDA 1</p>
+        <p>Tänk som flocken. Undvik att bli den rosa kon!</p>
+        <p id="roundTitle" style="font-weight: 800; color: var(--primary); margin-bottom: 10px;">RUNDA 1</p>
         <div class="question-box" id="qDisplay">...</div>
-        <button class="btn" id="btn-scoring" onclick="showScoring()">Rätta</button>
+        <button class="btn" onclick="showScoring()">Rätta</button>
     </div>
 
     <div id="scr-scoring" class="hidden screen-animate">
-        <h1 id="txt-scoring-title">Poäng</h1>
-        <p id="txt-scoring-sub">...</p>
+        <h1>Poängsättning</h1>
+        <p>Ge poäng till majoriteten. Markera vem som är <b>Rosa Kon</b> 🐮</p>
         <div id="scoring-list"></div>
         <div style="display: flex; gap: 10px; margin-top: 20px;">
-            <button class="btn" id="btn-finish" style="flex: 1; background: var(--glass);" onclick="triggerFinal()">Avsluta</button>
-            <button class="btn" id="btn-next" style="flex: 2; margin-top: 0;" onclick="nextRound()">Nästa</button>
+            <button class="btn" style="flex: 1; background: var(--glass);" onclick="triggerFinal()">Avsluta</button>
+            <button class="btn" style="flex: 2; margin-top: 0;" onclick="nextRound()">Nästa runda</button>
         </div>
     </div>
 
     <div id="scr-video" class="hidden screen-animate">
-        <h1 id="txt-video-title">Finalen...</h1>
+        <h1>Finalen...</h1>
         <div class="video-wrapper">
             <video id="victoryVideo" playsinline><source src="video2.mp4" type="video/mp4"></video>
         </div>
-        <button class="btn" id="btn-skip" onclick="finishVideo()">Skippa</button>
+        <button class="btn" onclick="finishVideo()">Hoppa över</button>
     </div>
 
     <div id="scr-final" class="hidden screen-animate">
-        <h1 id="grandWinner" style="font-size: 3.5rem; color: var(--winner-gold);">Namn</h1>
-        <div id="final-ranking"></div>
-        <button class="btn" id="btn-again" onclick="location.reload()">Spela igen</button>
-        <a href="index.html" style="display:inline-block; margin-top:15px; color:#818cf8; font-size:0.9rem; text-decoration:none;">&#8592; Tillbaka till meny</a>
+        <span style="font-size: 4rem; display: block; animation: winBounce 1.5s ease-in-out infinite;">👑</span>
+        <img id="winnerFace" class="winner-face" src="" alt="Vinnare">
+        <h1 id="grandWinner" style="font-size: 3rem; color: var(--winner-gold); -webkit-text-fill-color: var(--winner-gold);">Namn</h1>
+        <div id="final-ranking" style="margin-top: 20px;"></div>
+        <button class="btn" onclick="saveAndReturn()">Tillbaka till trekampen</button>
     </div>
 </div>
 
+<div class="confetti-container" id="confettiContainer"></div>
+
 <script>
-    const data = {
-        sv: {
-            title: "Herd Mentality", subtitle: "Tänk som flocken. Undvik att bli den rosa kon!", pcount: "Antal spelare:", continue: "Fortsätt", namesTitle: "Spelarnamn", start: "Starta spelet", round: "RUNDA", scoring: "Rätta svar", scoringTitle: "Poängsättning", scoringSub: "Ge poäng till majoriteten. Markera vem som är <b>Rosa Kon</b> 🐮", finish: "Avsluta", next: "Nästa runda", videoTitle: "Finalen...", skip: "Hoppa över", again: "Spela igen", ranking: "Slutställning:", pts: "poäng",
-            questions: ["Bästa pizzan?", "Mest irriterande instrument?", "Bästa superkraften?", "Coolaste djuret?", "Bästa frukten?", "Bästa veckodagen?", "En känd trollkarl?", "Bästa glassen?", "Land med bäst mat?", "En populär sport?", "Bästa filmgenren?", "Vanligt hundnamn?", "Bästa sättet att resa?", "Något i badrummet?", "Bästa chokladen?", "En populär app?", "Bästa frukosten?", "Ett tråkigt skolämne?", "Bästa brädspelet?", "En planet?", "Bästa läsken?", "Kändis alla gillar?", "Bästa Disneyfilmen?", "Görs innan man sover?", "Bästa högtiden?", "Svårskalad frukt?", "Bästa uppfinningen?", "Stad man vill besöka?", "Bästa burgaren?", "Roligt men svårt jobb?", "Bästa kakan?", "Vanlig krydda?", "Bästa söndagssysslan?", "Ett legendariskt väsen?", "Bästa bilfärgen?", "Grönsak barn hatar?", "Bästa 80-talslåten?", "Något man alltid tappar bort?", "Anledning att komma sent?", "Bästa brödet?", "Görs när man har tråkigt?", "Bästa pommes fritesen?", "Bästa tecknade serien?", "Något man gör på bröllop?", "Bästa nöten?", "Ett vackert språk?", "Bästa telefonen?", "Något till stranden?", "Bästa pastan?", "En känd idrottare?", "Bästa sitcomen?", "Kan inte leva utan?", "Bästa tårtan?"]
-        },
-        en: {
-            title: "Herd Mentality", subtitle: "Think like the herd. Don't be the Pink Cow!", pcount: "Number of players:", continue: "Continue", namesTitle: "Player Names", start: "Start Game", round: "ROUND", scoring: "Go to Scoring", scoringTitle: "Scoring Phase", scoringSub: "Award points to the majority. Mark the <b>Pink Cow</b> 🐮", finish: "Finish Game", next: "Next Round", videoTitle: "The Finale...", skip: "Skip Video", again: "Play Again", ranking: "Final Standings:", pts: "points",
-            questions: ["Best pizza topping?", "Most annoying instrument?", "Best superpower?", "Coolest animal?", "Best fruit?", "Best day of the week?", "A famous wizard?", "Best ice cream flavor?", "Country with best food?", "A popular sport?", "Best movie genre?", "Common dog name?", "Best way to travel?", "Something in a bathroom?", "Best chocolate bar?", "A popular app?", "Best breakfast food?", "Boring school subject?", "Best board game?", "A planet?", "Best soda?", "Celebrity everyone likes?", "Best Disney movie?", "Done before sleeping?", "Best holiday?", "Fruit hard to peel?", "Best invention?", "City to visit?", "Best burger?", "Fun but hard job?", "Best cookie?", "Common spice?", "Best Sunday activity?", "Legendary creature?", "Best car color?", "Vegetable kids hate?", "Best 80s song?", "Something you always lose?", "Reason to be late?", "Best bread?", "Done when bored?", "Best fries?", "Best cartoon?", "Done at weddings?", "Best nut?", "Beautiful language?", "Best phone brand?", "Taken to the beach?", "Best pasta shape?", "Famous athlete?", "Best sitcom?", "Can't live without?", "Best cake?"]
-        }
-    };
+    const PLAYERS = [
+        { name: 'Jonas', img: 'Jonas' },
+        { name: 'Jessica', img: 'Jessan' },
+        { name: 'Johanna', img: 'Johanna' },
+        { name: 'Alex', img: 'Alex' },
+        { name: 'Rasmus', img: 'Rasmus' },
+        { name: 'Boel', img: 'Boel' },
+        { name: 'Karla', img: 'Karla' },
+        { name: 'Elin', img: 'Elin' }
+    ];
 
-    let players = [], roundNum = 0, shuffledQ = [], pinkCowIndex = -1, lang = 'sv';
-
-    function setLanguage(l) {
-        lang = l;
-        document.getElementById('txt-title').innerText = data[lang].title;
-        document.getElementById('txt-subtitle').innerText = data[lang].subtitle;
-        document.getElementById('txt-pcount').innerText = data[lang].pcount;
-        document.getElementById('btn-continue').innerText = data[lang].continue;
-        switchScreen('scr-language', 'scr-setup');
+    function getImg(p, mood) {
+        return 'Chameleon Lillebror/' + mood + ' ' + p.img + '.webp';
     }
 
-    function setupNames() {
-        const count = document.getElementById('pCount').value;
-        const container = document.getElementById('name-container');
-        container.innerHTML = '';
-        for(let i=0; i<count; i++) container.innerHTML += `<input type="text" id="pName${i}" placeholder="${lang === 'sv' ? 'Namn' : 'Name'} ${i+1}">`;
-        switchScreen('scr-setup', 'scr-names');
-        shuffledQ = [...data[lang].questions].sort(() => Math.random() - 0.5);
-    }
+    const questions = [
+        "Bästa pizzan?", "Mest irriterande instrument?", "Bästa superkraften?", "Coolaste djuret?",
+        "Bästa frukten?", "Bästa veckodagen?", "En känd trollkarl?", "Bästa glassen?",
+        "Land med bäst mat?", "En populär sport?", "Bästa filmgenren?", "Vanligt hundnamn?",
+        "Bästa sättet att resa?", "Något i badrummet?", "Bästa chokladen?", "En populär app?",
+        "Bästa frukosten?", "Ett tråkigt skolämne?", "Bästa brädspelet?", "En planet?",
+        "Bästa läsken?", "Kändis alla gillar?", "Bästa Disneyfilmen?", "Görs innan man sover?",
+        "Bästa högtiden?", "Svårskalad frukt?", "Bästa uppfinningen?", "Stad man vill besöka?",
+        "Bästa burgaren?", "Roligt men svårt jobb?", "Bästa kakan?", "Vanlig krydda?",
+        "Bästa söndagssysslan?", "Ett legendariskt väsen?", "Bästa bilfärgen?",
+        "Grönsak barn hatar?", "Bästa 80-talslåten?", "Något man alltid tappar bort?",
+        "Anledning att komma sent?", "Bästa brödet?", "Görs när man har tråkigt?",
+        "Bästa pommes fritesen?", "Bästa tecknade serien?", "Något man gör på bröllop?",
+        "Bästa nöten?", "Ett vackert språk?", "Bästa telefonen?", "Något till stranden?",
+        "Bästa pastan?", "En känd idrottare?", "Bästa sitcomen?", "Kan inte leva utan?", "Bästa tårtan?"
+    ];
 
-    function initGame() {
-        const count = document.getElementById('pCount').value;
-        for(let i=0; i<count; i++) players.push({ name: document.getElementById(`pName${i}`).value || `P${i+1}`, score: 0 });
-        startRound();
-    }
+    let players = PLAYERS.map(p => ({ ...p, score: 0 }));
+    let roundNum = 0;
+    let shuffledQ = [...questions].sort(() => Math.random() - 0.5);
+    let pinkCowIndex = -1;
+    let awardedThisRound = {};
+
+    // Start first round immediately
+    startRound();
 
     function startRound() {
         roundNum++;
-        document.getElementById('roundTitle').innerText = `${data[lang].round} ${roundNum}`;
-        document.getElementById('qDisplay').innerText = shuffledQ[roundNum - 1] || (lang === 'sv' ? "Slut!" : "Finished!");
+        document.getElementById('roundTitle').innerText = 'RUNDA ' + roundNum;
+        document.getElementById('qDisplay').innerText = shuffledQ[(roundNum - 1) % shuffledQ.length];
+        awardedThisRound = {};
         switchScreen(activeScreen(), 'scr-question');
     }
 
     function showScoring() {
+        renderScoringList();
+        switchScreen('scr-question', 'scr-scoring');
+    }
+
+    function renderScoringList() {
         const list = document.getElementById('scoring-list');
         list.innerHTML = '';
         players.forEach((p, i) => {
             const hasCow = (i === pinkCowIndex);
-            list.innerHTML += `<div class="score-row ${hasCow ? 'has-cow' : ''}"><button class="cow-btn ${hasCow ? 'active' : ''}" onclick="toggleCow(${i})">🐮</button><span style="flex:1; text-align:left; margin-left:15px;">${p.name}</span><button class="point-btn" id="ptBtn${i}" ${hasCow ? 'disabled' : ''} onclick="awardPoint(${i})">+1</button></div>`;
+            const awarded = awardedThisRound[i];
+            let mood = 'Rund';
+            if (hasCow) mood = 'Ledsen';
+            else if (awarded) mood = 'Glad';
+
+            const faceClass = 'sr-face' + (hasCow ? ' cow-face' : '') + (awarded ? ' happy' : '');
+
+            list.innerHTML +=
+                '<div class="score-row ' + (hasCow ? 'has-cow' : '') + '">' +
+                '<button class="cow-btn ' + (hasCow ? 'active' : '') + '" onclick="toggleCow(' + i + ')">🐮</button>' +
+                '<img class="' + faceClass + '" src="' + getImg(p, mood) + '" alt="' + p.name + '">' +
+                '<span class="sr-name">' + p.name + '</span>' +
+                '<span class="sr-pts">' + p.score + ' p</span>' +
+                '<button class="point-btn" id="ptBtn' + i + '" ' + (hasCow || awarded ? 'disabled' : '') +
+                ' onclick="awardPoint(' + i + ')">+1</button>' +
+                '</div>';
         });
-        document.getElementById('txt-scoring-title').innerText = data[lang].scoringTitle;
-        document.getElementById('txt-scoring-sub').innerHTML = data[lang].scoringSub;
-        document.getElementById('btn-finish').innerText = data[lang].finish;
-        document.getElementById('btn-next').innerText = data[lang].next;
-        switchScreen('scr-question', 'scr-scoring');
     }
 
-    function awardPoint(idx) { players[idx].score++; const b = document.getElementById(`ptBtn${idx}`); b.innerText = "✓"; b.disabled = true; }
-    function toggleCow(idx) { pinkCowIndex = (pinkCowIndex === idx) ? -1 : idx; showScoring(); }
-    function nextRound() { startRound(); }
-    function triggerFinal() { 
-        document.getElementById('txt-video-title').innerText = data[lang].videoTitle;
-        document.getElementById('btn-skip').innerText = data[lang].skip;
-        switchScreen('scr-scoring', 'scr-video'); 
-        const v = document.getElementById('victoryVideo'); v.play().catch(()=>{}); v.onended = finishVideo; 
+    function awardPoint(idx) {
+        players[idx].score++;
+        awardedThisRound[idx] = true;
+        renderScoringList();
     }
-    function finishVideo() { document.getElementById('victoryVideo').pause(); switchScreen('scr-video', 'scr-final'); showFinalWinner(); }
+
+    function toggleCow(idx) {
+        pinkCowIndex = (pinkCowIndex === idx) ? -1 : idx;
+        renderScoringList();
+    }
+
+    function nextRound() {
+        startRound();
+    }
+
+    function triggerFinal() {
+        switchScreen('scr-scoring', 'scr-video');
+        const v = document.getElementById('victoryVideo');
+        v.play().catch(() => { finishVideo(); });
+        v.onended = finishVideo;
+    }
+
+    function finishVideo() {
+        document.getElementById('victoryVideo').pause();
+        switchScreen('scr-video', 'scr-final');
+        showFinalWinner();
+    }
+
     function showFinalWinner() {
-        const s = [...players].sort((a,b)=>b.score-a.score);
-        document.getElementById('grandWinner').innerText = s[0].name;
-        document.getElementById('btn-again').innerText = data[lang].again;
-        const r = document.getElementById('final-ranking');
-        r.innerHTML = `<h3 style="color:var(--primary); margin-bottom:15px;">${data[lang].ranking}</h3>`;
-        s.forEach((p, i) => {
-            r.innerHTML += `<div class="score-row" style="background:var(--glass)"><span>${i+1}. ${p.name}</span><b>${p.score} ${data[lang].pts}</b></div>`;
+        const sorted = [...players].sort((a, b) => b.score - a.score);
+        const winner = sorted[0];
+
+        document.getElementById('winnerFace').src = getImg(winner, 'Glad');
+        document.getElementById('grandWinner').innerText = winner.name;
+
+        const ranking = document.getElementById('final-ranking');
+        ranking.innerHTML = '<h3 style="color:var(--primary); margin-bottom: 12px;">Slutställning:</h3>';
+        sorted.forEach((p, i) => {
+            const mood = i === 0 ? 'Glad' : (i >= sorted.length - 2 ? 'Ledsen' : 'Rund');
+            ranking.innerHTML += '<div class="final-row">' +
+                '<img class="f-face" src="' + getImg(p, mood) + '" alt="' + p.name + '">' +
+                '<span class="f-name">' + (i + 1) + '. ' + p.name + '</span>' +
+                '<span class="f-score">' + p.score + ' p</span></div>';
         });
+
+        launchConfetti();
+    }
+
+    function saveAndReturn() {
+        try {
+            const scores = JSON.parse(localStorage.getItem('trekamp_scores') || '{}');
+            players.forEach(p => { scores[p.name] = (scores[p.name] || 0) + p.score; });
+            localStorage.setItem('trekamp_scores', JSON.stringify(scores));
+
+            const games = JSON.parse(localStorage.getItem('trekamp_games') || '[]');
+            if (!games.includes('herd-mentality')) games.push('herd-mentality');
+            localStorage.setItem('trekamp_games', JSON.stringify(games));
+        } catch(e) {}
+
+        window.location.href = 'index.html';
     }
 
     function switchScreen(from, to) {
         document.getElementById(from).classList.add('hidden');
-        document.getElementById(to).classList.remove('hidden');
+        const next = document.getElementById(to);
+        next.classList.remove('hidden');
+        next.classList.remove('screen-animate');
+        void next.offsetWidth;
+        next.classList.add('screen-animate');
     }
 
     function activeScreen() {
-        const ids = ['scr-language', 'scr-setup', 'scr-names', 'scr-question', 'scr-scoring', 'scr-video'];
-        for(let id of ids) if(!document.getElementById(id).classList.contains('hidden')) return id;
-        return 'scr-language';
+        const ids = ['scr-question', 'scr-scoring', 'scr-video', 'scr-final'];
+        for (let id of ids) if (!document.getElementById(id).classList.contains('hidden')) return id;
+        return 'scr-question';
+    }
+
+    function launchConfetti() {
+        const container = document.getElementById('confettiContainer');
+        const colors = ['#818cf8', '#f472b6', '#fbbf24', '#34d399', '#d946ef', '#38bdf8'];
+        for (let i = 0; i < 60; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti';
+            el.style.left = Math.random() * 100 + '%';
+            el.style.background = colors[Math.floor(Math.random() * colors.length)];
+            el.style.width = (6 + Math.random() * 8) + 'px';
+            el.style.height = (6 + Math.random() * 8) + 'px';
+            el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+            el.style.animationDuration = (2 + Math.random() * 3) + 's';
+            el.style.animationDelay = (Math.random() * 2) + 's';
+            container.appendChild(el);
+        }
+        setTimeout(() => { container.innerHTML = ''; }, 6000);
     }
 </script>
 </body>

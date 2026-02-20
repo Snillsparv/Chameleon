@@ -3,21 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spelkväll</title>
+    <title>Spelkväll Trekamp!</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0f172a">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏆</text></svg>">
 
     <style>
         :root {
-            --bg-overlay: rgba(15, 23, 42, 0.85);
+            --bg-overlay: rgba(15, 23, 42, 0.82);
             --card: rgba(30, 41, 59, 0.6);
             --primary: #818cf8;
             --accent: #d946ef;
+            --accent2: #34d399;
+            --winner-gold: #fbbf24;
             --text: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,13 +35,14 @@
             color: var(--text);
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
+            padding: 20px 0;
         }
 
         .container {
             width: 95%;
-            max-width: 500px;
+            max-width: 520px;
             text-align: center;
             animation: fadeIn 0.8s ease-out;
         }
@@ -51,97 +55,402 @@
         h1 {
             font-weight: 800;
             font-size: 2.4rem;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             background: linear-gradient(to right, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .subtitle {
-            color: #94a3b8;
-            margin-bottom: 35px;
-            font-size: 1rem;
+        .subtitle { color: #94a3b8; margin-bottom: 20px; font-size: 1rem; }
+
+        /* Player grid */
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
         }
 
-        .game-card {
+        .player-card {
             background: var(--card);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 30px 25px;
-            margin-bottom: 20px;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+            padding: 12px 6px 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            position: relative;
         }
 
-        .game-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
-            border-color: var(--primary);
-        }
-
-        .game-icon {
-            font-size: 3.5rem;
-            display: block;
-            margin-bottom: 12px;
-        }
-
-        .game-title {
-            font-weight: 800;
-            font-size: 1.5rem;
-            color: var(--text);
+        .player-card .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.15);
             margin-bottom: 6px;
         }
 
-        .game-desc {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            line-height: 1.4;
+        .player-card .p-name {
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--text);
+            line-height: 1.2;
         }
 
-        .game-players {
-            display: inline-block;
-            background: rgba(129, 140, 248, 0.15);
+        .player-card .p-score {
+            font-weight: 800;
+            font-size: 1.1rem;
             color: var(--primary);
-            font-size: 0.8rem;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 20px;
-            margin-top: 12px;
+            margin-top: 2px;
+        }
+
+        .player-card.leader .avatar {
+            border-color: var(--winner-gold);
+            box-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
+        }
+        .player-card.leader .p-score { color: var(--winner-gold); }
+
+        /* Game cards */
+        .game-card {
+            background: var(--card);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 22px 20px;
+            margin-bottom: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px -8px rgba(0,0,0,0.5);
+            border-color: var(--primary);
+        }
+
+        .game-card .game-icon { font-size: 2.5rem; flex-shrink: 0; }
+        .game-card .game-info { text-align: left; flex: 1; }
+        .game-card .game-title { font-weight: 800; font-size: 1.2rem; color: var(--text); }
+        .game-card .game-desc { color: #94a3b8; font-size: 0.82rem; line-height: 1.3; margin-top: 3px; }
+
+        .game-card .check-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--accent2);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 8px rgba(52,211,153,0.5);
+        }
+
+        .game-card.played { opacity: 0.65; }
+        .game-card.played:hover { opacity: 0.85; }
+
+        /* Finish button */
+        .btn-finish {
+            background: linear-gradient(135deg, var(--winner-gold), #f59e0b);
+            color: #1e293b;
+            border: none;
+            padding: 18px;
+            border-radius: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.15rem;
+            margin-top: 10px;
+            box-shadow: 0 10px 20px -5px rgba(251,191,36,0.4);
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .btn-finish:hover { transform: translateY(-3px); box-shadow: 0 15px 30px -5px rgba(251,191,36,0.5); }
+
+        .btn-reset {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #64748b;
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Finale screen */
+        .hidden { display: none !important; }
+
+        #scr-finale {
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 40px 25px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+
+        .finale-winner-face {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--winner-gold);
+            box-shadow: 0 0 30px rgba(251,191,36,0.5);
+            animation: winnerBounce 1.5s ease-in-out infinite;
+            margin: 0 auto 10px;
+            display: block;
+        }
+
+        @keyframes winnerBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-12px) scale(1.05); }
+        }
+
+        .finale-crown { font-size: 4rem; margin-bottom: 5px; display: block; animation: crownSpin 2s ease-in-out infinite; }
+        @keyframes crownSpin {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .finale-title {
+            font-weight: 800; font-size: 2.2rem;
+            color: var(--winner-gold);
+            text-shadow: 0 0 20px rgba(251,191,36,0.4);
+            margin-bottom: 5px;
+        }
+
+        .finale-subtitle { color: #94a3b8; margin-bottom: 25px; }
+
+        .ranking-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.04);
+            padding: 10px 14px;
+            border-radius: 14px;
+            margin-bottom: 8px;
+        }
+
+        .ranking-row .rank { font-weight: 800; font-size: 1.1rem; color: #64748b; min-width: 28px; }
+        .ranking-row .rank.gold { color: var(--winner-gold); }
+        .ranking-row .rank.silver { color: #cbd5e1; }
+        .ranking-row .rank.bronze { color: #c9855a; }
+
+        .ranking-row .r-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .ranking-row .r-name { flex: 1; text-align: left; font-weight: 600; }
+        .ranking-row .r-score { font-weight: 800; color: var(--primary); }
+
+        .btn-finale {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white; border: none; padding: 16px; border-radius: 16px;
+            font-weight: 700; cursor: pointer; width: 100%; font-size: 1.05rem;
+            margin-top: 20px; font-family: 'Outfit', sans-serif;
+        }
+
+        /* Confetti */
+        .confetti-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confettiFall linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Spelkväll</h1>
-    <p class="subtitle">Välj ett spel att spela</p>
 
-    <a href="kameleonten.html" class="game-card">
-        <span class="game-icon">🦎</span>
-        <div class="game-title">Kameleonten</div>
-        <div class="game-desc">Bluffy dig igenom 100 kategorier. Vem är kameleonten som inte vet det hemliga ordet?</div>
-        <span class="game-players">3–10 spelare</span>
-    </a>
+    <!-- HUB SCREEN -->
+    <div id="scr-hub">
+        <h1>Spelkväll Trekamp!</h1>
+        <p class="subtitle">Välj ett spel och kämpa om segern!</p>
 
-    <a href="herd-mentality.html" class="game-card">
-        <span class="game-icon">🐮</span>
-        <div class="game-title">Herd Mentality</div>
-        <div class="game-desc">Tänk som flocken! Svara som majoriteten och undvik att bli den rosa kon.</div>
-        <span class="game-players">3–10 spelare</span>
-    </a>
+        <div class="player-grid" id="playerGrid"></div>
 
-    <a href="med-andra-ord.html" class="game-card">
-        <span class="game-icon">💬</span>
-        <div class="game-title">Med andra ord</div>
-        <div class="game-desc">Förklara ord utan att säga dem! 300 ord att tävla om i lag — vem är bäst på att beskriva?</div>
-        <span class="game-players">4+ spelare (2 lag)</span>
-    </a>
+        <a href="kameleonten.html" class="game-card" id="gc-kameleonten">
+            <span class="game-icon">🦎</span>
+            <div class="game-info">
+                <div class="game-title">Kameleonten</div>
+                <div class="game-desc">Bluffy dig genom 100 kategorier!</div>
+            </div>
+        </a>
+
+        <a href="herd-mentality.html" class="game-card" id="gc-herd">
+            <span class="game-icon">🐮</span>
+            <div class="game-info">
+                <div class="game-title">Herd Mentality</div>
+                <div class="game-desc">Tänk som flocken!</div>
+            </div>
+        </a>
+
+        <a href="med-andra-ord.html" class="game-card" id="gc-mao">
+            <span class="game-icon">💬</span>
+            <div class="game-info">
+                <div class="game-title">Med andra ord</div>
+                <div class="game-desc">Förklara ord utan att säga dem!</div>
+            </div>
+        </a>
+
+        <button class="btn-finish" onclick="showFinale()">Avsluta spelkvällen!</button>
+        <button class="btn-reset" onclick="resetAll()">Nollställ allt och börja om</button>
+    </div>
+
+    <!-- FINALE SCREEN -->
+    <div id="scr-finale" class="hidden">
+        <span class="finale-crown">👑</span>
+        <img id="finaleWinnerFace" class="finale-winner-face" src="" alt="Vinnare">
+        <div class="finale-title" id="finaleWinnerName">Vinnare!</div>
+        <p class="finale-subtitle" id="finaleWinnerSub">vinner spelkvällen!</p>
+        <div id="finaleRanking"></div>
+        <button class="btn-finale" onclick="resetAll()">Ny spelkväll!</button>
+    </div>
+
 </div>
 
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+    const PLAYERS = [
+        { name: 'Jonas', img: 'Jonas' },
+        { name: 'Jessica', img: 'Jessan' },
+        { name: 'Johanna', img: 'Johanna' },
+        { name: 'Alex', img: 'Alex' },
+        { name: 'Rasmus', img: 'Rasmus' },
+        { name: 'Boel', img: 'Boel' },
+        { name: 'Karla', img: 'Karla' },
+        { name: 'Elin', img: 'Elin' }
+    ];
+
+    function getImg(player, mood) {
+        return 'Chameleon Lillebror/' + mood + ' ' + player.img + '.webp';
+    }
+
+    function getScores() {
+        try { return JSON.parse(localStorage.getItem('trekamp_scores') || '{}'); }
+        catch { return {}; }
+    }
+
+    function getGamesPlayed() {
+        try { return JSON.parse(localStorage.getItem('trekamp_games') || '[]'); }
+        catch { return []; }
+    }
+
+    function renderHub() {
+        const scores = getScores();
+        const games = getGamesPlayed();
+        const grid = document.getElementById('playerGrid');
+
+        // Find leader
+        let maxScore = 0;
+        PLAYERS.forEach(p => { if ((scores[p.name] || 0) > maxScore) maxScore = scores[p.name]; });
+
+        grid.innerHTML = PLAYERS.map(p => {
+            const s = scores[p.name] || 0;
+            const isLeader = s > 0 && s === maxScore;
+            const mood = isLeader ? 'Glad' : 'Rund';
+            return `<div class="player-card${isLeader ? ' leader' : ''}">
+                <img class="avatar" src="${getImg(p, mood)}" alt="${p.name}">
+                <div class="p-name">${p.name}</div>
+                <div class="p-score">${s} p</div>
+            </div>`;
+        }).join('');
+
+        // Mark played games
+        ['kameleonten', 'herd', 'mao'].forEach(key => {
+            const card = document.getElementById('gc-' + key);
+            const badge = card.querySelector('.check-badge');
+            if (badge) badge.remove();
+            const gameName = key === 'mao' ? 'med-andra-ord' : key === 'herd' ? 'herd-mentality' : key;
+            if (games.includes(gameName)) {
+                card.classList.add('played');
+                card.insertAdjacentHTML('beforeend', '<div class="check-badge">✓</div>');
+            } else {
+                card.classList.remove('played');
+            }
+        });
+    }
+
+    function showFinale() {
+        document.getElementById('scr-hub').classList.add('hidden');
+        document.getElementById('scr-finale').classList.remove('hidden');
+
+        const scores = getScores();
+        const sorted = PLAYERS.map(p => ({ ...p, score: scores[p.name] || 0 }))
+            .sort((a, b) => b.score - a.score);
+
+        const winner = sorted[0];
+        document.getElementById('finaleWinnerFace').src = getImg(winner, 'Glad');
+        document.getElementById('finaleWinnerName').textContent = winner.name;
+        document.getElementById('finaleWinnerSub').textContent = `vinner spelkvällen med ${winner.score} poäng!`;
+
+        const rankColors = ['gold', 'silver', 'bronze'];
+        const ranking = document.getElementById('finaleRanking');
+        ranking.innerHTML = sorted.map((p, i) => {
+            const mood = i === 0 ? 'Glad' : (i >= sorted.length - 2 ? 'Ledsen' : 'Rund');
+            return `<div class="ranking-row">
+                <span class="rank ${rankColors[i] || ''}">${i + 1}.</span>
+                <img class="r-avatar" src="${getImg(p, mood)}" alt="${p.name}">
+                <span class="r-name">${p.name}</span>
+                <span class="r-score">${p.score} p</span>
+            </div>`;
+        }).join('');
+
+        launchConfetti();
+    }
+
+    function resetAll() {
+        if (confirm('Vill du verkligen nollställa allt och börja en ny spelkväll?')) {
+            localStorage.removeItem('trekamp_scores');
+            localStorage.removeItem('trekamp_games');
+            location.reload();
+        }
+    }
+
+    function launchConfetti() {
+        const container = document.getElementById('confettiContainer');
+        const colors = ['#818cf8', '#d946ef', '#fbbf24', '#34d399', '#f472b6', '#38bdf8', '#f87171'];
+        for (let i = 0; i < 80; i++) {
+            const el = document.createElement('div');
+            el.className = 'confetti';
+            el.style.left = Math.random() * 100 + '%';
+            el.style.background = colors[Math.floor(Math.random() * colors.length)];
+            el.style.width = (6 + Math.random() * 8) + 'px';
+            el.style.height = (6 + Math.random() * 8) + 'px';
+            el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+            el.style.animationDuration = (2 + Math.random() * 3) + 's';
+            el.style.animationDelay = (Math.random() * 2) + 's';
+            container.appendChild(el);
+        }
+        setTimeout(() => { container.innerHTML = ''; }, 6000);
+    }
+
+    renderHub();
+</script>
 </body>
 </html>
