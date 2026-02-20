@@ -3,7 +3,6 @@ const PLAYERS = [
     { name: 'Jessica', img: 'Jessan' },
     { name: 'Johanna', img: 'Johanna' },
     { name: 'Alex', img: 'Alex' },
-    { name: 'Rasmus', img: 'Rasmus' },
     { name: 'Boel', img: 'Boel' },
     { name: 'Karla', img: 'Karla' },
     { name: 'Elin', img: 'Elin' }
