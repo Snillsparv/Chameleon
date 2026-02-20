@@ -63,49 +63,51 @@
 
         .subtitle { color: #94a3b8; margin-bottom: 20px; font-size: 1rem; }
 
-        /* Player grid */
-        .player-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 25px;
+        /* Player strip - horizontal scroll */
+        .player-strip {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            padding: 10px 4px 14px;
+            margin-bottom: 20px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
         }
+        .player-strip::-webkit-scrollbar { display: none; }
 
         .player-card {
-            background: var(--card);
-            backdrop-filter: blur(12px);
-            border-radius: 18px;
-            padding: 12px 6px 10px;
-            border: 1px solid rgba(255,255,255,0.08);
+            flex: 0 0 auto;
+            text-align: center;
             position: relative;
         }
 
         .player-card .avatar {
-            width: 64px;
-            height: 64px;
+            width: 82px;
+            height: 82px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.15);
+            border: 3px solid rgba(255,255,255,0.15);
             margin-bottom: 6px;
+            display: block;
         }
 
         .player-card .p-name {
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             color: var(--text);
             line-height: 1.2;
         }
 
         .player-card .p-score {
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--primary);
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
         .player-card.leader .avatar {
             border-color: var(--winner-gold);
-            box-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
+            box-shadow: 0 0 16px rgba(251, 191, 36, 0.5);
         }
         .player-card.leader .p-score { color: var(--winner-gold); }
 
@@ -248,7 +250,7 @@
         .ranking-row .rank.silver { color: #cbd5e1; }
         .ranking-row .rank.bronze { color: #c9855a; }
 
-        .ranking-row .r-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .ranking-row .r-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
         .ranking-row .r-name { flex: 1; text-align: left; font-weight: 600; }
         .ranking-row .r-score { font-weight: 800; color: var(--primary); }
 
@@ -291,7 +293,7 @@
         <h1>Spelkväll Trekamp!</h1>
         <p class="subtitle">Välj ett spel och kämpa om segern!</p>
 
-        <div class="player-grid" id="playerGrid"></div>
+        <div class="player-strip" id="playerGrid"></div>
 
         <a href="kameleonten.html" class="game-card" id="gc-kameleonten">
             <span class="game-icon">🦎</span>
