@@ -42,7 +42,7 @@
 
         .container {
             width: 95%;
-            max-width: 520px;
+            max-width: 820px;
             text-align: center;
             animation: fadeIn 0.8s ease-out;
         }
@@ -63,32 +63,32 @@
 
         .subtitle { color: #94a3b8; margin-bottom: 20px; font-size: 1rem; }
 
-        /* Player strip - horizontal scroll */
+        /* Player strip */
         .player-strip {
             display: flex;
-            gap: 14px;
-            overflow-x: auto;
-            padding: 10px 4px 14px;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 0 14px;
             margin-bottom: 20px;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
+            flex-wrap: nowrap;
         }
-        .player-strip::-webkit-scrollbar { display: none; }
 
         .player-card {
-            flex: 0 0 auto;
+            flex: 1 1 0;
+            min-width: 0;
             text-align: center;
             position: relative;
         }
 
         .player-card .avatar {
-            width: 82px;
-            height: 82px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid rgba(255,255,255,0.15);
-            margin-bottom: 6px;
+            margin: 0 auto 6px;
             display: block;
+            max-width: 100%;
         }
 
         .player-card .p-name {
@@ -112,6 +112,8 @@
         .player-card.leader .p-score { color: var(--winner-gold); }
 
         /* Game cards */
+        .game-cards { max-width: 500px; margin: 0 auto; }
+
         .game-card {
             background: var(--card);
             backdrop-filter: blur(16px);
@@ -171,7 +173,7 @@
             cursor: pointer;
             width: 100%;
             font-size: 1.15rem;
-            margin-top: 10px;
+            margin-top: 14px;
             box-shadow: 0 10px 20px -5px rgba(251,191,36,0.4);
             font-family: 'Outfit', sans-serif;
             transition: all 0.3s ease;
@@ -295,32 +297,34 @@
 
         <div class="player-strip" id="playerGrid"></div>
 
-        <a href="kameleonten.html" class="game-card" id="gc-kameleonten">
-            <span class="game-icon">🦎</span>
-            <div class="game-info">
-                <div class="game-title">Kameleonten</div>
-                <div class="game-desc">Bluffy dig genom 100 kategorier!</div>
-            </div>
-        </a>
+        <div class="game-cards">
+            <a href="kameleonten.html" class="game-card" id="gc-kameleonten">
+                <span class="game-icon">🦎</span>
+                <div class="game-info">
+                    <div class="game-title">Kameleonten</div>
+                    <div class="game-desc">Bluffy dig genom 100 kategorier!</div>
+                </div>
+            </a>
 
-        <a href="herd-mentality.html" class="game-card" id="gc-herd">
-            <span class="game-icon">🐮</span>
-            <div class="game-info">
-                <div class="game-title">Herd Mentality</div>
-                <div class="game-desc">Tänk som flocken!</div>
-            </div>
-        </a>
+            <a href="herd-mentality.html" class="game-card" id="gc-herd">
+                <span class="game-icon">🐮</span>
+                <div class="game-info">
+                    <div class="game-title">Herd Mentality</div>
+                    <div class="game-desc">Tänk som flocken!</div>
+                </div>
+            </a>
 
-        <a href="med-andra-ord.html" class="game-card" id="gc-mao">
-            <span class="game-icon">💬</span>
-            <div class="game-info">
-                <div class="game-title">Med andra ord</div>
-                <div class="game-desc">Förklara ord utan att säga dem!</div>
-            </div>
-        </a>
+            <a href="med-andra-ord.html" class="game-card" id="gc-mao">
+                <span class="game-icon">💬</span>
+                <div class="game-info">
+                    <div class="game-title">Med andra ord</div>
+                    <div class="game-desc">Förklara ord utan att säga dem!</div>
+                </div>
+            </a>
 
-        <button class="btn-finish" onclick="showFinale()">Avsluta spelkvällen!</button>
-        <button class="btn-reset" onclick="resetAll()">Nollställ allt och börja om</button>
+            <button class="btn-finish" onclick="showFinale()">Avsluta spelkvällen!</button>
+            <button class="btn-reset" onclick="resetAll()">Nollställ allt och börja om</button>
+        </div>
     </div>
 
     <!-- FINALE SCREEN -->
