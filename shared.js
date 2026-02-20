@@ -20,6 +20,19 @@ function shuffle(array) {
     return array;
 }
 
+const SFX = {
+    correct: new Audio('correct.wav'),
+    wrong: new Audio('wrong.wav'),
+    fanfar: new Audio('fanfar.mp3')
+};
+
+function playSound(name) {
+    const sound = SFX[name];
+    if (!sound) return;
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
+}
+
 function launchConfetti(count) {
     const container = document.getElementById('confettiContainer');
     if (!container) return;

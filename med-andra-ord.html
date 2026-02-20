@@ -489,6 +489,7 @@
     }
 
     function correctWord() {
+        playSound('correct');
         roundWords.push({ word: shuffledWords[wordIndex], result: 'correct' });
         roundCorrect++;
         teams[currentTeamIdx].score++;
@@ -497,6 +498,7 @@
     }
 
     function skipWord() {
+        playSound('wrong');
         roundWords.push({ word: shuffledWords[wordIndex], result: 'skipped' });
         roundSkipped++;
         teams[currentTeamIdx].score = Math.max(0, teams[currentTeamIdx].score - 1);
@@ -560,6 +562,7 @@
 
         updateAllScores();
         switchScreen('scr-result', 'scr-final');
+        playSound('fanfar');
         launchConfetti();
     }
 
