@@ -21,7 +21,7 @@
             --glass: rgba(255, 255, 255, 0.05);
         }
 
-        * { box-sizing: border-box; transition: all 0.3s ease; }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Outfit', sans-serif;
@@ -197,22 +197,8 @@
 
 <div class="confetti-container" id="confettiContainer"></div>
 
+<script src="shared.js"></script>
 <script>
-    const PLAYERS = [
-        { name: 'Jonas', img: 'Jonas' },
-        { name: 'Jessica', img: 'Jessan' },
-        { name: 'Johanna', img: 'Johanna' },
-        { name: 'Alex', img: 'Alex' },
-        { name: 'Rasmus', img: 'Rasmus' },
-        { name: 'Boel', img: 'Boel' },
-        { name: 'Karla', img: 'Karla' },
-        { name: 'Elin', img: 'Elin' }
-    ];
-
-    function getImg(p, mood) {
-        return 'Chameleon Lillebror/' + mood + ' ' + p.img + '.webp';
-    }
-
     const questions = [
         "Bästa pizzan?", "Mest irriterande instrument?", "Bästa superkraften?", "Coolaste djuret?",
         "Bästa frukten?", "Bästa veckodagen?", "En känd trollkarl?", "Bästa glassen?",
@@ -232,7 +218,7 @@
 
     let players = PLAYERS.map(p => ({ ...p, score: 0 }));
     let roundNum = 0;
-    let shuffledQ = [...questions].sort(() => Math.random() - 0.5);
+    let shuffledQ = shuffle([...questions]);
     let pinkCowIndex = -1;
     let awardedThisRound = {};
 
@@ -353,23 +339,6 @@
         return 'scr-question';
     }
 
-    function launchConfetti() {
-        const container = document.getElementById('confettiContainer');
-        const colors = ['#818cf8', '#f472b6', '#fbbf24', '#34d399', '#d946ef', '#38bdf8'];
-        for (let i = 0; i < 60; i++) {
-            const el = document.createElement('div');
-            el.className = 'confetti';
-            el.style.left = Math.random() * 100 + '%';
-            el.style.background = colors[Math.floor(Math.random() * colors.length)];
-            el.style.width = (6 + Math.random() * 8) + 'px';
-            el.style.height = (6 + Math.random() * 8) + 'px';
-            el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-            el.style.animationDuration = (2 + Math.random() * 3) + 's';
-            el.style.animationDelay = (Math.random() * 2) + 's';
-            container.appendChild(el);
-        }
-        setTimeout(() => { container.innerHTML = ''; }, 6000);
-    }
 </script>
 </body>
 </html>

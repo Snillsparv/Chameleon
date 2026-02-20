@@ -289,22 +289,8 @@
 
 <div class="confetti-container" id="confettiContainer"></div>
 
+<script src="shared.js"></script>
 <script>
-    const PLAYERS = [
-        { name: 'Jonas', img: 'Jonas' },
-        { name: 'Jessica', img: 'Jessan' },
-        { name: 'Johanna', img: 'Johanna' },
-        { name: 'Alex', img: 'Alex' },
-        { name: 'Rasmus', img: 'Rasmus' },
-        { name: 'Boel', img: 'Boel' },
-        { name: 'Karla', img: 'Karla' },
-        { name: 'Elin', img: 'Elin' }
-    ];
-
-    function getImg(p, mood) {
-        return 'Chameleon Lillebror/' + mood + ' ' + p.img + '.webp';
-    }
-
     const allWords = [
         "Tandborste","Flygplan","Jordgubbe","Solglasögon","Regnbåge",
         "Fotboll","Dammsugare","Skorsten","Hängmatta","Fallskärm",
@@ -400,7 +386,7 @@
     }
 
     function buildTeams() {
-        const shuffled = [...PLAYERS].sort(() => Math.random() - 0.5);
+        const shuffled = shuffle([...PLAYERS]);
         teams = [];
         for (let i = 0; i < teamCount; i++) {
             teams.push({ name: 'Lag ' + (i + 1), score: 0, members: [] });
@@ -435,7 +421,7 @@
         winScore = parseInt(document.getElementById('winScoreInput').value) || 25;
 
         teams.forEach(t => t.score = 0);
-        shuffledWords = [...allWords].sort(() => Math.random() - 0.5);
+        shuffledWords = shuffle([...allWords]);
         wordIndex = 0;
         currentTeamIdx = 0;
         showTurnScreen();
@@ -495,7 +481,7 @@
 
     function showNextWord() {
         if (wordIndex >= shuffledWords.length) {
-            shuffledWords = [...allWords].sort(() => Math.random() - 0.5);
+            shuffledWords = shuffle([...allWords]);
             wordIndex = 0;
         }
         document.getElementById('wordDisplay').textContent = shuffledWords[wordIndex];
@@ -627,23 +613,6 @@
         return 'scr-teamchoice';
     }
 
-    function launchConfetti() {
-        const container = document.getElementById('confettiContainer');
-        const colors = ['#818cf8', '#34d399', '#fbbf24', '#d946ef', '#f472b6', '#38bdf8'];
-        for (let i = 0; i < 60; i++) {
-            const el = document.createElement('div');
-            el.className = 'confetti';
-            el.style.left = Math.random() * 100 + '%';
-            el.style.background = colors[Math.floor(Math.random() * colors.length)];
-            el.style.width = (6 + Math.random() * 8) + 'px';
-            el.style.height = (6 + Math.random() * 8) + 'px';
-            el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-            el.style.animationDuration = (2 + Math.random() * 3) + 's';
-            el.style.animationDelay = (Math.random() * 2) + 's';
-            container.appendChild(el);
-        }
-        setTimeout(() => { container.innerHTML = ''; }, 6000);
-    }
 </script>
 </body>
 </html>

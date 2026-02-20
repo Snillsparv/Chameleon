@@ -38,6 +38,7 @@
             align-items: flex-start;
             min-height: 100vh;
             padding: 20px 0;
+            overflow-x: hidden;
         }
 
         .container {
@@ -45,6 +46,8 @@
             max-width: 820px;
             text-align: center;
             animation: fadeIn 0.8s ease-out;
+            position: relative;
+            z-index: 2;
         }
 
         @keyframes fadeIn {
@@ -52,16 +55,52 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Shimmer title */
         h1 {
             font-weight: 800;
             font-size: 2.4rem;
             margin-bottom: 4px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--winner-gold), var(--accent2), var(--primary));
+            background-size: 300% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .subtitle { color: #94a3b8; margin-bottom: 20px; font-size: 1rem; }
+
+        /* Progress indicator */
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .progress-star {
+            font-size: 1.6rem;
+            opacity: 0.25;
+            transition: all 0.4s ease;
+            filter: grayscale(100%);
+        }
+
+        .progress-star.earned {
+            opacity: 1;
+            filter: grayscale(0%);
+            animation: starPop 0.6s ease-out;
+        }
+
+        @keyframes starPop {
+            0% { transform: scale(0.5) rotate(-20deg); }
+            60% { transform: scale(1.3) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
 
         /* Player strip */
         .player-strip {
@@ -78,6 +117,12 @@
             min-width: 0;
             text-align: center;
             position: relative;
+            cursor: pointer;
+        }
+
+        .player-card .avatar-wrap {
+            position: relative;
+            display: inline-block;
         }
 
         .player-card .avatar {
@@ -86,9 +131,37 @@
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid rgba(255,255,255,0.15);
-            margin: 0 auto 6px;
             display: block;
             max-width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .player-card:active .avatar {
+            transform: scale(1.15) rotate(-5deg);
+        }
+
+        .player-card .medal {
+            position: absolute;
+            top: -6px;
+            right: -2px;
+            font-size: 1.3rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            z-index: 3;
+        }
+
+        .player-card .crown {
+            position: absolute;
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.4rem;
+            z-index: 3;
+            animation: crownBob 2s ease-in-out infinite;
+        }
+
+        @keyframes crownBob {
+            0%, 100% { transform: translateX(-50%) translateY(0) rotate(-3deg); }
+            50% { transform: translateX(-50%) translateY(-4px) rotate(3deg); }
         }
 
         .player-card .p-name {
@@ -96,6 +169,7 @@
             font-size: 0.82rem;
             color: var(--text);
             line-height: 1.2;
+            margin-top: 6px;
         }
 
         .player-card .p-score {
@@ -110,6 +184,19 @@
             box-shadow: 0 0 16px rgba(251, 191, 36, 0.5);
         }
         .player-card.leader .p-score { color: var(--winner-gold); }
+
+        /* Wiggle animation on tap */
+        @keyframes wiggle {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-8deg) scale(1.1); }
+            50% { transform: rotate(8deg) scale(1.1); }
+            75% { transform: rotate(-4deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .player-card.wiggle .avatar {
+            animation: wiggle 0.5s ease;
+        }
 
         /* Game cards */
         .game-cards { max-width: 500px; margin: 0 auto; }
@@ -137,7 +224,23 @@
             border-color: var(--primary);
         }
 
-        .game-card .game-icon { font-size: 2.5rem; flex-shrink: 0; }
+        .game-card .game-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+            display: inline-block;
+            animation: iconBounce 3s ease-in-out infinite;
+        }
+
+        .game-card:nth-child(1) .game-icon { animation-delay: 0s; }
+        .game-card:nth-child(2) .game-icon { animation-delay: 1s; }
+        .game-card:nth-child(3) .game-icon { animation-delay: 2s; }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            15% { transform: translateY(-6px) rotate(-5deg); }
+            30% { transform: translateY(0) rotate(0deg); }
+        }
+
         .game-card .game-info { text-align: left; flex: 1; }
         .game-card .game-title { font-weight: 800; font-size: 1.2rem; color: var(--text); }
         .game-card .game-desc { color: #94a3b8; font-size: 0.82rem; line-height: 1.3; margin-top: 3px; }
@@ -155,7 +258,7 @@
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 0.85rem;
+            font-size: 1.1rem;
             box-shadow: 0 2px 8px rgba(52,211,153,0.5);
         }
 
@@ -203,6 +306,8 @@
             border: 1px solid rgba(255,255,255,0.1);
             padding: 40px 25px;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         .finale-winner-face {
@@ -263,6 +368,29 @@
             margin-top: 20px; font-family: 'Outfit', sans-serif;
         }
 
+        /* Floating party emojis */
+        .party-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .party-emoji {
+            position: absolute;
+            font-size: 1.8rem;
+            opacity: 0;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) rotate(360deg) scale(1); opacity: 0; }
+        }
+
         /* Confetti */
         .confetti-container {
             position: fixed;
@@ -288,12 +416,16 @@
 </head>
 <body>
 
+<div class="party-bg" id="partyBg"></div>
+
 <div class="container">
 
     <!-- HUB SCREEN -->
     <div id="scr-hub">
         <h1>Spelkväll Trekamp!</h1>
-        <p class="subtitle">Välj ett spel och kämpa om segern!</p>
+        <p class="subtitle" id="subtitle">Välj ett spel och kämpa om segern!</p>
+
+        <div class="progress-bar" id="progressBar"></div>
 
         <div class="player-strip" id="playerGrid"></div>
 
@@ -341,21 +473,27 @@
 
 <div class="confetti-container" id="confettiContainer"></div>
 
+<script src="shared.js"></script>
 <script>
-    const PLAYERS = [
-        { name: 'Jonas', img: 'Jonas' },
-        { name: 'Jessica', img: 'Jessan' },
-        { name: 'Johanna', img: 'Johanna' },
-        { name: 'Alex', img: 'Alex' },
-        { name: 'Rasmus', img: 'Rasmus' },
-        { name: 'Boel', img: 'Boel' },
-        { name: 'Karla', img: 'Karla' },
-        { name: 'Elin', img: 'Elin' }
+    const GAME_KEYS = [
+        { key: 'kameleonten', game: 'kameleonten', icon: '🦎' },
+        { key: 'herd', game: 'herd-mentality', icon: '🐮' },
+        { key: 'mao', game: 'med-andra-ord', icon: '💬' }
     ];
 
-    function getImg(player, mood) {
-        return 'Chameleon Lillebror/' + mood + ' ' + player.img + '.webp';
-    }
+    const FUN_SUBTITLES = [
+        'Välj ett spel och kämpa om segern!',
+        'Vem blir kvällens mästare?',
+        'Dags att visa vem som är bäst!',
+        'Redo att spela? Let\'s gooo!'
+    ];
+
+    const PROGRESS_SUBTITLES = [
+        null,
+        'Bra start! Två spel kvar!',
+        'Bara ett spel kvar!',
+        'Alla spel avklarade! Dags för finalen?'
+    ];
 
     function getScores() {
         try { return JSON.parse(localStorage.getItem('trekamp_scores') || '{}'); }
@@ -372,34 +510,107 @@
         const games = getGamesPlayed();
         const grid = document.getElementById('playerGrid');
 
-        // Find leader
-        let maxScore = 0;
-        PLAYERS.forEach(p => { if ((scores[p.name] || 0) > maxScore) maxScore = scores[p.name]; });
+        // Sorted by score for medal assignment
+        const withScores = PLAYERS.map(p => ({ ...p, score: scores[p.name] || 0 }));
+        const sorted = [...withScores].sort((a, b) => b.score - a.score);
+
+        // Assign medals: only if score > 0
+        const medals = {};
+        const medalEmojis = ['🥇', '🥈', '🥉'];
+        let prevScore = -1;
+        let rank = 0;
+        sorted.forEach((p, i) => {
+            if (p.score <= 0) return;
+            if (p.score !== prevScore) rank = i;
+            if (rank < 3) medals[p.name] = medalEmojis[rank];
+            prevScore = p.score;
+        });
+
+        const maxScore = sorted[0]?.score || 0;
 
         grid.innerHTML = PLAYERS.map(p => {
             const s = scores[p.name] || 0;
             const isLeader = s > 0 && s === maxScore;
             const mood = isLeader ? 'Glad' : 'Rund';
-            return `<div class="player-card${isLeader ? ' leader' : ''}">
-                <img class="avatar" src="${getImg(p, mood)}" alt="${p.name}">
+            const medal = medals[p.name] || '';
+            const crown = isLeader ? '<span class="crown">👑</span>' : '';
+
+            return `<div class="player-card${isLeader ? ' leader' : ''}" onclick="wigglePlayer(this)">
+                <div class="avatar-wrap">
+                    ${crown}
+                    <img class="avatar" src="${getImg(p, mood)}" alt="${p.name}">
+                    ${medal ? '<span class="medal">' + medal + '</span>' : ''}
+                </div>
                 <div class="p-name">${p.name}</div>
                 <div class="p-score">${s} p</div>
             </div>`;
         }).join('');
 
-        // Mark played games
-        ['kameleonten', 'herd', 'mao'].forEach(key => {
+        // Progress stars
+        const progressBar = document.getElementById('progressBar');
+        progressBar.innerHTML = GAME_KEYS.map(g => {
+            const played = games.includes(g.game);
+            return `<span class="progress-star ${played ? 'earned' : ''}">${played ? '⭐' : '☆'}</span>`;
+        }).join('');
+
+        // Dynamic subtitle
+        const numPlayed = games.length;
+        const sub = PROGRESS_SUBTITLES[numPlayed] ||
+            FUN_SUBTITLES[Math.floor(Math.random() * FUN_SUBTITLES.length)];
+        document.getElementById('subtitle').textContent = sub;
+
+        // Mark played games with star badge
+        GAME_KEYS.forEach(({ key, game }) => {
             const card = document.getElementById('gc-' + key);
             const badge = card.querySelector('.check-badge');
             if (badge) badge.remove();
-            const gameName = key === 'mao' ? 'med-andra-ord' : key === 'herd' ? 'herd-mentality' : key;
-            if (games.includes(gameName)) {
+            if (games.includes(game)) {
                 card.classList.add('played');
-                card.insertAdjacentHTML('beforeend', '<div class="check-badge">✓</div>');
+                card.insertAdjacentHTML('beforeend', '<div class="check-badge">⭐</div>');
             } else {
                 card.classList.remove('played');
             }
         });
+    }
+
+    function wigglePlayer(el) {
+        el.classList.remove('wiggle');
+        void el.offsetWidth;
+        el.classList.add('wiggle');
+        setTimeout(() => el.classList.remove('wiggle'), 600);
+    }
+
+    // Floating party emojis
+    function startPartyBackground() {
+        const container = document.getElementById('partyBg');
+        const emojis = ['🎈', '🎉', '⭐', '🎊', '✨', '🎪', '🎯', '🏆', '🎶', '🎵'];
+        function spawnEmoji() {
+            const el = document.createElement('span');
+            el.className = 'party-emoji';
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = (Math.random() * 100) + '%';
+            el.style.fontSize = (1.2 + Math.random() * 1.2) + 'rem';
+            el.style.animationDuration = (8 + Math.random() * 12) + 's';
+            el.style.animationDelay = '0s';
+            container.appendChild(el);
+            const duration = parseFloat(el.style.animationDuration) * 1000;
+            setTimeout(() => el.remove(), duration);
+        }
+        // Spawn a batch immediately for a "full" feeling
+        for (let i = 0; i < 8; i++) {
+            setTimeout(spawnEmoji, i * 400);
+        }
+        setInterval(spawnEmoji, 2500);
+    }
+
+    // Welcome-back confetti if new scores detected
+    function checkWelcomeBack() {
+        const lastScores = sessionStorage.getItem('trekamp_last_scores');
+        const currentScores = JSON.stringify(getScores());
+        if (lastScores && lastScores !== currentScores && currentScores !== '{}') {
+            setTimeout(() => launchConfetti(40), 500);
+        }
+        sessionStorage.setItem('trekamp_last_scores', currentScores);
     }
 
     function showFinale() {
@@ -416,47 +627,33 @@
         document.getElementById('finaleWinnerSub').textContent = `vinner spelkvällen med ${winner.score} poäng!`;
 
         const rankColors = ['gold', 'silver', 'bronze'];
+        const rankEmojis = ['🥇', '🥈', '🥉'];
         const ranking = document.getElementById('finaleRanking');
         ranking.innerHTML = sorted.map((p, i) => {
             const mood = i === 0 ? 'Glad' : (i >= sorted.length - 2 ? 'Ledsen' : 'Rund');
             return `<div class="ranking-row">
-                <span class="rank ${rankColors[i] || ''}">${i + 1}.</span>
+                <span class="rank ${rankColors[i] || ''}">${rankEmojis[i] || (i + 1) + '.'}</span>
                 <img class="r-avatar" src="${getImg(p, mood)}" alt="${p.name}">
                 <span class="r-name">${p.name}</span>
                 <span class="r-score">${p.score} p</span>
             </div>`;
         }).join('');
 
-        launchConfetti();
+        launchConfetti(80);
     }
 
     function resetAll() {
         if (confirm('Vill du verkligen nollställa allt och börja en ny spelkväll?')) {
             localStorage.removeItem('trekamp_scores');
             localStorage.removeItem('trekamp_games');
+            sessionStorage.removeItem('trekamp_last_scores');
             location.reload();
         }
     }
 
-    function launchConfetti() {
-        const container = document.getElementById('confettiContainer');
-        const colors = ['#818cf8', '#d946ef', '#fbbf24', '#34d399', '#f472b6', '#38bdf8', '#f87171'];
-        for (let i = 0; i < 80; i++) {
-            const el = document.createElement('div');
-            el.className = 'confetti';
-            el.style.left = Math.random() * 100 + '%';
-            el.style.background = colors[Math.floor(Math.random() * colors.length)];
-            el.style.width = (6 + Math.random() * 8) + 'px';
-            el.style.height = (6 + Math.random() * 8) + 'px';
-            el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-            el.style.animationDuration = (2 + Math.random() * 3) + 's';
-            el.style.animationDelay = (Math.random() * 2) + 's';
-            container.appendChild(el);
-        }
-        setTimeout(() => { container.innerHTML = ''; }, 6000);
-    }
-
     renderHub();
+    startPartyBackground();
+    checkWelcomeBack();
 </script>
 </body>
 </html>
